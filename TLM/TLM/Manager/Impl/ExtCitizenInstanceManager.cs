@@ -33,14 +33,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Extended citizen instance data:");
+            Log._Trace("Extended citizen instance data:");
 
             for (var i = 0; i < ExtInstances.Length; ++i) {
                 if (!IsValid((ushort)i)) {
                     continue;
                 }
 
-                Log._Debug($"Citizen instance {i}: {ExtInstances[i]}");
+                Log._Trace($"Citizen instance {i}: {ExtInstances[i]}");
             }
         }
 
@@ -1211,7 +1211,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (extInstance.returnPathId != 0) {
                 if (logParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"Releasing return path {extInstance.returnPathId} of citizen instance " +
                         $"{extInstance.instanceId}. ReturnPathState={extInstance.returnPathState}");
                 }
@@ -1232,7 +1232,7 @@ namespace TrafficManager.Manager.Impl {
             bool extendedLogParkingAi = DebugSwitch.ExtendedParkingAILog.Get() && citizenDebug;
 
             if (extendedLogParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtCitizenInstance.UpdateReturnPathState() called for citizen instance " +
                     $"{extInstance.instanceId}");
             }
@@ -1253,7 +1253,7 @@ namespace TrafficManager.Manager.Impl {
             if ((returnPathFlags & PathUnit.FLAG_READY) != 0) {
                 extInstance.returnPathState = ExtPathState.Ready;
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"CustomHumanAI.CustomSimulationStep: Return path {extInstance.returnPathId} " +
                         $"SUCCEEDED. Flags={returnPathFlags}. " +
                         $"Setting ReturnPathState={extInstance.returnPathState}");
@@ -1261,7 +1261,7 @@ namespace TrafficManager.Manager.Impl {
             } else if ((returnPathFlags & PathUnit.FLAG_FAILED) != 0) {
                 extInstance.returnPathState = ExtPathState.Failed;
                 if (logParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"CustomHumanAI.CustomSimulationStep: Return path {extInstance.returnPathId} " +
                         $"FAILED. Flags={returnPathFlags}. " +
                         $"Setting ReturnPathState={extInstance.returnPathState}");
@@ -1335,7 +1335,7 @@ namespace TrafficManager.Manager.Impl {
                     ref Singleton<SimulationManager>.instance.m_randomizer,
                     args)) {
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "ExtCitizenInstance.CalculateReturnPath: Path-finding starts for return " +
                             "path of citizen instance {0}, path={1}, parkPathPos.segment={2}, " +
                             "parkPathPos.lane={3}, targetPathPos.segment={4}, targetPathPos.lane={5}",
@@ -1354,7 +1354,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logParkingAi) {
-                Log._Debug("ExtCitizenInstance.CalculateReturnPath: Could not find path " +
+                Log._Trace("ExtCitizenInstance.CalculateReturnPath: Could not find path " +
                            "position(s) for either the parking position or target position of " +
                            $"citizen instance {extInstance.instanceId}.");
             }
@@ -1472,7 +1472,7 @@ namespace TrafficManager.Manager.Impl {
             // bool fineDebug = DebugSwitch.ExtendedParkingAILog.Get() && citizenDebug;
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtCitizenInstanceManager.IsAtOutsideConnection({extInstance.instanceId}): " +
                     $"called. Path: {instanceData.m_path} sourceBuilding={instanceData.m_sourceBuilding}");
             }
@@ -1488,7 +1488,7 @@ namespace TrafficManager.Manager.Impl {
                         .m_position).magnitude <= parkingAiConf.MaxBuildingToPedestrianLaneDistance;
 
             if (logParkingAi) {
-                Log._Debug($"ExtCitizenInstanceManager.IsAtOutsideConnection({instanceId}): ret={ret}");
+                Log._Trace($"ExtCitizenInstanceManager.IsAtOutsideConnection({instanceId}): ret={ret}");
             }
 
             return ret;

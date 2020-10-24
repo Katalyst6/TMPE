@@ -139,7 +139,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"All relaxed changed to {newAllRelaxed}");
+            Log._Trace($"All relaxed changed to {newAllRelaxed}");
             Options.allRelaxed = newAllRelaxed;
         }
 
@@ -148,7 +148,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Relaxed busses changed to {newRelaxedBusses}");
+            Log._Trace($"Relaxed busses changed to {newRelaxedBusses}");
             Options.relaxedBusses = newRelaxedBusses;
         }
 
@@ -162,7 +162,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"allowEnterBlockedJunctions changed to {newValue}");
+            Log._Trace($"allowEnterBlockedJunctions changed to {newValue}");
             SetAllowEnterBlockedJunctions(newValue);
         }
 
@@ -176,7 +176,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"allowUTurns changed to {newValue}");
+            Log._Trace($"allowUTurns changed to {newValue}");
             SetAllowUTurns(newValue);
         }
 
@@ -191,7 +191,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"allowNearTurnOnRed changed to {newValue}");
+            Log._Trace($"allowNearTurnOnRed changed to {newValue}");
             SetAllowNearTurnOnRed(newValue);
 
             if (!newValue) {
@@ -209,7 +209,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"allowFarTurnOnRed changed to {newValue}");
+            Log._Trace($"allowFarTurnOnRed changed to {newValue}");
             SetAllowFarTurnOnRed(newValue);
         }
 
@@ -223,7 +223,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"allowLaneChangesWhileGoingStraight changed to {newValue}");
+            Log._Trace($"allowLaneChangesWhileGoingStraight changed to {newValue}");
             SetAllowLaneChangesWhileGoingStraight(newValue);
         }
 
@@ -237,7 +237,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"trafficLightPriorityRules changed to {newValue}");
+            Log._Trace($"trafficLightPriorityRules changed to {newValue}");
             Options.trafficLightPriorityRules = newValue;
 
             if (newValue) {
@@ -250,7 +250,7 @@ namespace TrafficManager.State {
             if (!Options.IsGameLoaded()) {
                 return;
             }
-            Log._Debug($"AutomaticallyAddTrafficLightsIfApplicableChanged changed to {newValue}");
+            Log._Trace($"AutomaticallyAddTrafficLightsIfApplicableChanged changed to {newValue}");
             Options.automaticallyAddTrafficLightsIfApplicable = newValue;
         }
 
@@ -259,7 +259,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"vehicleRestrictionsAggression changed to {newValue}");
+            Log._Trace($"vehicleRestrictionsAggression changed to {newValue}");
             SetVehicleRestrictionsAggression((VehicleRestrictionsAggression)newValue);
         }
 
@@ -285,7 +285,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"banRegularTrafficOnBusLanes changed to {newValue}");
+            Log._Trace($"banRegularTrafficOnBusLanes changed to {newValue}");
             Options.banRegularTrafficOnBusLanes = newValue;
             VehicleRestrictionsManager.Instance.ClearCache();
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -301,7 +301,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Highway rules changed to {newHighwayRules}");
+            Log._Trace($"Highway rules changed to {newHighwayRules}");
             Options.highwayRules = newHighwayRules;
             Flags.ClearHighwayLaneArrows();
             Flags.ApplyAllFlags();
@@ -321,7 +321,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"evacBussesMayIgnoreRules changed to {value}");
+            Log._Trace($"evacBussesMayIgnoreRules changed to {value}");
             Options.evacBussesMayIgnoreRules = value;
         }
 

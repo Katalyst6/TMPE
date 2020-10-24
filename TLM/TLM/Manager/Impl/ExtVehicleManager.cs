@@ -43,14 +43,14 @@
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Ext. vehicles:");
+            Log._Trace($"Ext. vehicles:");
 
             for (int i = 0; i < ExtVehicles.Length; ++i) {
                 if ((ExtVehicles[i].flags & ExtVehicleFlags.Spawned) == ExtVehicleFlags.None) {
                     continue;
                 }
 
-                Log._Debug($"Vehicle {i}: {ExtVehicles[i]}");
+                Log._Trace($"Vehicle {i}: {ExtVehicles[i]}");
             }
         }
 
@@ -135,7 +135,7 @@
                 VehicleInfo.VehicleType.None) {
 
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnCreateVehicle({vehicleId}): unhandled vehicle! " +
                         $"flags: {vehicleData.m_flags}, type: {vehicleData.Info.m_vehicleType}");
                 }
@@ -144,7 +144,7 @@
             }
 
             if (logVehicleLinking) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.OnCreateVehicle({vehicleId}): calling OnCreate for " +
                     $"vehicle {vehicleId}");
             }
@@ -166,7 +166,7 @@
                 Vehicle.Flags.Created)
             {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnStartPathFind({vehicleId}, {vehicleType}): " +
                         $"unhandled vehicle! type: {vehicleData.Info.m_vehicleType}");
                 }
@@ -190,7 +190,7 @@
                 }
 
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnStartPathFind({vehicleId}, {vehicleType}): " +
                         $"overriding vehicle type for connected vehicle {connectedVehicleId} of " +
                         $"vehicle {vehicleId} (trailing)");
@@ -217,7 +217,7 @@
                 (vehicleData.Info.m_vehicleType & VEHICLE_TYPES) == VehicleInfo.VehicleType.None)
             {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnSpawnVehicle({vehicleId}): unhandled vehicle! " +
                         $"flags: {vehicleData.m_flags}, type: {vehicleData.Info.m_vehicleType}, " +
                         $"path: {vehicleData.m_path}");
@@ -227,7 +227,7 @@
             }
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnSpawnVehicle({vehicleId}): calling OnSpawn for " +
+                Log._Trace($"ExtVehicleManager.OnSpawnVehicle({vehicleId}): calling OnSpawn for " +
                            $"vehicle {vehicleId}");
             }
 
@@ -258,7 +258,7 @@
         private void UpdateVehiclePosition(ref Vehicle vehicleData, ref ExtVehicle extVehicle) {
 #if DEBUG
             if (DebugSwitch.VehicleLinkingToSegmentEnd.Get()) {
-                Log._Debug($"ExtVehicleManager.UpdateVehiclePosition({extVehicle.vehicleId}) called");
+                Log._Trace($"ExtVehicleManager.UpdateVehiclePosition({extVehicle.vehicleId}) called");
             }
 #endif
 
@@ -300,7 +300,7 @@
             if ((vehicleData.Info.m_vehicleType & VEHICLE_TYPES) == VehicleInfo.VehicleType.None
                 || (vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Spawned)) == 0) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnDespawnVehicle({vehicleId}): unhandled vehicle! " +
                         $"type: {vehicleData.Info.m_vehicleType}");
                 }
@@ -311,7 +311,7 @@
             ushort connectedVehicleId = vehicleId;
             while (connectedVehicleId != 0) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnDespawnVehicle({vehicleId}): calling OnDespawn " +
                         $"for connected vehicle {connectedVehicleId} of vehicle {vehicleId} (trailing)");
                 }
@@ -332,14 +332,14 @@
 #endif
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnReleaseVehicle({vehicleId}) called.");
+                Log._Trace($"ExtVehicleManager.OnReleaseVehicle({vehicleId}) called.");
             }
 
             if ((vehicleData.m_flags & (Vehicle.Flags.Created | Vehicle.Flags.Deleted)) != Vehicle.Flags.Created
                 || (vehicleData.Info.m_vehicleType & VEHICLE_TYPES) == VehicleInfo.VehicleType.None)
             {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnReleaseVehicle({vehicleId}): unhandled vehicle! " +
                         $"flags: {vehicleData.m_flags}, type: {vehicleData.Info.m_vehicleType}");
                 }
@@ -348,7 +348,7 @@
             }
 
             if (logVehicleLinking) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.OnReleaseVehicle({vehicleId}): calling OnRelease for " +
                     $"vehicle {vehicleId}");
             }
@@ -359,7 +359,7 @@
         public void Unlink(ref ExtVehicle extVehicle) {
 #if DEBUG
             if (DebugSwitch.VehicleLinkingToSegmentEnd.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.Unlink({extVehicle.vehicleId}) called: Unlinking vehicle " +
                     $"from all segment ends\nstate:{extVehicle}");
             }
@@ -409,7 +409,7 @@
                     ExtSegmentEndManager.Instance.GenerateVehicleChainDebugInfo(
                         prevSegmentId,
                         prevStartNode);
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.Unlink({extVehicle.vehicleId}) finished: Unlinked vehicle " +
                     $"from all segment ends\nstate:{extVehicle}\nold segment end vehicle chain: " +
                     vehicleChainDebugInfo);
@@ -426,7 +426,7 @@
         private void Link(ref ExtVehicle extVehicle, ref ExtSegmentEnd end, byte laneIndex) {
 #if DEBUG
             if (DebugSwitch.VehicleLinkingToSegmentEnd.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.Link({extVehicle.vehicleId}) called: Linking vehicle to " +
                     $"segment end {end}\nstate:{extVehicle}");
             }
@@ -449,7 +449,7 @@
                     ExtSegmentEndManager.Instance.GenerateVehicleChainDebugInfo(
                         extVehicle.currentSegmentId,
                         extVehicle.currentStartNode);
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.Link({extVehicle.vehicleId}) finished: Linked vehicle " +
                     $"to segment end: {end}\nstate:{extVehicle}\nsegment end vehicle chain: " +
                     vehicleChainDebugInfo);
@@ -464,12 +464,12 @@
             const bool logVehicleLinking = false;
 #endif
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnCreate({extVehicle.vehicleId}) called: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnCreate({extVehicle.vehicleId}) called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Created) != ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnCreate({extVehicle.vehicleId}): Vehicle is already created.");
                 }
 
@@ -481,7 +481,7 @@
             extVehicle.flags = ExtVehicleFlags.Created;
 
             if (logVehicleLinking) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.OnCreate({extVehicle.vehicleId}) finished: {extVehicle}");
             }
         }
@@ -496,14 +496,14 @@
 #endif
 
             if (logVehicleLinking) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.OnStartPathFind({extVehicle.vehicleId}, " +
                     $"{vehicleType}) called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Created) == ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnStartPathFind({extVehicle.vehicleId}, {vehicleType}): " +
                         "Vehicle has not yet been created.");
                 }
@@ -521,7 +521,7 @@
                     ref vehicleData);
 
             if (logVehicleLinking) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.OnStartPathFind({extVehicle.vehicleId}, {vehicleType}) " +
                     $"finished: {extVehicle}");
             }
@@ -539,12 +539,12 @@
             const bool logVehicleLinking = false;
 #endif
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}) called: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}) called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Created) == ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}): " +
                         "Vehicle has not yet been created.");
                 }
@@ -571,7 +571,7 @@
                 extVehicle.totalLength = 0;
 
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}): " +
                         $"Error occurred while calculating total length: {e}\nstate: {extVehicle}");
                 }
@@ -582,7 +582,7 @@
             extVehicle.flags |= ExtVehicleFlags.Spawned;
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}) finished: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnSpawn({extVehicle.vehicleId}) finished: {extVehicle}");
             }
         }
 
@@ -597,12 +597,12 @@
             const bool logVehicleLinking = false;
 #endif
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}) called: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}) called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Spawned) == ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}): Vehicle is not yet spawned.");
                 }
 
@@ -620,7 +620,7 @@
                 extVehicle.currentStartNode != segEnd.startNode ||
                 extVehicle.currentLaneIndex != curPos.m_lane) {
                 if (logVehicleLinking) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}): " +
                         $"Current segment end changed. seg. {extVehicle.currentSegmentId}, " +
                         $"start {extVehicle.currentStartNode}, lane {extVehicle.currentLaneIndex} -> " +
@@ -629,7 +629,7 @@
 
                 if (extVehicle.currentSegmentId != 0) {
                     if (logVehicleLinking) {
-                        Log._Debug(
+                        Log._Trace(
                             $"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}): " +
                             "Unlinking from current segment end");
                     }
@@ -644,7 +644,7 @@
 
 #if DEBUGVSTATE
                 if (logVehicleLinking) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "ExtVehicleManager.UpdatePosition({0}): Linking vehicle to segment end {1} " +
                         "@ {2} ({3}). Current position: Seg. {4}, lane {5}, offset {6} / " +
                         "Next position: Seg. {7}, lane {8}, offset {9}",
@@ -661,7 +661,7 @@
             }
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}) finshed: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.UpdatePosition({extVehicle.vehicleId}) finshed: {extVehicle}");
             }
         }
 
@@ -673,12 +673,12 @@
 #endif
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId} called: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId} called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Spawned) == ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId}): Vehicle is not spawned.");
+                    Log._Trace($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId}): Vehicle is not spawned.");
                 }
 
                 return;
@@ -699,7 +699,7 @@
             extVehicle.flags &= ExtVehicleFlags.Created;
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId}) finished: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnDespawn({extVehicle.vehicleId}) finished: {extVehicle}");
             }
         }
 
@@ -711,12 +711,12 @@
 #endif
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}) called: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}) called: {extVehicle}");
             }
 
             if ((extVehicle.flags & ExtVehicleFlags.Created) == ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}): Vehicle is not created.");
+                    Log._Trace($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}): Vehicle is not created.");
                 }
 
                 return;
@@ -724,7 +724,7 @@
 
             if ((extVehicle.flags & ExtVehicleFlags.Spawned) != ExtVehicleFlags.None) {
                 if (logVehicleLinking) {
-                    Log._Debug($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}): Vehicle is spawned.");
+                    Log._Trace($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}): Vehicle is spawned.");
                 }
 
                 OnDespawn(ref extVehicle);
@@ -743,7 +743,7 @@
             extVehicle.recklessDriver = false;
 
             if (logVehicleLinking) {
-                Log._Debug($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}) finished: {extVehicle}");
+                Log._Trace($"ExtVehicleManager.OnRelease({extVehicle.vehicleId}) finished: {extVehicle}");
             }
         }
 
@@ -775,7 +775,7 @@
         public void UpdateDynamicLaneSelectionParameters(ref ExtVehicle extVehicle) {
 #if DEBUG
             if (DebugSwitch.VehicleLinkingToSegmentEnd.Get()) {
-                Log._Debug("VehicleState.UpdateDynamicLaneSelectionParameters" +
+                Log._Trace("VehicleState.UpdateDynamicLaneSelectionParameters" +
                            $"({extVehicle.vehicleId}) called.");
             }
 #endif
@@ -902,7 +902,7 @@
 
 #if DEBUG
             if (DebugSwitch.VehicleLinkingToSegmentEnd.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"ExtVehicleManager.DetermineVehicleType({extVehicle.vehicleId}): " +
                     $"vehicleType={extVehicle.vehicleType}, heavyVehicle={extVehicle.heavyVehicle}. " +
                     $"Info={vehicleData.Info?.name}");
@@ -1004,7 +1004,7 @@
             }
 
 #if DEBUGVSTATE
-            Log._Debug(
+            Log._Trace(
                 $"ExtVehicleManager.DetermineVehicleType({vehicleId}): Could not determine " +
                 $"vehicle type from ai type: {ai.GetType()}");
 #endif
@@ -1012,7 +1012,7 @@
         }
 
         private void InitAllVehicles() {
-            Log._Debug("ExtVehicleManager: InitAllVehicles()");
+            Log._Trace("ExtVehicleManager: InitAllVehicles()");
 
             bool HandleVehicle(ushort vId, ref Vehicle vehicle) {
                 if ((vehicle.m_flags & Vehicle.Flags.Created) == 0) {

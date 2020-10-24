@@ -15,10 +15,6 @@ namespace TrafficManager.Custom.PathFinding {
     using TrafficManager.State;
     using UnityEngine;
 
-#if !PF_DIJKSTRA
-    using CustomPathFind = CustomPathFind_Old;
-#endif
-
     [TargetType(typeof(PathManager))]
     public class CustomPathManager : PathManager {
         /// <summary>
@@ -57,7 +53,7 @@ namespace TrafficManager.Custom.PathFinding {
             m_pathUnits = stockPathManager.m_pathUnits;
             m_bufferLock = stockPathManager.m_bufferLock;
 
-            Log._Debug("Waking up CustomPathManager.");
+            Log._Trace("Waking up CustomPathManager.");
 
             QueueItems = new PathUnitQueueItem[MAX_PATHUNIT_COUNT];
 
@@ -65,7 +61,7 @@ namespace TrafficManager.Custom.PathFinding {
             int numOfStockPathFinds = stockPathFinds.Length;
             int numCustomPathFinds = numOfStockPathFinds;
 
-            Log._Debug("Creating " + numCustomPathFinds + " custom PathFind objects.");
+            Log._Trace("Creating " + numCustomPathFinds + " custom PathFind objects.");
             _replacementPathFinds = new CustomPathFind[numCustomPathFinds];
 
             try {
@@ -73,24 +69,18 @@ namespace TrafficManager.Custom.PathFinding {
 
                 for (int i = 0; i < numCustomPathFinds; i++) {
                     _replacementPathFinds[i] = gameObject.AddComponent<CustomPathFind>();
-#if !PF_DIJKSTRA
-					_replacementPathFinds[i].pfId = i;
-					if (i == 0) {
-						_replacementPathFinds[i].IsMasterPathFind = true;
-					}
-#endif
                 }
 
-                Log._Debug("Setting _replacementPathFinds");
+                Log._Trace("Setting _replacementPathFinds");
                 FieldInfo fieldInfo = typeof(PathManager).GetField(
                     "m_pathfinds",
                     BindingFlags.NonPublic | BindingFlags.Instance);
 
-                Log._Debug("Setting m_pathfinds to custom collection");
+                Log._Trace("Setting m_pathfinds to custom collection");
                 fieldInfo?.SetValue(this, _replacementPathFinds);
 
                 for (int i = 0; i < numOfStockPathFinds; i++) {
-                    Log._Debug($"PF {i}: {stockPathFinds[i].m_queuedPathFindCount} queued path-finds");
+                    Log._Trace($"PF {i}: {stockPathFinds[i].m_queuedPathFindCount} queued path-finds");
 
                     // would cause deadlock since we have a lock on m_bufferLock
                     // stockPathFinds[i].WaitForAllPaths();
@@ -258,15 +248,9 @@ namespace TrafficManager.Custom.PathFinding {
                 pathFind = pathFindCandidate;
             }
 
-#if PF_DIJKSTRA
             if (pathFind != null && pathFind.CalculatePath(unit, args.skipQueue)) {
                 return true;
             }
-#else
-			if (pathFind != null && pathFind.ExtCalculatePath(unit, args.skipQueue)) {
-				return true;
-			}
-#endif
 
             // NON-STOCK CODE START
             try {
@@ -387,7 +371,7 @@ namespace TrafficManager.Custom.PathFinding {
         }
 
         protected virtual void OnDestroy() {
-            Log._Debug("CustomPathManager: OnDestroy");
+            Log._Trace("CustomPathManager: OnDestroy");
             StopPathFinds();
         }
     }

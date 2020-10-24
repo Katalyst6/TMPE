@@ -255,7 +255,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logGeometry) {
-                Log._Debug($"ExtSegmentEndManager.Recalculate({segmentId}, {startNode}) called.");
+                Log._Trace($"ExtSegmentEndManager.Recalculate({segmentId}, {startNode}) called.");
             }
 
             ushort nodeIdBeforeRecalc = segEnd.nodeId;
@@ -398,7 +398,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logGeometry = false;
 #endif
             if (logGeometry) {
-                Log._Debug($"Checking if segment {segmentId} is connected to highways only " +
+                Log._Trace($"Checking if segment {segmentId} is connected to highways only " +
                            $"at node {nodeId}.");
             }
 
@@ -430,7 +430,7 @@ namespace TrafficManager.Manager.Impl {
                     Constants.ManagerFactory.ExtSegmentManager.CalculateIsHighway(otherSegmentId);
 
                 if (logGeometry) {
-                    Log._Debug(
+                    Log._Trace(
                         $"Segment {segmentId} is connected to segment {otherSegmentId} at node " +
                         $"{nodeId}. otherIsOneWay={otherIsOneWay} otherIsIncoming={otherIsIncoming} " +
                         $"otherIsOutgoing={otherIsOutgoing} otherIsHighway={otherIsHighway}");
@@ -491,28 +491,28 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Extended segment end data:");
+            Log._Trace($"Extended segment end data:");
 
             for (uint i = 0; i < NetManager.MAX_SEGMENT_COUNT; ++i) {
                 if (!Constants.ManagerFactory.ExtSegmentManager.IsValid((ushort)i)) {
                     continue;
                 }
 
-                Log._Debug($"Segment {i} @ start node: {ExtSegmentEnds[GetIndex((ushort)i, true)]}");
-                Log._Debug($"Segment {i} @ end node: {ExtSegmentEnds[GetIndex((ushort)i, false)]}");
+                Log._Trace($"Segment {i} @ start node: {ExtSegmentEnds[GetIndex((ushort)i, true)]}");
+                Log._Trace($"Segment {i} @ end node: {ExtSegmentEnds[GetIndex((ushort)i, false)]}");
             }
         }
 
         public override void OnLevelLoading() {
             base.OnLevelLoading();
-            Log._Debug($"ExtSegmentEndManager.OnLevelLoading: Calculating {ExtSegmentEnds.Length} " +
+            Log._Trace($"ExtSegmentEndManager.OnLevelLoading: Calculating {ExtSegmentEnds.Length} " +
            "extended segment ends...");
 
             for (int i = 0; i < ExtSegmentEnds.Length; ++i) {
                 // TODO [issue #872]: move CalculateCorners to Recalculate().
                 CalculateCorners(ExtSegmentEnds[i].segmentId, ExtSegmentEnds[i].startNode);
             }
-            Log._Debug($"ExtSegmentEndManager.OnLevelLoading: Calculation finished.");
+            Log._Trace($"ExtSegmentEndManager.OnLevelLoading: Calculation finished.");
         }
 
         public override void OnLevelUnloading() {

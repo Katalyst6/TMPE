@@ -184,7 +184,7 @@ namespace TrafficManager.UI {
             if (Assembly.GetExecutingAssembly()
                         .GetManifestResourceNames()
                         .Contains(RESOURCES_PREFIX + translatedFilename)) {
-                Log._Debug($"Translated file {translatedFilename} found");
+                Log._Trace($"Translated file {translatedFilename} found");
                 return translatedFilename;
             }
 

@@ -31,7 +31,7 @@ namespace TrafficManager.UI {
         /// If the modal stack was previously empty, a blur effect is added over the screen background.
         /// </summary>
         public void Initialize() {
-            Log._Debug("IncompatibleModsPanel initialize");
+            Log._Trace("IncompatibleModsPanel initialize");
             if (mainPanel_ != null) {
                 mainPanel_.OnDestroy();
             }
@@ -175,7 +175,7 @@ namespace TrafficManager.UI {
         ///
         /// <param name="value">The new value of the checkbox; <c>true</c> if checked, otherwise <c>false</c>.</param>
         private void RunModsCheckerOnStartup_eventCheckChanged(bool value) {
-            Log._Debug("Incompatible mods checker run on game launch changed to " + value);
+            Log._Trace("Incompatible mods checker run on game launch changed to " + value);
             OptionsGeneralTab.SetScanForKnownIncompatibleMods(value);
         }
 
@@ -274,7 +274,7 @@ namespace TrafficManager.UI {
         /// <returns>Returns <c>true</c> if successfully deleted, otherwise <c>false</c>.</returns>
         private bool DeleteLocalTMPE(PluginInfo mod) {
             try {
-                Log._Debug($"Deleting local TM:PE from {mod.modPath}");
+                Log._Trace($"Deleting local TM:PE from {mod.modPath}");
                 // mod.Unload();
                 DirectoryUtils.DeleteDirectory(mod.modPath);
                 return true;

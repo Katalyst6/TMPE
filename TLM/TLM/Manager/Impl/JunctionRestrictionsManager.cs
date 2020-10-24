@@ -73,7 +73,7 @@ namespace TrafficManager.Manager.Impl {
                     return true;
                 });
 
-            Log._Debug(
+            Log._Trace(
                 $"JunctionRestrictionsManager.HandleSegmentEndReplacement({replacement}): " +
                 $"Segment replacement detected: {oldSegmentEndId.SegmentId} -> {newSegmentEndId.SegmentId} " +
                 $"@ {newSegmentEndId.StartNode}");
@@ -93,19 +93,19 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Junction restrictions:");
+            Log._Trace("Junction restrictions:");
 
             for (int i = 0; i < segmentFlags_.Length; ++i) {
                 if (segmentFlags_[i].IsDefault()) {
                     continue;
                 }
 
-                Log._Debug($"Segment {i}: {segmentFlags_[i]}");
+                Log._Trace($"Segment {i}: {segmentFlags_[i]}");
             }
         }
 
         private bool MayHaveJunctionRestrictions(ushort nodeId) {
-            Log._Debug($"JunctionRestrictionsManager.MayHaveJunctionRestrictions({nodeId}): " +
+            Log._Trace($"JunctionRestrictionsManager.MayHaveJunctionRestrictions({nodeId}): " +
                        $"flags={Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId].m_flags}");
 
             return
@@ -143,7 +143,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         private void RemoveJunctionRestrictions(ushort nodeId) {
-            Log._Debug($"JunctionRestrictionsManager.RemoveJunctionRestrictions({nodeId}) called.");
+            Log._Trace($"JunctionRestrictionsManager.RemoveJunctionRestrictions({nodeId}) called.");
             Services.NetService.IterateNodeSegments(
                 nodeId,
                 (ushort segmentId, ref NetSegment segment) => {
@@ -294,7 +294,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "JunctionRestrictionsManager.UpdateDefaults({0}, {1}): Set defaults: " +
                     "defaultUturnAllowed={2}, defaultNearTurnOnRedAllowed={3}, " +
                     "defaultFarTurnOnRedAllowed={4}, defaultStraightLaneChangingAllowed={5}, " +
@@ -324,7 +324,7 @@ namespace TrafficManager.Manager.Impl {
                 && !Constants.ManagerFactory.ExtSegmentManager.ExtSegments[segmentId].oneWay;
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "JunctionRestrictionsManager.IsUturnAllowedConfigurable({0}, {1}): ret={2}, " +
                     "flags={3}, service={4}, seg.oneWay={5}",
                     segmentId,
@@ -352,7 +352,7 @@ namespace TrafficManager.Manager.Impl {
                 bool res = (node.m_flags & (NetNode.Flags.End | NetNode.Flags.OneWayOut)) !=
                            NetNode.Flags.None;
                 if (logLogic) {
-                    Log._Debug(
+                    Log._Trace(
                         $"JunctionRestrictionsManager.GetDefaultUturnAllowed({segmentId}, " +
                         $"{startNode}): Setting is not configurable. res={res}, flags={node.m_flags}");
                 }
@@ -369,7 +369,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logLogic) {
-                Log._Debug(
+                Log._Trace(
                     $"JunctionRestrictionsManager.GetDefaultUturnAllowed({segmentId}, " +
                     $"{startNode}): Setting is configurable. ret={ret}, flags={node.m_flags}");
             }
@@ -406,7 +406,7 @@ namespace TrafficManager.Manager.Impl {
                 ((!lht == near) && turnOnRedMan.TurnOnRedSegments[index].rightSegmentId != 0));
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"JunctionRestrictionsManager.IsTurnOnRedAllowedConfigurable({near}, " +
                     $"{segmentId}, {startNode}): ret={ret}");
             }
@@ -436,7 +436,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!IsTurnOnRedAllowedConfigurable(near, segmentId, startNode, ref node)) {
                 if (logLogic) {
-                    Log._Debug(
+                    Log._Trace(
                         $"JunctionRestrictionsManager.IsTurnOnRedAllowedConfigurable({near}, " +
                         $"{segmentId}, {startNode}): Setting is not configurable. res=false");
                 }
@@ -446,7 +446,7 @@ namespace TrafficManager.Manager.Impl {
 
             bool ret = near ? Options.allowNearTurnOnRed : Options.allowFarTurnOnRed;
             if (logLogic) {
-                Log._Debug(
+                Log._Trace(
                     $"JunctionRestrictionsManager.GetTurnOnRedAllowed({near}, {segmentId}, " +
                     $"{startNode}): Setting is configurable. ret={ret}, flags={node.m_flags}");
             }
@@ -488,7 +488,7 @@ namespace TrafficManager.Manager.Impl {
                                        .outgoing) && node.CountSegments() > 2;
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "JunctionRestrictionsManager.IsLaneChangingAllowedWhenGoingStraightConfigurable" +
                     "({0}, {1}): ret={2}, flags={3}, service={4}, outgoingOneWay={5}, " +
                     "node.CountSegments()={6}",
@@ -517,7 +517,7 @@ namespace TrafficManager.Manager.Impl {
                               startNode,
                               ref node)) {
                 if (logLogic) {
-                    Log._Debug(
+                    Log._Trace(
                         "JunctionRestrictionsManager.GetDefaultLaneChangingAllowedWhenGoingStraight" +
                         $"({segmentId}, {startNode}): Setting is not configurable. res=false");
                 }
@@ -528,7 +528,7 @@ namespace TrafficManager.Manager.Impl {
             bool ret = Options.allowLaneChangesWhileGoingStraight;
 
             if (logLogic) {
-                Log._Debug(
+                Log._Trace(
                     "JunctionRestrictionsManager.GetDefaultLaneChangingAllowedWhenGoingStraight" +
                     $"({segmentId}, {startNode}): Setting is configurable. ret={ret}");
             }
@@ -559,7 +559,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "JunctionRestrictionsManager.IsEnteringBlockedJunctionAllowedConfigurable" +
                     "({0}, {1}): ret={2}, flags={3}, service={4}, outgoingOneWay={5}",
                     segmentId,
@@ -592,7 +592,7 @@ namespace TrafficManager.Manager.Impl {
                                      NetNode.Flags.OneWayIn)) != NetNode.Flags.Junction ||
                     node.CountSegments() == 2;
                 if (logLogic) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed" +
                         "({0}, {1}): Setting is not configurable. res={2}, flags={3}, " +
                         "node.CountSegments()={4}",
@@ -625,7 +625,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logLogic) {
-                Log._Debug(
+                Log._Trace(
                     "JunctionRestrictionsManager.GetDefaultEnteringBlockedJunctionAllowed" +
                     $"({segmentId}, {startNode}): Setting is configurable. ret={ret}");
             }
@@ -642,7 +642,7 @@ namespace TrafficManager.Manager.Impl {
                        && node.Info?.m_class?.m_service != ItemClass.Service.Beautification;
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
-                Log._Debug(
+                Log._Trace(
                     "JunctionRestrictionsManager.IsPedestrianCrossingAllowedConfigurable" +
                     $"({segmentId}, {startNode}): ret={ret}, flags={node.m_flags}, " +
                     $"service={node.Info?.m_class?.m_service}");
@@ -660,7 +660,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!IsPedestrianCrossingAllowedConfigurable(segmentId, startNode, ref node)) {
                 if (logLogic) {
-                    Log._Debug(
+                    Log._Trace(
                         "JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed" +
                         $"({segmentId}, {startNode}): Setting is not configurable. res=true");
                 }
@@ -713,7 +713,7 @@ namespace TrafficManager.Manager.Impl {
                        NetNode.Flags.None;
 
             if (logLogic) {
-                Log._Debug(
+                Log._Trace(
                     $"JunctionRestrictionsManager.GetDefaultPedestrianCrossingAllowed({segmentId}, " +
                     $"{startNode}): Setting is configurable. ret={ret}, flags={node.m_flags}");
             }

@@ -174,7 +174,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"prioritySignsOverlay changed to {newPrioritySignsOverlay}");
+            Log._Trace($"prioritySignsOverlay changed to {newPrioritySignsOverlay}");
             Options.prioritySignsOverlay = newPrioritySignsOverlay;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -185,7 +185,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"timedLightsOverlay changed to {newTimedLightsOverlay}");
+            Log._Trace($"timedLightsOverlay changed to {newTimedLightsOverlay}");
             Options.timedLightsOverlay = newTimedLightsOverlay;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -196,7 +196,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"speedLimitsOverlay changed to {newSpeedLimitsOverlay}");
+            Log._Trace($"speedLimitsOverlay changed to {newSpeedLimitsOverlay}");
             Options.speedLimitsOverlay = newSpeedLimitsOverlay;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -207,7 +207,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"vehicleRestrictionsOverlay changed to {newVehicleRestrictionsOverlay}");
+            Log._Trace($"vehicleRestrictionsOverlay changed to {newVehicleRestrictionsOverlay}");
             Options.vehicleRestrictionsOverlay = newVehicleRestrictionsOverlay;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -218,7 +218,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"parkingRestrictionsOverlay changed to {newParkingRestrictionsOverlay}");
+            Log._Trace($"parkingRestrictionsOverlay changed to {newParkingRestrictionsOverlay}");
             Options.parkingRestrictionsOverlay = newParkingRestrictionsOverlay;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -229,7 +229,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"junctionRestrictionsOverlay changed to {newValue}");
+            Log._Trace($"junctionRestrictionsOverlay changed to {newValue}");
             Options.junctionRestrictionsOverlay = newValue;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -240,7 +240,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"connectedLanesOverlay changed to {newValue}");
+            Log._Trace($"connectedLanesOverlay changed to {newValue}");
             Options.connectedLanesOverlay = newValue;
 
             ModUI.GetTrafficManagerTool(false)?.InitializeSubTools();
@@ -251,7 +251,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Nodes overlay changed to {newNodesOverlay}");
+            Log._Trace($"Nodes overlay changed to {newNodesOverlay}");
             Options.nodesOverlay = newNodesOverlay;
         }
 
@@ -260,7 +260,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Show lanes changed to {newShowLanes}");
+            Log._Trace($"Show lanes changed to {newShowLanes}");
             Options.showLanes = newShowLanes;
         }
 
@@ -269,7 +269,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Vehicle overlay changed to {newVal}");
+            Log._Trace($"Vehicle overlay changed to {newVal}");
             Options.vehicleOverlay = newVal;
         }
 
@@ -278,7 +278,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Citizen overlay changed to {newVal}");
+            Log._Trace($"Citizen overlay changed to {newVal}");
             Options.citizenOverlay = newVal;
         }
 
@@ -287,7 +287,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Building overlay changed to {newVal}");
+            Log._Trace($"Building overlay changed to {newVal}");
             Options.buildingOverlay = newVal;
         }
 

@@ -81,7 +81,7 @@ namespace TrafficManager.State.Keybinds {
                 }
             }
             catch (Exception) {
-                Log._Debug("Could not load/create the keyboard shortcuts file.");
+                Log._Trace("Could not load/create the keyboard shortcuts file.");
             }
         }
 

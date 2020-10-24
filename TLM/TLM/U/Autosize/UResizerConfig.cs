@@ -69,7 +69,7 @@ namespace TrafficManager.U.Autosize {
                     return null;
                 }
             } else {
-                Log._Debug("CallOnResize for a non-ISmartSizableControl");
+                Log._Trace("CallOnResize for a non-ISmartSizableControl");
             }
             return new UBoundingBox(control);
         }

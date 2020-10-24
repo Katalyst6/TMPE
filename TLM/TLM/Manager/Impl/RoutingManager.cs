@@ -96,7 +96,7 @@ namespace TrafficManager.Manager.Impl {
                 buf += $"Lane {laneId} @ end: {LaneEndForwardRoutings[GetLaneEndRoutingIndex(laneId, false)]}\n";
             }
 
-            Log._Debug(buf);
+            Log._Trace(buf);
         }
 
         public void SimulationStep() {
@@ -162,7 +162,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.RequestRecalculation({segmentId}, {propagate}) called.");
+                Log._Trace($"RoutingManager.RequestRecalculation({segmentId}, {propagate}) called.");
             }
 
             try {
@@ -198,7 +198,7 @@ namespace TrafficManager.Manager.Impl {
         protected void RecalculateAll() {
 #if DEBUG
             bool logRouting = DebugSwitch.RoutingBasicLog.Get();
-            Log._Debug($"RoutingManager.RecalculateAll: called");
+            Log._Trace($"RoutingManager.RecalculateAll: called");
 #endif
             Flags.ClearHighwayLaneArrows();
             for (uint segmentId = 0; segmentId < NetManager.MAX_SEGMENT_COUNT; ++segmentId) {
@@ -219,12 +219,12 @@ namespace TrafficManager.Manager.Impl {
             const bool logRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.RecalculateSegment({segmentId}) called.");
+                Log._Trace($"RoutingManager.RecalculateSegment({segmentId}) called.");
             }
 
             if (!Services.NetService.IsSegmentValid(segmentId)) {
                 if (logRouting) {
-                    Log._Debug($"RoutingManager.RecalculateSegment({segmentId}): " +
+                    Log._Trace($"RoutingManager.RecalculateSegment({segmentId}): " +
                                "Segment is invalid. Skipping recalculation");
                 }
                 return;
@@ -264,7 +264,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug("RoutingManager.ResetRoutingData: Identify nodes connected to " +
+                Log._Trace("RoutingManager.ResetRoutingData: Identify nodes connected to " +
                            $"{segmentId}: nodeIds={nodeIds.ArrayToString()}");
             }
 
@@ -317,7 +317,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logRouting) {
-                Log._Debug($"RoutingManager.ResetRoutingData: called for segment {segmentId}");
+                Log._Trace($"RoutingManager.ResetRoutingData: called for segment {segmentId}");
             }
 
             SegmentRoutings[segmentId].Reset();
@@ -325,22 +325,22 @@ namespace TrafficManager.Manager.Impl {
 
             Services.NetService.IterateSegmentLanes(
                 segmentId,
-                (uint laneId,
+                (GenericGameBridge.Service.NetSegmentLaneHandler)((uint laneId,
                  ref NetLane lane,
                  NetInfo.Lane laneInfo,
                  ushort segId,
                  ref NetSegment segment,
                  byte laneIndex) => {
                     if (extendedLogRouting) {
-                        Log._Debug($"RoutingManager.ResetRoutingData: Resetting lane {laneId}, " +
-                                   $"idx {laneIndex} @ seg. {segmentId}");
+                         Log._Trace((string)($"RoutingManager.ResetRoutingData: Resetting lane {laneId}, " +
+                                   $"idx {laneIndex} @ seg. {segmentId}"));
                     }
 
-                    ResetLaneRoutings(laneId, true);
-                    ResetLaneRoutings(laneId, false);
+                     ResetLaneRoutings(laneId, true);
+                     ResetLaneRoutings(laneId, false);
 
                     return true;
-                });
+                }));
         }
 
         protected void RecalculateSegmentRoutingData(ushort segmentId) {
@@ -356,7 +356,7 @@ namespace TrafficManager.Manager.Impl {
             const bool extendedLogRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.RecalculateSegmentRoutingData: called for seg. {segmentId}");
+                Log._Trace($"RoutingManager.RecalculateSegmentRoutingData: called for seg. {segmentId}");
             }
 
             SegmentRoutings[segmentId].Reset();
@@ -371,7 +371,7 @@ namespace TrafficManager.Manager.Impl {
             SegmentRoutings[segmentId].endNodeOutgoingOneWay = seg.oneWay && endSegEnd.outgoing;
 
             if (logRouting) {
-                Log._Debug("RoutingManager.RecalculateSegmentRoutingData: Calculated routing " +
+                Log._Trace("RoutingManager.RecalculateSegmentRoutingData: Calculated routing " +
                            $"data for segment {segmentId}: {SegmentRoutings[segmentId]}");
             }
         }
@@ -392,7 +392,7 @@ namespace TrafficManager.Manager.Impl {
             const bool extendedLogRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
+                Log._Trace($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                            $"{laneIndex}, {laneId}, {startNode}) called");
             }
 
@@ -400,7 +400,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!IsOutgoingLane(segmentId, startNode, laneIndex)) {
                 if (extendedLogRouting) {
-                    Log._Debug($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
+                    Log._Trace($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                $"{laneIndex}, {laneId}, {startNode}): Lane is not an outgoing lane");
                 }
 
@@ -536,7 +536,7 @@ namespace TrafficManager.Manager.Impl {
             ushort nextSegmentId = iterateViaGeometry ? segmentId : (ushort)0;
 
             if (extendedLogRouting) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                     "prevSegment={4}. Starting exploration with nextSegment={5} @ nextNodeId={6} " +
                     "-- onHighway={7} applyHighwayRules={8} applyHighwayRulesAtJunction={9} " +
@@ -558,7 +558,7 @@ namespace TrafficManager.Manager.Impl {
                     prevEnd.outgoing && prevSeg.oneWay,
                     prevSeg.highway,
                     iterateViaGeometry);
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                     "prevSegIsInverted={4} leftHandDrive={5}",
                     segmentId,
@@ -567,7 +567,7 @@ namespace TrafficManager.Manager.Impl {
                     startNode,
                     prevSegIsInverted,
                     lht);
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                     "prevSimilarLaneCount={4} prevInnerSimilarLaneIndex={5} prevOuterSimilarLaneIndex={6} " +
                     "prevHasBusLane={7}",
@@ -579,7 +579,7 @@ namespace TrafficManager.Manager.Impl {
                     prevInnerSimilarLaneIndex,
                     prevOuterSimilarLaneIndex,
                     prevHasBusLane);
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): nextIsJunction={4} " +
                     "nextIsEndOrOneWayOut={5} nextHasTrafficLights={6} nextIsSimpleJunction={7} " +
                     "nextIsSplitJunction={8} isNextRealJunction={9}",
@@ -593,7 +593,7 @@ namespace TrafficManager.Manager.Impl {
                     nextIsSimpleJunction,
                     nextIsSplitJunction,
                     nextIsRealJunction);
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): nextNodeId={4} " +
                     "buildingId={5} isTollBooth={6}",
                     segmentId,
@@ -658,7 +658,7 @@ namespace TrafficManager.Manager.Impl {
                     Constants.ManagerFactory.ExtSegmentManager.CalculateHasBusLane(nextSegmentId);
 
                 if (extendedLogRouting) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): Exploring " +
                         "nextSegmentId={4}",
                         segmentId,
@@ -666,7 +666,7 @@ namespace TrafficManager.Manager.Impl {
                         laneId,
                         startNode,
                         nextSegmentId);
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                         "isNextStartNodeOfNextSegment={4} nextSegIsInverted={5} nextFirstLaneId={6} " +
                         "nextIsHighway={7} nextHasBusLane={8} totalOutgoingLanes={9} totalIncomingLanes={10}",
@@ -688,7 +688,7 @@ namespace TrafficManager.Manager.Impl {
                 bool isNextSegmentValid = nextIncomingDir != ArrowDirection.None;
 
                 if (extendedLogRouting) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                         "prevSegment={4}. Exploring nextSegment={5} -- nextFirstLaneId={6} " +
                         "-- nextIncomingDir={7} valid={8}",
@@ -741,7 +741,7 @@ namespace TrafficManager.Manager.Impl {
                     NetInfo.Lane nextLaneInfo = nextSegmentInfo.m_lanes[nextLaneIndex];
 
                     if (extendedLogRouting) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                             "prevSegment={4}. Exploring nextSegment={5}, lane {6}, idx {7}",
                             segmentId,
@@ -761,7 +761,7 @@ namespace TrafficManager.Manager.Impl {
                         (nextLaneInfo.m_laneType & prevLaneInfo.m_laneType) != NetInfo.LaneType.None*/)
                     {
                         if (extendedLogRouting) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                 $"{laneIndex}, {laneId}, {startNode}): vehicle type check passed for " +
                                 $"nextLaneId={nextLaneId}, idx={nextLaneIndex}");
@@ -770,7 +770,7 @@ namespace TrafficManager.Manager.Impl {
                         // next is incoming lane
                         if ((nextLaneInfo.m_finalDirection & nextDir2) != NetInfo.Direction.None) {
                             if (extendedLogRouting) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                     $"{laneIndex}, {laneId}, {startNode}): lane direction check passed " +
                                     $"for nextLaneId={nextLaneId}, idx={nextLaneIndex}");
@@ -779,7 +779,7 @@ namespace TrafficManager.Manager.Impl {
                             ++incomingVehicleLanes;
 
                             if (extendedLogRouting) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "increasing number of incoming lanes at nextLaneId={4}, idx={5}: " +
                                     "isNextValid={6}, nextLaneInfo.m_finalDirection={7}, nextDir2={8}: " +
@@ -821,7 +821,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "checking lane connections of nextLaneId={4}, idx={5}: " +
                                         "isNextStartNodeOfNextSegment={6}, nextSegmentId={7}, " +
@@ -836,7 +836,7 @@ namespace TrafficManager.Manager.Impl {
                                         nextSegmentId,
                                         nextHasOutgoingConnections,
                                         nextIsConnectedWithPrev);
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "connection information for nextLaneId={4}, idx={5}: " +
                                         "nextOuterSimilarLaneIndex={6}, nextHasOutgoingConnections={7}, " +
@@ -875,7 +875,7 @@ namespace TrafficManager.Manager.Impl {
                                         }
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): nextLaneId={4}, idx={5} has outgoing connections " +
                                                 "and is connected with previous lane. adding as lane connection lane.",
@@ -888,7 +888,7 @@ namespace TrafficManager.Manager.Impl {
                                         }
                                     } else {
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): nextLaneId={4}, idx={5} has outgoing connections " +
                                                 "but is NOT connected with previous lane",
@@ -904,7 +904,7 @@ namespace TrafficManager.Manager.Impl {
 
                                 if (isTollBooth) {
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "nextNodeId={4}, buildingId={5} is a toll booth. Preventing lane changes.",
                                             segmentId,
@@ -917,7 +917,7 @@ namespace TrafficManager.Manager.Impl {
 
                                     if (nextOuterSimilarLaneIndex == prevOuterSimilarLaneIndex) {
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                                 "nextLaneId={4}, idx={5} is associated with a toll booth " +
                                                 "(buildingId={6}). adding as Default.",
@@ -935,7 +935,7 @@ namespace TrafficManager.Manager.Impl {
                                     }
                                 } else if (!nextIsJunction) {
                                     if (extendedLogRouting) {
-                                        Log._Debug(
+                                        Log._Trace(
                                             $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                             $"{laneIndex}, {laneId}, {startNode}): nextLaneId={nextLaneId}, " +
                                             $"idx={nextLaneIndex} is not a junction. adding as Default.");
@@ -955,7 +955,7 @@ namespace TrafficManager.Manager.Impl {
                                         LaneArrows.None;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "start lane arrow check for nextLaneId={4}, idx={5}: hasLeftArrow={6}, " +
                                             "hasForwardArrow={7}, hasRightArrow={8}",
@@ -981,7 +981,7 @@ namespace TrafficManager.Manager.Impl {
                                                  || (!lht && hasLeftArrow))))) // valid turning lane
                                     {
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): lane arrow check passed for nextLaneId={4}, " +
                                                 "idx={5}. adding as default lane.",
@@ -997,7 +997,7 @@ namespace TrafficManager.Manager.Impl {
                                         transitionType = LaneEndTransitionType.Default;
                                     } else if (nextIsConnectedWithPrev) {
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): lane arrow check FAILED for nextLaneId={4}, " +
                                                 "idx={5}. adding as relaxed lane.",
@@ -1029,7 +1029,7 @@ namespace TrafficManager.Manager.Impl {
                                     }
                                 } else if (!nextHasOutgoingConnections) {
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                             "{2}, {3}): nextLaneId={4}, idx={5} is used by vehicles " +
                                             "that do not follow lane arrows. adding as default.",
@@ -1069,7 +1069,7 @@ namespace TrafficManager.Manager.Impl {
 
                                 if (isCompatibleLane) {
                                     if (extendedLogRouting) {
-                                        Log._Debug(
+                                        Log._Trace(
                                             $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                             $"{laneIndex}, {laneId}, {startNode}): adding nextLaneId=" +
                                             $"{nextLaneId}, idx={nextLaneIndex} as compatible lane now.");
@@ -1096,7 +1096,7 @@ namespace TrafficManager.Manager.Impl {
                                     }
                                 } else {
                                     if (extendedLogRouting) {
-                                        Log._Debug(
+                                        Log._Trace(
                                             $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                             $"{laneIndex}, {laneId}, {startNode}): nextLaneId={nextLaneId}, " +
                                             $"idx={nextLaneIndex} is NOT compatible.");
@@ -1105,7 +1105,7 @@ namespace TrafficManager.Manager.Impl {
                             }
                         } else {
                             if (extendedLogRouting) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "lane direction check NOT passed for nextLaneId={4}, idx={5}: " +
                                     "isNextValid={6}, nextLaneInfo.m_finalDirection={7}, nextDir2={8}",
@@ -1125,7 +1125,7 @@ namespace TrafficManager.Manager.Impl {
                             {
                                 ++outgoingVehicleLanes;
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "increasing number of outgoing lanes at nextLaneId={4}, idx={5}: " +
                                         "isNextValid={6}, nextLaneInfo.m_finalDirection={7}, nextDir2={8}: " +
@@ -1146,7 +1146,7 @@ namespace TrafficManager.Manager.Impl {
                         }
                     } else {
                         if (extendedLogRouting) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                 "vehicle type check NOT passed for nextLaneId={4}, idx={5}: " +
                                 "prevLaneInfo.m_vehicleType={6}, nextLaneInfo.m_vehicleType={7}, " +
@@ -1176,7 +1176,7 @@ namespace TrafficManager.Manager.Impl {
 
 
                 if (extendedLogRouting) {
-                    Log._Debug(
+                    Log._Trace(
                         $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, {laneIndex}, " +
                         $"{laneId}, {startNode}): isNextValid={isNextSegmentValid} Compatible lanes: " +
                         nextCompatibleTransitionDatas?.ArrayToString());
@@ -1212,7 +1212,7 @@ namespace TrafficManager.Manager.Impl {
                             && (applyHighwayRulesAtJunction || Math.Abs(laneDiff) == 1);
 
                         if (extendedLogRouting) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): found " +
                                 "compatible lanes! compatibleLaneIndicesSortedByOuterSimilarIndex={4}, " +
                                 "laneDiff={5}, applyHighwayRulesAtSegment={6}",
@@ -1228,7 +1228,7 @@ namespace TrafficManager.Manager.Impl {
                         if (applyHighwayRulesAtJunction) {
                             // we reached a highway junction where more than two segments are connected to each other
                             if (extendedLogRouting) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, {laneIndex}, " +
                                     $"{laneId}, {startNode}): applying highway rules at junction");
                             }
@@ -1245,17 +1245,17 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUGHWJUNCTIONROUTING
                             if (extendedLogRouting) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "applying highway rules at junction",
                                     segmentId, laneIndex, laneId, startNode);
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "totalIncomingLanes={4}, totalOutgoingLanes={5}, numLanesSeen={6} " +
                                     "laneChangesAllowed={7}",
                                     segmentId, laneIndex, laneId, startNode, totalIncomingLanes,
                                     totalOutgoingLanes, numLanesSeen, laneChangesAllowed);
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "prevInnerSimilarLaneIndex={4}, prevSimilarLaneCount={5}, " +
                                     "nextCompatibleLaneCount={6}",
@@ -1291,7 +1291,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUGHWJUNCTIONROUTING
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "highway rules at junction: lane splitting junction. " +
                                         "minNextInnerSimilarIndex={4}, maxNextInnerSimilarIndex={5}",
@@ -1341,7 +1341,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUGHWJUNCTIONROUTING
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, " +
                                         "{3}): highway rules at junction: lane merging/unknown junction. " +
                                         "minNextInnerSimilarIndex={4}, maxNextInnerSimilarIndex={5}",
@@ -1354,7 +1354,7 @@ namespace TrafficManager.Manager.Impl {
                             if (minNextInnerSimilarIndex >= 0) {
 #if DEBUGHWJUNCTIONROUTING
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "minNextInnerSimilarIndex >= 0. nextCompatibleTransitionDatas={4}",
                                         segmentId, laneIndex, laneId, startNode,
@@ -1374,7 +1374,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUGHWJUNCTIONROUTING
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                             "{2}, {3}): highway junction iteration: " +
                                             "nextInnerSimilarIndex={4}, nextTransitionIndex={5}",
@@ -1408,7 +1408,7 @@ namespace TrafficManager.Manager.Impl {
                                         }
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): Next lane ({4}) has outgoing lane connections. " +
                                                 "Skip for now but set compatibleLaneDist={5} if " +
@@ -1429,7 +1429,7 @@ namespace TrafficManager.Manager.Impl {
                                     nextCompatibleTransitionDatas[nextTransitionIndex].distance = compatibleLaneDist;
 #if DEBUGHWJUNCTIONROUTING
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, " +
                                             "{3}): highway junction iteration: compatibleLaneDist={4}",
                                             segmentId, laneIndex, laneId, startNode,
@@ -1454,7 +1454,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUGHWJUNCTIONROUTING
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "highway junction iterations finished: nextCompatibleTransitionDataIndices={4}",
                                         segmentId, laneIndex, laneId, startNode,
@@ -1470,7 +1470,7 @@ namespace TrafficManager.Manager.Impl {
                             // 3. a city junction
                             // with multiple or a single target lane: Perform lane matching
                             if (extendedLogRouting) {
-                                Log._Debug($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
+                                Log._Trace($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                            $"{laneIndex}, {laneId}, {startNode}): regular node");
                             }
 
@@ -1482,7 +1482,7 @@ namespace TrafficManager.Manager.Impl {
                                 maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "u-turn: minNextCompatibleOuterSimilarIndex={4}, " +
                                         "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1495,7 +1495,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
                             } else if (nextIsRealJunction) {
                                 if (extendedLogRouting) {
-                                    Log._Debug($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
+                                    Log._Trace($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                                $"{laneIndex}, {laneId}, {startNode}): next is real junction");
                                 }
 
@@ -1508,7 +1508,7 @@ namespace TrafficManager.Manager.Impl {
                                     maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "merge inner lanes: minNextCompatibleOuterSimilarIndex={4}, " +
                                             "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1530,7 +1530,7 @@ namespace TrafficManager.Manager.Impl {
                                             prevOuterSimilarLaneIndex / splitFactor;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                             "{2}, {3}): symmetric split: minNextCompatibleOuterSimilarIndex={4}, " +
                                             "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1547,7 +1547,7 @@ namespace TrafficManager.Manager.Impl {
                                     maxNextCompatibleOuterSimilarIndex = prevOuterSimilarLaneIndex;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                             "{2}, {3}): 1-to-n (split inner lane) or 1-to-1 (direct " +
                                             "lane matching): minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1565,7 +1565,7 @@ namespace TrafficManager.Manager.Impl {
                                     nextIncomingDir == ArrowDirection.Forward && laneChangesAllowed;
 
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "laneChangesAllowed={4} straightLaneChangesAllowed={5}",
                                         segmentId,
@@ -1584,7 +1584,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex + 1);
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): allow vehicles on the bus lane AND on the " +
                                                 "next lane to merge on this lane: " +
@@ -1603,7 +1603,7 @@ namespace TrafficManager.Manager.Impl {
                                             0, minNextCompatibleOuterSimilarIndex - 1);
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): allow vehicles to enter the bus lane: " +
                                                 "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1622,7 +1622,7 @@ namespace TrafficManager.Manager.Impl {
                                     maxNextCompatibleOuterSimilarIndex = maxNextCompatibleOuterSimilarIndex + 1;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, " +
                                             "{3}): vehicles may change lanes when going straight: " +
                                             "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1641,7 +1641,7 @@ namespace TrafficManager.Manager.Impl {
                                 maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "equal lane count: minNextCompatibleOuterSimilarIndex={4}, " +
                                         "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1655,7 +1655,7 @@ namespace TrafficManager.Manager.Impl {
                             } else {
                                 // lane continuation point: lane merging/splitting
                                 if (extendedLogRouting) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                         $"{laneIndex}, {laneId}, {startNode}): lane continuation point: " +
                                         "lane merging/splitting");
@@ -1664,13 +1664,13 @@ namespace TrafficManager.Manager.Impl {
                                 bool sym1 = (prevSimilarLaneCount & 1) == 0; // mod 2 == 0
                                 bool sym2 = (nextCompatibleLaneCount & 1) == 0; // mod 2 == 0
                                 if (extendedLogRouting) {
-                                    Log._Debug($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
+                                    Log._Trace($"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                                $"{laneIndex}, {laneId}, {startNode}): sym1={sym1}, sym2={sym2}");
                                 }
 
                                 if (prevSimilarLaneCount < nextCompatibleLaneCount) {
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, " +
                                             "{3}): lane merging (prevSimilarLaneCount={4} < " +
                                             "nextCompatibleLaneCount={5})",
@@ -1689,7 +1689,7 @@ namespace TrafficManager.Manager.Impl {
                                         int a = (nextCompatibleLaneCount - prevSimilarLaneCount) >> 1;
 
                                         if (extendedLogRouting) {
-                                            Log._Debug(
+                                            Log._Trace(
                                                 $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                                 $"{laneIndex}, {laneId}, {startNode}): merge outer lanes. a={a}");
                                         }
@@ -1701,7 +1701,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevSimilarLaneCount == 1: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1718,7 +1718,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = a;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevOuterSimilarLaneIndex == 0: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1737,7 +1737,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevOuterSimilarLaneIndex == prevSimilarLaneCount - 1: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1755,7 +1755,7 @@ namespace TrafficManager.Manager.Impl {
                                                     prevOuterSimilarLaneIndex + a;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): default case: minNextCompatibleOuterSimilarIndex" +
                                                     "={4}, maxNextCompatibleOuterSimilarIndex={5}",
@@ -1776,7 +1776,7 @@ namespace TrafficManager.Manager.Impl {
                                         int b = (nextCompatibleLaneCount - prevSimilarLaneCount + 1) >> 1;
 
                                         if (extendedLogRouting) {
-                                            Log._Debug(
+                                            Log._Trace(
                                                 $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                                 $"{laneIndex}, {laneId}, {startNode}): criss-cross merge: " +
                                                 $"a={a}, b={b}");
@@ -1788,7 +1788,7 @@ namespace TrafficManager.Manager.Impl {
                                             // always >=0
                                             maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevSimilarLaneCount == 1: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1805,7 +1805,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = b;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevOuterSimilarLaneIndex == 0: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1824,7 +1824,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = nextCompatibleLaneCount - 1;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): prevOuterSimilarLaneIndex == " +
                                                     "prevSimilarLaneCount - 1: minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1841,7 +1841,7 @@ namespace TrafficManager.Manager.Impl {
                                             maxNextCompatibleOuterSimilarIndex = prevOuterSimilarLaneIndex + b;
 
                                             if (extendedLogRouting) {
-                                                Log._DebugFormat(
+                                                Log._TraceFormat(
                                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                     "{2}, {3}): default criss-cross case: " +
                                                     "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1859,7 +1859,7 @@ namespace TrafficManager.Manager.Impl {
                                     // at lane splits: distribute traffic evenly (1-to-n, n-to-n)
                                     // prevOuterSimilarIndex is always > nextCompatibleLaneCount
                                     if (extendedLogRouting) {
-                                        Log._Debug(
+                                        Log._Trace(
                                             $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                             $"{laneIndex}, {laneId}, {startNode}): at lane splits: " +
                                             "distribute traffic evenly (1-to-n, n-to-n)");
@@ -1876,7 +1876,7 @@ namespace TrafficManager.Manager.Impl {
                                                 prevOuterSimilarLaneIndex - a;
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): split outer lanes: " +
                                                 "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1903,7 +1903,7 @@ namespace TrafficManager.Manager.Impl {
                                                 : prevOuterSimilarLaneIndex - a;
 
                                         if (extendedLogRouting) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, " +
                                                 "{2}, {3}): split outer lanes, criss-cross inner lanes: " +
                                                 "minNextCompatibleOuterSimilarIndex={4}, " +
@@ -1920,7 +1920,7 @@ namespace TrafficManager.Manager.Impl {
                             }
 
                             if (extendedLogRouting) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "pre-final bounds: minNextCompatibleOuterSimilarIndex={4}, " +
                                     "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1948,7 +1948,7 @@ namespace TrafficManager.Manager.Impl {
                             }
 
                             if (extendedLogRouting) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                     "final bounds: minNextCompatibleOuterSimilarIndex={4}, " +
                                     "maxNextCompatibleOuterSimilarIndex={5}",
@@ -1970,7 +1970,7 @@ namespace TrafficManager.Manager.Impl {
                                     nextCompatibleOuterSimilarIndex);
 
                                 if (extendedLogRouting) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                         "best matching lane iteration -- nextCompatibleOuterSimilarIndex={4} " +
                                         "=> nextTransitionIndex={5}",
@@ -2018,7 +2018,7 @@ namespace TrafficManager.Manager.Impl {
                                     }
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "Next lane ({4}) has outgoing lane connections. Skip for now but " +
                                             "set compatibleLaneDist={5} if laneConnectionTransIndex={6} >= 0.",
@@ -2045,7 +2045,7 @@ namespace TrafficManager.Manager.Impl {
                                         LaneEndTransitionType.Relaxed;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "Next lane ({4}) is avoided u-turn. Incrementing compatible " +
                                             "lane distance to {5}",
@@ -2059,7 +2059,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 
                                 if (extendedLogRouting) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"RoutingManager.RecalculateLaneEndRoutingData({segmentId}, " +
                                         $"{laneIndex}, {laneId}, {startNode}): -> " +
                                         $"compatibleLaneDist={compatibleLaneDist}");
@@ -2074,7 +2074,7 @@ namespace TrafficManager.Manager.Impl {
                                         = LaneEndTransitionType.Relaxed;
 
                                     if (extendedLogRouting) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                                             "-> under normal circumstances vehicles should not change " +
                                             "more than one lane on highways at one time: setting type to Relaxed",
@@ -2127,7 +2127,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (extendedLogRouting) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): build " +
                             "array for nextSegment={4}: nextTransitionDatas={5}",
                             segmentId,
@@ -2141,7 +2141,7 @@ namespace TrafficManager.Manager.Impl {
                     backwardRouting.AddTransitions(nextTransitionDatas);
 
                     if (extendedLogRouting) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                             "updated incoming/outgoing lanes for next segment iteration: " +
                             "totalIncomingLanes={4}, totalOutgoingLanes={5}",
@@ -2199,7 +2199,7 @@ namespace TrafficManager.Manager.Impl {
                     LaneEndForwardRoutings[sourceIndex].AddTransition(forwardTransition);
 
                     if (extendedLogRouting) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                             "adding transition to forward routing of laneId={4}, idx={5} @ seg. " +
                             "{6} @ node {7} (sourceIndex={8}): {9}\n\nNew forward routing:\n{10}",
@@ -2219,7 +2219,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logRouting) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +
                     "FINISHED calculating routing data for array index {4}: {5}",
                     segmentId,
@@ -2417,7 +2417,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.HandleInvalidSegment({seg.segmentId}) called.");
+                Log._Trace($"RoutingManager.HandleInvalidSegment({seg.segmentId}) called.");
             }
 
             Flags.RemoveHighwayLaneArrowFlagsAtSegment(seg.segmentId);
@@ -2433,7 +2433,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logRouting = false;
 #endif
             if (logRouting) {
-                Log._Debug($"RoutingManager.HandleValidSegment({seg.segmentId}) called.");
+                Log._Trace($"RoutingManager.HandleValidSegment({seg.segmentId}) called.");
             }
 
             ResetRoutingData(seg.segmentId);

@@ -122,7 +122,7 @@
                                       .instance.m_citizens.m_buffer[citizenData.m_citizen]
                                       .m_parkedVehicle;
                 if (parkedVehicleId != 0) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"CustomTouristAI.CustomGetVehicleInfo({instanceId}): " +
                         $"Citizen instance {instanceId} owns a parked vehicle {parkedVehicleId}. " +

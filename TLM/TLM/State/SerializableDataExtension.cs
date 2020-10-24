@@ -20,15 +20,15 @@ namespace TrafficManager.State {
         public static bool StateLoading;
 
         public override void OnCreated(ISerializableData serializableData) {
-            Log._Debug("SerializableDataExtension.OnCreated() called");
+            Log._Trace("SerializableDataExtension.OnCreated() called");
             if(LoadingExtension.IsGameLoaded) {
-                Log._Debug("Hot reload of another mod detected. Skipping SerializableDataExtension.OnCreated() ...");
+                Log._Trace("Hot reload of another mod detected. Skipping SerializableDataExtension.OnCreated() ...");
                 return;
             }
             _serializableData = serializableData;
 
             if (TrafficManagerMod.Instance.InGameHotReload) {
-                Log._Debug("HOT RELOAD ...");
+                Log._Trace("HOT RELOAD ...");
                 OnLoadData();
                 LoadingExtension.Instance.OnLevelLoaded(LoadMode.LoadGame);
             }

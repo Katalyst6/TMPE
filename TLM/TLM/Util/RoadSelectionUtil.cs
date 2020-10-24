@@ -118,7 +118,7 @@ namespace TrafficManager.Util {
                 }
                 string name = NetManager.instance.GetSegmentName(selectedSegmentID);
                 if(prev_name != name) {
-                    Log._Debug($"name={name} prev_name={prev_name}");
+                    Log._Trace($"name={name} prev_name={prev_name}");
                     prev_name = name;
                     RoadSelectionUtil.Instance.CalculatePath(selectedSegmentID, 0);
                 }
@@ -159,7 +159,7 @@ namespace TrafficManager.Util {
                         }
                     }
                     if (changed) {
-                        Log._Debug("RoadSelection.Threading.OnUpdate() road selection changed");
+                        Log._Trace("RoadSelection.Threading.OnUpdate() road selection changed");
                         prev_length = len;
                         RoadSelectionUtil.Instance.OnChanged?.Invoke();
                     }

@@ -99,7 +99,7 @@ namespace TrafficManager.Traffic.Impl {
                 }
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logDebug,
                 () => $"GetVehicleMetricGoingToSegment: Segment {SegmentId}, Node {NodeId}, " +
                 $"includeStopped={includeStopped}.");
@@ -148,7 +148,7 @@ namespace TrafficManager.Traffic.Impl {
                         e.Select(x => x.Key.ToString() + "=" + x.Value.ToString()).ToArray())
                         + "]";
                 string result = string.Join(", ", ret.Select(SelectFun).ToArray());
-                Log._Debug("GetVehicleMetricGoingToSegment: Calculation completed. " + result);
+                Log._Trace("GetVehicleMetricGoingToSegment: Calculation completed. " + result);
             }
 
             return ret;
@@ -164,7 +164,7 @@ namespace TrafficManager.Traffic.Impl {
                                               ref int numProcessed)
         {
             if (logDebug) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     " MeasureOutgoingVehicle: (Segment {0}, Node {1} (start={2})) Checking vehicle {3}. " +
                     "Coming from seg. {4}, start {5}, lane {6} going to seg. {7}, lane {8}",
                     SegmentId,
@@ -179,7 +179,7 @@ namespace TrafficManager.Traffic.Impl {
             }
 
             if ((state.flags & ExtVehicleFlags.Spawned) == ExtVehicleFlags.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logDebug,
                     () => $" MeasureOutgoingVehicle: Vehicle {vehicleId} is unspawned. Ignoring.");
                 return;
@@ -188,7 +188,7 @@ namespace TrafficManager.Traffic.Impl {
 #if DEBUG
             if (state.currentSegmentId != SegmentId || state.currentStartNode != StartNode) {
                 if (logDebug) {
-                    Log._Debug(
+                    Log._Trace(
                         $" MeasureOutgoingVehicle: (Segment {SegmentId}, Node {NodeId} " +
                         $"(start={StartNode})) Vehicle {vehicleId} error: Segment end mismatch! {state}");
                 }
@@ -199,7 +199,7 @@ namespace TrafficManager.Traffic.Impl {
 
             if (state.nextSegmentId == 0) {
                 if (logDebug) {
-                    Log._Debug($" MeasureOutgoingVehicle: (Segment {SegmentId}, Node {NodeId} " +
+                    Log._Trace($" MeasureOutgoingVehicle: (Segment {SegmentId}, Node {NodeId} " +
                                $"(start={StartNode})) Vehicle {vehicleId}: Ignoring vehicle");
                 }
 
@@ -209,7 +209,7 @@ namespace TrafficManager.Traffic.Impl {
             if (state.currentLaneIndex >= ret.Length
                 || !ret[state.currentLaneIndex].ContainsKey(state.nextSegmentId)) {
                 if (logDebug) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         " MeasureOutgoingVehicle: (Segment {0}, Node {1} (start={2})) Vehicle {3} is " +
                         "on lane {4} and wants to go to segment {5} but one or both are invalid: {6}",
                         SegmentId,
@@ -229,7 +229,7 @@ namespace TrafficManager.Traffic.Impl {
                     * GlobalConfig.Instance.PriorityRules.MaxStopVelocity)
             {
                 if (logDebug) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "  MeasureOutgoingVehicle: (Segment {0}, Node {1}) Vehicle {2}: too slow ({3})",
                         SegmentId,
                         NodeId,
@@ -250,7 +250,7 @@ namespace TrafficManager.Traffic.Impl {
             }
 
             if (logDebug) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "  MeasureOutgoingVehicle: (Segment {0}, Node {1}) NormLength of vehicle {2}: " +
                     "{3} -> {4} (avgSegmentLength={5})",
                     SegmentId,
@@ -265,7 +265,7 @@ namespace TrafficManager.Traffic.Impl {
             ++numProcessed;
 
             if (logDebug) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "  MeasureOutgoingVehicle: (Segment {0}, Node {1}) Vehicle {2}: ***ADDED*** " +
                     "({3}@{4} -> {5}@{6})!",
                     SegmentId,

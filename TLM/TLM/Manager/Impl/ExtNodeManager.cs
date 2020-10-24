@@ -92,14 +92,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Extended node data:");
+            Log._Trace($"Extended node data:");
 
             for (uint i = 0; i < ExtNodes.Length; ++i) {
                 if (!IsValid((ushort)i)) {
                     continue;
                 }
 
-                Log._Debug($"Node {i}: {ExtNodes[i]}");
+                Log._Trace($"Node {i}: {ExtNodes[i]}");
             }
         }
 

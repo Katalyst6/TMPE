@@ -25,14 +25,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Segment ends:");
+            Log._Trace($"Segment ends:");
 
             for (int i = 0; i < SegmentEnds.Length; ++i) {
                 if (SegmentEnds[i] == null) {
                     continue;
                 }
 
-                Log._Debug($"Segment end {i}: {SegmentEnds[i]}");
+                Log._Trace($"Segment end {i}: {SegmentEnds[i]}");
             }
         }
 
@@ -82,7 +82,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logPriority) {
-                Log._Debug($"SegmentEndManager.RemoveSegmentEnd({segmentId}, {startNode}) called");
+                Log._Trace($"SegmentEndManager.RemoveSegmentEnd({segmentId}, {startNode}) called");
             }
 
             DestroySegmentEnd(GetIndex(segmentId, startNode));
@@ -108,7 +108,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!Services.NetService.IsSegmentValid(segmentId)) {
                 if (logPriority) {
-                    Log._Debug(
+                    Log._Trace(
                         $"SegmentEndManager.UpdateSegmentEnd({segmentId}, {startNode}): Segment " +
                         $"{segmentId} is invalid. Removing all segment ends.");
                 }
@@ -123,7 +123,7 @@ namespace TrafficManager.Manager.Impl {
                         segmentId,
                         startNode))) {
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "SegmentEndManager.UpdateSegmentEnd({0}, {1}): Segment {2} @ {3} has timed " +
                         "light or priority sign. Adding segment end {4} @ {5}",
                         segmentId,
@@ -142,20 +142,20 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (logPriority) {
-                    Log._Debug($"SegmentEndManager.UpdateSegmentEnd({segmentId}, {startNode}): " +
+                    Log._Trace($"SegmentEndManager.UpdateSegmentEnd({segmentId}, {startNode}): " +
                                "Added segment end. Updating now.");
                 }
 
                 end.Update();
                 if (logPriority) {
-                    Log._Debug($"SegmentEndManager.UpdateSegmentEnd({segmentId}, {startNode}): " +
+                    Log._Trace($"SegmentEndManager.UpdateSegmentEnd({segmentId}, {startNode}): " +
                                "Update of segment end finished.");
                 }
 
                 return true;
             } else {
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "SegmentEndManager.UpdateSegmentEnd({0}, {1}): Segment {2} @ {3} neither has " +
                         "timed light nor priority sign. Removing segment end {4} @ {5}",
                         segmentId,

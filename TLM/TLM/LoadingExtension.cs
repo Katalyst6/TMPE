@@ -56,13 +56,13 @@ namespace TrafficManager {
         }
 
         public override void OnCreated(ILoading loading) {
-            Log._Debug("LoadingExtension.OnCreated() called");
+            Log._Trace("LoadingExtension.OnCreated() called");
 
             // SelfDestruct.DestructOldInstances(this);
             base.OnCreated(loading);
             if (IsGameLoaded) {
                 // When another mod is detected, OnCreated is called again for god - or CS team - knows what reason!
-                Log._Debug("Hot reload of another mod detected. Skipping LoadingExtension.OnCreated() ...");
+                Log._Trace("Hot reload of another mod detected. Skipping LoadingExtension.OnCreated() ...");
                 return;
             }
 
@@ -153,7 +153,7 @@ namespace TrafficManager {
                 if (ModUI.Instance != null) {
                     ModUI.Instance.CloseMainMenu(); // Hide the UI ASAP
                     ModUI.Instance.Destroy();
-                    Log._Debug("removed UIBase instance.");
+                    Log._Trace("removed UIBase instance.");
                 }
             }
             catch (Exception e) {
@@ -261,11 +261,11 @@ namespace TrafficManager {
                         throw new Exception("stockPathManager is null");
                     }
 
-                    Log._Debug($"Got stock PathManager instance {stockPathManager?.GetName()}");
+                    Log._Trace($"Got stock PathManager instance {stockPathManager?.GetName()}");
 
                     CustomPathManager =
                         stockPathManager.gameObject.AddComponent<CustomPathManager>();
-                    Log._Debug("Added CustomPathManager to gameObject List");
+                    Log._Trace("Added CustomPathManager to gameObject List");
 
                     if (CustomPathManager == null) {
                         Log.Error("CustomPathManager null. Error creating it.");
@@ -273,25 +273,25 @@ namespace TrafficManager {
                     }
 
                     CustomPathManager.UpdateWithPathManagerValues(stockPathManager);
-                    Log._Debug("UpdateWithPathManagerValues success");
+                    Log._Trace("UpdateWithPathManagerValues success");
 
                     pathManagerInstance.SetValue(null, CustomPathManager);
 
-                    Log._Debug("Getting Current SimulationManager");
+                    Log._Trace("Getting Current SimulationManager");
                     var simManager = this.simManager;
                     if (simManager == null) {
                         throw new Exception("simManager is null");
                     }
 
-                    Log._Debug("Removing Stock PathManager");
+                    Log._Trace("Removing Stock PathManager");
                     simManager.Remove(stockPathManager);
 
-                    Log._Debug("Adding Custom PathManager");
+                    Log._Trace("Adding Custom PathManager");
                     simManager.Add(CustomPathManager);
 
                     Object.Destroy(stockPathManager, 10f);
 
-                    Log._Debug("Should be custom: " + Singleton<PathManager>.instance.GetType());
+                    Log._Trace("Should be custom: " + Singleton<PathManager>.instance.GetType());
 
                     IsPathManagerReplaced = true;
                 }
@@ -384,7 +384,7 @@ namespace TrafficManager {
                     }
                 }
             } else {
-                Log._Debug("Could not get loading extensions");
+                Log._Trace("Could not get loading extensions");
             }
 
             return thirdPartyModLoaded;

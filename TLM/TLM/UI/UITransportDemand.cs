@@ -16,7 +16,7 @@ namespace TrafficManager.UI {
                                          .GetComponent<PublicTransportInfoViewPanel>();
 
             if (transportInfoViewPanel != null) {
-                Log._Debug($"Public transport info view panel found.");
+                Log._Trace($"Public transport info view panel found.");
                 transportInfoViewPanel.component.eventVisibilityChanged += this.ParentVisibilityChanged;
             } else {
                 Log.Warning($"Public transport info view panel NOT found.");
@@ -74,7 +74,7 @@ namespace TrafficManager.UI {
         }
 
         private void ParentVisibilityChanged(UIComponent component, bool value) {
-            Log._Debug($"Public transport info view panel changed visibility: {value}");
+            Log._Trace($"Public transport info view panel changed visibility: {value}");
 
             if (value && Options.parkingAI) {
                 TrafficManagerTool.CurrentTransportDemandViewMode =

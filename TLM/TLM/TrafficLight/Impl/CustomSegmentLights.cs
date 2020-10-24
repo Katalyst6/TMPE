@@ -109,7 +109,7 @@ namespace TrafficManager.TrafficLight.Impl {
             set {
                 if (InternalPedestrianLightState == null) {
 #if DEBUGHK
-                    Log._Debug($"CustomSegmentLights: Refusing to change pedestrian light at segment {SegmentId}");
+                    Log._Trace($"CustomSegmentLights: Refusing to change pedestrian light at segment {SegmentId}");
 #endif
                     return;
                 }
@@ -437,7 +437,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #endif
 
             if (logTrafficLights) {
-                Log._Debug("CustomSegmentLights.CalculateAutoPedestrianLightState: Calculating " +
+                Log._Trace("CustomSegmentLights.CalculateAutoPedestrianLightState: Calculating " +
                            $"pedestrian light state of seg. {SegmentId} @ node {NodeId}");
             }
 
@@ -464,7 +464,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                     ICustomSegmentLights otherLights = LightsManager.GetSegmentLights(nodeId, otherSegmentId);
                     if (otherLights == null) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "CustomSegmentLights.CalculateAutoPedestrianLightState: " +
                             $"Expected other (propagate) CustomSegmentLights at segment {otherSegmentId} " +
@@ -479,7 +479,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             if (IsAnyGreen()) {
                 if (logTrafficLights) {
-                    Log._Debug("CustomSegmentLights.CalculateAutoPedestrianLightState: Any green " +
+                    Log._Trace("CustomSegmentLights.CalculateAutoPedestrianLightState: Any green " +
                                $"at seg. {SegmentId} @ {NodeId}");
                 }
 
@@ -487,7 +487,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 return;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => "CustomSegmentLights.CalculateAutoPedestrianLightState: Querying incoming " +
                 $"segments at seg. {SegmentId} @ {NodeId}");
@@ -521,7 +521,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         continue;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => "CustomSegmentLights.CalculateAutoPedestrianLightState: Checking " +
                         $"incoming straight segment {otherSegmentId} at seg. {SegmentId} @ {NodeId}");
@@ -529,7 +529,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     ICustomSegmentLights otherLights = LightsManager.GetSegmentLights(nodeId, otherSegmentId);
 
                     if (otherLights == null) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "CustomSegmentLights.CalculateAutoPedestrianLightState: " +
                             $"Expected other (straight) CustomSegmentLights at segment {otherSegmentId} " +
@@ -547,7 +547,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                     if (nextConnectionClass.m_service != prevConnectionClass.m_service) {
                         if (logTrafficLights) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomSegmentLights.CalculateAutoPedestrianLightState: Other (straight) " +
                                 "segment {0} @ {1} has different connection service than segment {2} " +
                                 "({3} vs. {4}). Ignoring traffic light state.",
@@ -565,7 +565,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                     if (dir == ArrowDirection.Forward) {
                         if (!otherLights.IsAllMainRed()) {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logTrafficLights,
                                 () => "CustomSegmentLights.CalculateAutoPedestrianLightState: Not " +
                                 $"all main red at {otherSegmentId} at seg. {SegmentId} @ {NodeId}");
@@ -578,7 +578,7 @@ namespace TrafficManager.TrafficLight.Impl {
                                && ((lht && !otherLights.IsAllRightRed())
                                    || (!lht && !otherLights.IsAllLeftRed())))
                     {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "CustomSegmentLights.CalculateAutoPedestrianLightState: " +
                             $"Not all left red at {otherSegmentId} at seg. {SegmentId} @ {NodeId}");
@@ -591,7 +591,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             AutoPedestrianLightState = autoPedestrianLightState;
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => "CustomSegmentLights.CalculateAutoPedestrianLightState: Calculated " +
                 $"AutoPedestrianLightState for segment {SegmentId} @ {NodeId}: {AutoPedestrianLightState}");
@@ -627,7 +627,7 @@ namespace TrafficManager.TrafficLight.Impl {
             SeparateVehicleTypes = ExtVehicleType.None;
 
             if (logHouseKeeping) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "CustomSegmentLights.Housekeeping({0}, {1}): housekeeping started @ seg. {2}, " +
                     "node {3}, allAllowedTypes={4}, allAllowedMask={5}",
                     mayDelete,
@@ -680,14 +680,14 @@ namespace TrafficManager.TrafficLight.Impl {
                                      laneInfo,
                                      VehicleRestrictionsMode.Unrestricted);
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logHouseKeeping,
                         () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                         $"housekeeping @ seg. {SegmentId}, node {nodeId}: Processing lane {laneIndex} " +
                         $"with allowedTypes={allowedTypes}, defaultMask={defaultMask}");
 
                     if (laneInfo.m_vehicleType == VehicleInfo.VehicleType.Car && allowedTypes == defaultMask) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logHouseKeeping,
                             () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                             $"housekeeping @ seg. {SegmentId}, node {nodeId}, lane {laneIndex}: " +
@@ -700,7 +700,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                     ExtVehicleType mask = allowedTypes & ~ExtVehicleType.Emergency;
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logHouseKeeping,
                         () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                         $"housekeeping @ seg. {SegmentId}, node {nodeId}, lane {laneIndex}: " +
@@ -721,7 +721,7 @@ namespace TrafficManager.TrafficLight.Impl {
                                 false);
                         }
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logHouseKeeping,
                             () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                             $"housekeeping @ seg. {SegmentId}, node {nodeId}, lane {laneIndex}: " +
@@ -742,7 +742,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     SeparateVehicleTypes |= mask;
 
                     if (logHouseKeeping) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomSegmentLights.Housekeeping({0}, {1}): housekeeping @ seg. {2}, " +
                             "node {3}: Finished processing lane {4}: mainVehicleType={5}, " +
                             "VehicleTypeByLaneIndex={6}, laneIndicesWithoutSeparateLights={7}, " +
@@ -762,7 +762,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
 
             if (separateLanes == 0 || defaultLanes > 0) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logHouseKeeping,
                     () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                     $"housekeeping @ seg. {SegmentId}, node {nodeId}: Adding default main vehicle " +
@@ -796,7 +796,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     VehicleTypeByLaneIndex[laneIndex] = ExtVehicleType.None;
                 }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logHouseKeeping,
                         () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                         $"housekeeping @ seg. {SegmentId}, node {nodeId}: Added default main vehicle " +
@@ -809,7 +809,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
 
             if (logHouseKeeping) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "CustomSegmentLights.Housekeeping({0}, {1}): housekeeping @ seg. {2}, node {3}: " +
                     "Created all necessary lights. VehicleTypeByLaneIndex={4}, CustomLights={5}",
                     mayDelete,
@@ -834,7 +834,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 }
 
                 if (logHouseKeeping) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "CustomSegmentLights.Housekeeping({0}, {1}): housekeeping @ seg. {2}, " +
                         "node {3}: Going to delete unnecessary lights now: vehicleTypesToDelete={4}",
                         mayDelete,
@@ -858,7 +858,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
 
             // if (addPedestrianLight) {
-            Log._DebugIf(
+            Log._TraceIf(
                 logHouseKeeping,
                 () => $"CustomSegmentLights.Housekeeping({mayDelete}, {calculateAutoPedLight}): " +
                 $"housekeeping @ seg. {SegmentId}, node {nodeId}: adding pedestrian light");
@@ -873,7 +873,7 @@ namespace TrafficManager.TrafficLight.Impl {
             OnChange(calculateAutoPedLight);
 
             if (logHouseKeeping) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "CustomSegmentLights.Housekeeping({0}, {1}): housekeeping @ seg. {2}, node {3}: " +
                     "Housekeeping complete. VehicleTypeByLaneIndex={4} CustomLights={5}",
                     mayDelete,

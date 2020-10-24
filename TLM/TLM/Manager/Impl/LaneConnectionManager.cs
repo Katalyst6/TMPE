@@ -231,14 +231,14 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RemoveLaneConnection({laneId1}, {laneId2}, " +
+                Log._Trace($"LaneConnectionManager.RemoveLaneConnection({laneId1}, {laneId2}, " +
                            $"{startNode1}) called.");
             }
 
             bool ret = Flags.RemoveLaneConnection(laneId1, laneId2, startNode1);
 
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RemoveLaneConnection({laneId1}, {laneId2}, " +
+                Log._Trace($"LaneConnectionManager.RemoveLaneConnection({laneId1}, {laneId2}, " +
                            $"{startNode1}): ret={ret}");
             }
 
@@ -279,7 +279,7 @@ namespace TrafficManager.Manager.Impl {
         internal void RemoveLaneConnectionsFromNode(ushort nodeId) {
 #if DEBUG
             if (DebugSwitch.LaneConnections.Get()) {
-                Log._Debug($"LaneConnectionManager.RemoveLaneConnectionsFromNode({nodeId}) called.");
+                Log._Trace($"LaneConnectionManager.RemoveLaneConnectionsFromNode({nodeId}) called.");
             }
 #endif
             Services.NetService.IterateNodeSegments(
@@ -306,28 +306,28 @@ namespace TrafficManager.Manager.Impl {
             const bool logLaneConnections = false;
 #endif
             if (logLaneConnections) {
-                Log._Debug(
+                Log._Trace(
                     $"LaneConnectionManager.RemoveLaneConnectionsFromSegment({segmentId}, " +
                     $"{startNode}) called.");
             }
 
             Services.NetService.IterateSegmentLanes(
                 segmentId,
-                (uint laneId,
+                (GenericGameBridge.Service.NetSegmentLaneHandler)((uint laneId,
                  ref NetLane lane,
                  NetInfo.Lane laneInfo,
                  ushort segId,
                  ref NetSegment segment,
                  byte laneIndex) => {
                     if (logLaneConnections) {
-                        Log._Debug(
-                            "LaneConnectionManager.RemoveLaneConnectionsFromSegment: Removing " +
-                            $"lane connections from segment {segmentId}, lane {laneId}.");
+                         Log._Trace(
+                            (string)("LaneConnectionManager.RemoveLaneConnectionsFromSegment: Removing " +
+                            $"lane connections from segment {segmentId}, lane {laneId}."));
                     }
 
-                    RemoveLaneConnections(laneId, startNode, false);
+                     RemoveLaneConnections(laneId, startNode, false);
                     return true;
-                });
+                }));
 
             if (recalcAndPublish) {
                 RoutingManager.Instance.RequestRecalculation(segmentId);
@@ -352,7 +352,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logLaneConnections = false;
 #endif
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RemoveLaneConnections({laneId}, " +
+                Log._Trace($"LaneConnectionManager.RemoveLaneConnections({laneId}, " +
                            $"{startNode}) called.");
             }
 
@@ -420,7 +420,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.AddLaneConnection({sourceLaneId}, " +
+                Log._Trace($"LaneConnectionManager.AddLaneConnection({sourceLaneId}, " +
                            $"{targetLaneId}, {sourceStartNode}): ret={ret}");
             }
 
@@ -469,7 +469,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logLaneConnections = false;
 #endif
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.HandleInvalidSegment({seg.segmentId}): " +
+                Log._Trace($"LaneConnectionManager.HandleInvalidSegment({seg.segmentId}): " +
                            "Segment has become invalid. Removing lane connections.");
             }
 
@@ -606,7 +606,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logLaneConnections = false;
 #endif
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}) called");
+                Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}) called");
             }
 
             if (!Options.laneConnectorEnabled) {
@@ -615,7 +615,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!Flags.CanHaveLaneArrows(laneId, startNode)) {
                 if (logLaneConnections) {
-                    Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                    Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                $"lane {laneId}, startNode? {startNode} must not have lane arrows");
                 }
 
@@ -624,7 +624,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!HasConnections(laneId, startNode)) {
                 if (logLaneConnections) {
-                    Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                    Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                $"lane {laneId} does not have outgoing connections");
                 }
 
@@ -633,7 +633,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (nodeId == 0) {
                 if (logLaneConnections) {
-                    Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                    Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                "invalid node");
                 }
 
@@ -646,7 +646,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (segmentId == 0) {
                 if (logLaneConnections) {
-                    Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                    Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                "invalid segment");
                 }
 
@@ -654,13 +654,13 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                            $"startNode? {startNode}");
             }
 
             if (!Services.NetService.IsNodeValid(nodeId)) {
                 if (logLaneConnections) {
-                    Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                    Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                "Node is invalid");
                 }
 
@@ -672,13 +672,13 @@ namespace TrafficManager.Manager.Impl {
 
             Services.NetService.IterateNodeSegments(
                 nodeId,
-                (ushort otherSegmentId, ref NetSegment otherSeg) => {
+                (GenericGameBridge.Service.NetSegmentHandler)((ushort otherSegmentId, ref NetSegment otherSeg) => {
                     ArrowDirection dir = segEndMan.GetDirection(ref segEnd, otherSegmentId);
 
                     if (logLaneConnections) {
-                        Log._Debug(
-                            $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
-                            $"processing connected segment {otherSegmentId}. dir={dir}");
+                        Log._Trace(
+                            (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                            $"processing connected segment {otherSegmentId}. dir={dir}"));
                     }
 
                     // check if arrow has already been set for this direction
@@ -727,9 +727,9 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (logLaneConnections) {
-                        Log._Debug(
-                            $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
-                            $"processing connected segment {otherSegmentId}: need to determine arrows");
+                        Log._Trace(
+                            (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                            $"processing connected segment {otherSegmentId}: need to determine arrows"));
                     }
 
                     bool addArrow = false;
@@ -737,17 +737,17 @@ namespace TrafficManager.Manager.Impl {
 
                     while (curLaneId != 0) {
                         if (logLaneConnections) {
-                            Log._Debug(
-                                $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
-                                $"processing connected segment {otherSegmentId}: checking lane {curLaneId}");
+                            Log._Trace(
+                                (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                                $"processing connected segment {otherSegmentId}: checking lane {curLaneId}"));
                         }
 
                         if (AreLanesConnected(laneId, curLaneId, startNode)) {
                             if (logLaneConnections) {
-                                Log._Debug(
-                                    $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                                Log._Trace(
+                                    (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                                     $"processing connected segment {otherSegmentId}: checking lane " +
-                                    $"{curLaneId}: lanes are connected");
+                                    $"{curLaneId}: lanes are connected"));
                             }
 
                             addArrow = true;
@@ -758,10 +758,10 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (logLaneConnections) {
-                        Log._Debug(
-                            $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                        Log._Trace(
+                            (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                             $"processing connected segment {otherSegmentId}: finished processing " +
-                            $"lanes. addArrow={addArrow} arrows (before)={arrows}");
+                            $"lanes. addArrow={addArrow} arrows (before)={arrows}"));
                     }
 
                     if (!addArrow) {
@@ -800,16 +800,16 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (logLaneConnections) {
-                        Log._Debug(
-                            $"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
-                            $"processing connected segment {otherSegmentId}: arrows={arrows}");
+                        Log._Trace(
+                            (string)($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                            $"processing connected segment {otherSegmentId}: arrows={arrows}"));
                     }
 
                     return true;
-                });
+                }));
 
             if (logLaneConnections) {
-                Log._Debug($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
+                Log._Trace($"LaneConnectionManager.RecalculateLaneArrows({laneId}, {nodeId}): " +
                            $"setting lane arrows to {arrows}");
             }
 

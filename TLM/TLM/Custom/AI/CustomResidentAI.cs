@@ -126,7 +126,7 @@
                                       .m_parkedVehicle;
 
                 if (parkedVehicleId != 0) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"CustomResidentAI.CustomGetVehicleInfo({instanceId}): " +
                         $"Citizen instance {instanceId} owns a parked vehicle {parkedVehicleId}. " +

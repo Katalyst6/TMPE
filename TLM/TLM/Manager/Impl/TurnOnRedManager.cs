@@ -43,10 +43,10 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Turn-on-red segments:");
+            Log._Trace("Turn-on-red segments:");
 
             for (int i = 0; i < TurnOnRedSegments.Length; ++i) {
-                Log._Debug($"Segment end {i}: {TurnOnRedSegments[i]}");
+                Log._Trace($"Segment end {i}: {TurnOnRedSegments[i]}");
             }
         }
 
@@ -61,7 +61,7 @@ namespace TrafficManager.Manager.Impl {
         protected void UpdateSegment(ref ExtSegment seg) {
 #if DEBUG
             if (DebugSwitch.TurnOnRed.Get()) {
-                Log._Debug($"TurnOnRedManager.UpdateSegment({seg.segmentId}) called.");
+                Log._Trace($"TurnOnRedManager.UpdateSegment({seg.segmentId}) called.");
             }
 #endif
             ResetSegment(seg.segmentId);
@@ -94,7 +94,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logTurnOnRed = false;
 #endif
             if (logTurnOnRed) {
-                Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}) called.");
+                Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}) called.");
             }
 
             IExtSegmentManager segmentManager = Constants.ManagerFactory.ExtSegmentManager;
@@ -122,7 +122,7 @@ namespace TrafficManager.Manager.Impl {
             // check if traffic can flow to the node and that there is at least one left segment
             if (!end.incoming || !hasOutgoingSegment) {
                 if (logTurnOnRed) {
-                    Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
+                    Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                "outgoing one-way or insufficient number of outgoing segments.");
                 }
 
@@ -146,7 +146,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!nodeValid) {
                 if (logTurnOnRed) {
-                    Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): node invalid");
+                    Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): node invalid");
                 }
 
                 return;
@@ -166,7 +166,7 @@ namespace TrafficManager.Manager.Impl {
                 });
 
             if (logTurnOnRed) {
-                Log._Debug(
+                Log._Trace(
                     $"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                     $"got left/right segments: {leftSegmentId}/{rightSegmentId}");
             }
@@ -176,7 +176,7 @@ namespace TrafficManager.Manager.Impl {
                 && segmentEndManager.GetDirection(ref end, leftSegmentId) != ArrowDirection.Left)
             {
                 if (logTurnOnRed) {
-                    Log._Debug(
+                    Log._Trace(
                         $"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                         "left segment is not geometrically left");
                 }
@@ -188,7 +188,7 @@ namespace TrafficManager.Manager.Impl {
                 && segmentEndManager.GetDirection(ref end, rightSegmentId) != ArrowDirection.Right)
             {
                 if (logTurnOnRed) {
-                    Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
+                    Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                "right segment is not geometrically right");
                 }
 
@@ -200,7 +200,7 @@ namespace TrafficManager.Manager.Impl {
                 && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(leftSegmentId, nodeId)].outgoing)
             {
                 if (logTurnOnRed) {
-                    Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
+                    Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                "left segment is incoming one-way");
                 }
 
@@ -211,7 +211,7 @@ namespace TrafficManager.Manager.Impl {
                 && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(rightSegmentId, nodeId)].outgoing)
             {
                 if (logTurnOnRed) {
-                    Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
+                    Log._Trace($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                "right segment is incoming one-way");
                 }
 
@@ -222,7 +222,7 @@ namespace TrafficManager.Manager.Impl {
                 if ((lht && rightSegmentId != 0) || (!lht && leftSegmentId != 0)) {
                     // special case: one-way to one-way in non-preferred direction
                     if (logTurnOnRed) {
-                        Log._Debug(
+                        Log._Trace(
                             $"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                             "source is incoming one-way. checking for one-way in non-preferred direction");
                     }
@@ -232,7 +232,7 @@ namespace TrafficManager.Manager.Impl {
                     if (!segmentManager.ExtSegments[targetSegmentId].oneWay) {
                         // disallow turn in non-preferred direction
                         if (logTurnOnRed) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                 $"turn in non-preferred direction {(lht ? "right" : "left")} disallowed");
                         }
@@ -257,7 +257,7 @@ namespace TrafficManager.Manager.Impl {
             TurnOnRedSegments[index].rightSegmentId = rightSegmentId;
 
             if (logTurnOnRed) {
-                Log._Debug(
+                Log._Trace(
                     $"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                     $"Finished calculation. leftSegmentId={leftSegmentId}, rightSegmentId={rightSegmentId}");
             }

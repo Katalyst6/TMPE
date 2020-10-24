@@ -343,7 +343,7 @@ namespace TrafficManager.UI.MainMenu {
             GlobalConfig.Instance.Main.KeybindsPanelVisible = value;
             GlobalConfig.WriteConfig();
 
-            Log._Debug($"Toggle value of KeybindsPanelVisible to {value}");
+            Log._Trace($"Toggle value of KeybindsPanelVisible to {value}");
 
             // Refer to the TrafficManager tool asking it to request help from the current tool
             ModUI.GetTrafficManagerTool().RequestOnscreenDisplayUpdate();
@@ -555,7 +555,7 @@ namespace TrafficManager.UI.MainMenu {
                                config.Main.MainMenuY != (int)absolutePosition.y;
 
             if (posChanged) {
-                Log._Debug($"Menu position changed to {absolutePosition.x}|{absolutePosition.y}");
+                Log._Trace($"Menu position changed to {absolutePosition.x}|{absolutePosition.y}");
 
                 config.Main.MainMenuX = (int)absolutePosition.x;
                 config.Main.MainMenuY = (int)absolutePosition.y;

@@ -89,7 +89,7 @@ namespace TrafficManager.Util {
         /// TYPE inlinefunctionname(...) => expression.LogRet("messege");
         /// </summary>
         internal static T LogRet<T>(this T a, string m) {
-            Log._Debug(m + a);
+            Log._Trace(m + a);
             return a;
         }
 
@@ -99,7 +99,7 @@ namespace TrafficManager.Util {
             int frameCount = Time.frameCount;
             int diff = frameCount - _frameCounts[ID];
             if (diff<0 || diff > waitFrames) {
-                Log._Debug(m);
+                Log._Trace(m);
                 _frameCounts[ID] = frameCount;
             }
         }

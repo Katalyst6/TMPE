@@ -73,7 +73,7 @@ namespace TrafficManager.UI {
 
             public override void HandleClick(UIMouseEventParameter p) {
                 InstanceID instance = WorldInfoPanel.GetCurrentInstanceID();
-                Log._Debug($"Current citizen: {instance.Citizen}");
+                Log._Trace($"Current citizen: {instance.Citizen}");
 
                 if (instance.Citizen != 0) {
                     ushort citizenInstanceId = 0;
@@ -84,7 +84,7 @@ namespace TrafficManager.UI {
                             return true;
                         });
 
-                    Log._Debug(
+                    Log._Trace(
                         $"Current citizen: {instance.Citizen} Instance: {citizenInstanceId}");
                     if (citizenInstanceId != 0) {
                         bool isTourist = CitizenManager.instance.m_instances.m_buffer[citizenInstanceId].Info.m_citizenAI is TouristAI;

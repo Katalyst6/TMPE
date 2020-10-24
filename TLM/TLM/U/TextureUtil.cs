@@ -35,7 +35,7 @@ namespace TrafficManager.U {
             // Load separate sprites and then pack it in a texture together
             foreach (string spriteName in spriteNames) {
                 string resourceName = $"{resourcePrefix}.{spriteName}.png";
-                Log._Debug($"TextureUtil: Loading {resourceName} for sprite={spriteName}");
+                Log._Trace($"TextureUtil: Loading {resourceName} for sprite={spriteName}");
 
                 Texture2D loadedSprite = TextureResources.LoadDllResource(
                     resourceName: resourceName,
@@ -98,7 +98,7 @@ namespace TrafficManager.U {
             }
 
 #if DEBUG
-            Log._DebugIf(
+            Log._TraceIf(
             DebugSwitch.ResourceLoading.Get(),
                 () => $"Loading atlas for {name} count:{numX}x{numY} " +
                 $"texture:{texture.name} size:{texture.width}x{texture.height}");

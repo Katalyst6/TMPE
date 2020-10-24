@@ -29,13 +29,13 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Custom segments:");
+            Log._Trace("Custom segments:");
             for (int i = 0; i < customSegments_.Length; ++i) {
                 if (customSegments_[i] == null) {
                     continue;
                 }
 
-                Log._Debug($"Segment {i}: {customSegments_[i]}");
+                Log._Trace($"Segment {i}: {customSegments_[i]}");
             }
         }
 

@@ -51,6 +51,8 @@ namespace CSUtil.Commons {
             Error,
         }
 
+        private static LogLevel _level = LogLevel.Trace;
+
         private static Stopwatch _sw = Stopwatch.StartNew();
 
         static Log() {
@@ -99,6 +101,30 @@ namespace CSUtil.Commons {
         [Conditional("TRACE")]
         public static void _Trace(string s) {
             LogToFile(s, LogLevel.Trace);
+        }
+
+        /// <summary>
+        /// Will log only if trace mode, the string is prepared using string.Format
+        /// </summary>
+        /// <param name="format">The text</param>
+        [Conditional("TRACE")]
+        public static void _TraceFormat(string format, params object[] args) {
+            LogToFile(string.Format(format, args), LogLevel.Trace);
+        }
+
+        /// <summary>
+        /// Will log only if trace mode is enabled and the condition is true
+        /// NOTE: If a lambda contains values from `out` and `ref` scope args,
+        /// then you can not use a lambda, instead use `if (cond) { Log._Debug }`
+        /// </summary>
+        /// <param name="cond">The condition</param>
+        /// <param name="s">The function which returns text to log</param>
+        // TODO: Add log thread and replace formatted strings with lists to perform late formatting in that thread
+        [Conditional("TRACE")]
+        public static void _TraceIf(bool cond, Func<string> s) {
+            if (cond) {
+                LogToFile(s(), LogLevel.Debug);
+            }
         }
 
         public static void Info(string s) {
@@ -193,6 +219,10 @@ namespace CSUtil.Commons {
         }
 
         private static void LogToFile(string log, LogLevel level) {
+            if (level < _level) {
+                return;
+            }
+
             try {
                 Monitor.Enter(LogLock);
 

@@ -91,7 +91,7 @@ namespace TrafficManager.Manager.Impl {
             bool logParkingAi = DebugSwitch.BasicParkingAILog.Get() && citizenDebug;
             bool extendedLogParkingAi = DebugSwitch.ExtendedParkingAILog.Get() && citizenDebug;
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"CustomHumanAI.EnterParkedCar({instanceId}, ..., {parkedVehicleId}) called.");
 #else
@@ -109,7 +109,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!CustomPathManager._instance.m_pathUnits.m_buffer[instanceData.m_path]
                                   .GetPosition(0, out PathUnit.Position vehLanePathPos)) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"CustomHumanAI.EnterParkedCar({instanceId}): Could not get first car " +
                           $"path position of citizen instance {instanceId}!");
@@ -118,7 +118,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             uint vehLaneId = PathManager.GetLaneID(vehLanePathPos);
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi,
                 () => $"CustomHumanAI.EnterParkedCar({instanceId}): Determined vehicle " +
                       $"position for citizen instance {instanceId}: seg. {vehLanePathPos.m_segment}, " +
@@ -176,7 +176,7 @@ namespace TrafficManager.Manager.Impl {
                 if (!vehicleInfo.m_vehicleAI.TrySpawn(
                         vehicleId,
                         ref vehManager.m_vehicles.m_buffer[vehicleId])) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"CustomHumanAI.EnterParkedCar({instanceId}): Could not " +
                               $"spawn a {vehicleInfo.m_vehicleType} for citizen instance {instanceId}!");
@@ -208,7 +208,7 @@ namespace TrafficManager.Manager.Impl {
                 instanceData.Unspawn(instanceId);
 
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"CustomHumanAI.EnterParkedCar({instanceId}): Citizen instance " +
                         $"{instanceId} is now entering vehicle {vehicleId}. Set vehicle " +
                         $"target position to {vehLanePos} (segment={vehLanePathPos.m_segment}, " +
@@ -219,7 +219,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             // failed to find a road position
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"CustomHumanAI.EnterParkedCar({instanceId}): Could not " +
                       $"find a road position for citizen instance {instanceId} near " +
@@ -250,14 +250,14 @@ namespace TrafficManager.Manager.Impl {
             const bool logParkingAi = false;
             const bool extendedLogParkingAi = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi,
                 () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                 $"{mainPathState}) called.");
 
             if (mainPathState == ExtPathState.Calculating) {
                 // main path is still calculating, do not check return path
-                Log._DebugIf(
+                Log._TraceIf(
                     extendedLogParkingAi,
                     () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                     $"{mainPathState}): still calculating main path. returning CALCULATING.");
@@ -278,13 +278,13 @@ namespace TrafficManager.Manager.Impl {
 
             if (mainPathState == ExtPathState.None || mainPathState == ExtPathState.Failed) {
                 // main path failed or non-existing
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                     $"{mainPathState}): mainPathSate is {mainPathState}.");
 
                 if (mainPathState == ExtPathState.Failed) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, " +
                         $"..., {mainPathState}): Checking if path-finding may be repeated.");
@@ -296,7 +296,7 @@ namespace TrafficManager.Manager.Impl {
                         ref extCitizen);
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                     $"{mainPathState}): Resetting instance and returning FAILED.");
@@ -315,7 +315,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathState.None:
                 default: {
                     // no return path calculated: ignore
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                         $"{mainPathState}): return path state is None. Ignoring and " +
@@ -325,7 +325,7 @@ namespace TrafficManager.Manager.Impl {
 
                 case ExtPathState.Calculating: // OK
                 {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         extendedLogParkingAi,
                         () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                         $"{mainPathState}): return path state is still calculating.");
@@ -335,7 +335,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathState.Failed: // OK
                 {
                     // no walking path from parking position to target found. flag main path as 'failed'.
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                         $"{mainPathState}): Return path FAILED.");
@@ -346,7 +346,7 @@ namespace TrafficManager.Manager.Impl {
 
                 case ExtPathState.Ready: {
                     // handle valid return path
-                    Log._DebugIf(
+                    Log._TraceIf(
                         extendedLogParkingAi,
                         () => $"AdvancedParkingManager.UpdateCitizenPathState({citizenInstanceId}, ..., " +
                         $"{mainPathState}): Path is READY.");
@@ -396,14 +396,14 @@ namespace TrafficManager.Manager.Impl {
             const bool extendedLogParkingAi = false;
 #endif
 
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi,
                 () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                       $"{mainPathState}) called.");
 
             if (mainPathState == ExtPathState.Calculating) {
                 // main path is still calculating, do not check return path
-                Log._DebugIf(
+                Log._TraceIf(
                     extendedLogParkingAi,
                     () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                           $"{mainPathState}): still calculating main path. returning CALCULATING.");
@@ -424,7 +424,7 @@ namespace TrafficManager.Manager.Impl {
             // CustomPassengerCarAI.GetDriverInstance(vehicleId, ref vehicleData));
             if (!extCitInstMan.IsValid(driverExtInstance.instanceId)) {
                 // no driver
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                     $"{mainPathState}): no driver found!");
@@ -435,7 +435,7 @@ namespace TrafficManager.Manager.Impl {
             if (Constants.ManagerFactory.ExtVehicleManager.ExtVehicles[vehicleId].vehicleType !=
                 ExtVehicleType.PassengerCar) {
                 // non-passenger cars are not handled
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                     $"{mainPathState}): not a passenger car!");
@@ -446,13 +446,13 @@ namespace TrafficManager.Manager.Impl {
 
             if (mainPathState == ExtPathState.None || mainPathState == ExtPathState.Failed) {
                 // main path failed or non-existing: reset return path
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                           $"{mainPathState}): mainPathSate is {mainPathState}.");
 
                 if (mainPathState == ExtPathState.Failed) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                         $"{mainPathState}): Checking if path-finding may be repeated.");
@@ -464,7 +464,7 @@ namespace TrafficManager.Manager.Impl {
                                                 ref driverExtInstance);
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                           $"{mainPathState}): Resetting instance and returning FAILED.");
@@ -482,7 +482,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathState.None:
                 default: {
                     // no return path calculated: ignore
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                               $"{mainPathState}): return path state is None. " +
@@ -494,7 +494,7 @@ namespace TrafficManager.Manager.Impl {
 
                 case ExtPathState.Calculating: {
                     // return path not read yet: wait for it
-                    Log._DebugIf(
+                    Log._TraceIf(
                         extendedLogParkingAi,
                         () => $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                               $"{mainPathState}): return path state is still calculating.");
@@ -505,7 +505,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathState.Failed: {
                     // no walking path from parking position to target found. flag main path as 'failed'.
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                             $"{mainPathState}): Return path {driverExtInstance.returnPathId} " +
                             "FAILED. Forcing path-finding to fail.");
@@ -519,7 +519,7 @@ namespace TrafficManager.Manager.Impl {
                     // handle valid return path
                     extCitInstMan.ReleaseReturnPath(ref driverExtInstance);
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                             $"{mainPathState}): Path is ready for vehicle {vehicleId}, " +
                             $"citizen instance {driverExtInstance.instanceId}! " +
@@ -546,7 +546,7 @@ namespace TrafficManager.Manager.Impl {
                             driverExtInstance.pathMode = ExtPathMode.DrivingToAltParkPos;
                             driverExtInstance.parkingPathStartPosition = null;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                                     $"{mainPathState}): Path to an alternative parking position is " +
                                     $"READY for vehicle {vehicleId}! CurrentPathMode={driverExtInstance.pathMode}");
@@ -558,7 +558,7 @@ namespace TrafficManager.Manager.Impl {
                         case ExtPathMode.CalculatingCarPathToTarget: {
                             driverExtInstance.pathMode = ExtPathMode.DrivingToTarget;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                                     $"{mainPathState}): Car path is READY for vehicle {vehicleId}! " +
                                     $"CurrentPathMode={driverExtInstance.pathMode}");
@@ -570,7 +570,7 @@ namespace TrafficManager.Manager.Impl {
                         case ExtPathMode.CalculatingCarPathToKnownParkPos: {
                             driverExtInstance.pathMode = ExtPathMode.DrivingToKnownParkPos;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.UpdateCarPathState({vehicleId}, ..., " +
                                     $"{mainPathState}): Car path to known parking position is READY " +
                                     $"for vehicle {vehicleId}! CurrentPathMode={driverExtInstance.pathMode}");
@@ -611,7 +611,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if ((instanceData.m_flags & CitizenInstance.Flags.WaitingPath) != CitizenInstance.Flags.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     extendedLogParkingAi,
                     () => $"AdvancedParkingManager.CheckCitizenReachedParkedCar({instanceId}): " +
                         $"citizen instance {instanceId} is waiting for path-finding to complete.");
@@ -623,7 +623,7 @@ namespace TrafficManager.Manager.Impl {
             if (extInstance.pathMode != ExtPathMode.ApproachingParkedCar &&
                 extInstance.pathMode != ExtPathMode.WalkingToParkedCar) {
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                         $"({instanceId}): citizen instance {instanceId} is not reaching " +
                         $"a parked car ({extInstance.pathMode})");
@@ -654,7 +654,7 @@ namespace TrafficManager.Manager.Impl {
                         (instanceData.GetLastFramePosition() - doorPosition).sqrMagnitude;
 
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                             $"({instanceId}): citizen instance {instanceId} was walking to " +
                             "parked car and reached final path position. " +
@@ -689,7 +689,7 @@ namespace TrafficManager.Manager.Impl {
 
                     // distance has increased dramatically since the last time
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                             $"({instanceId}): Citizen instance {instanceId} is currently " +
                             "reaching their parked car but distance increased! " +
@@ -699,7 +699,7 @@ namespace TrafficManager.Manager.Impl {
 
 #if DEBUG
                     if (DebugSwitch.ParkingAIDistanceIssue.Get()) {
-                        Log._Debug(
+                        Log._Trace(
                             "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                             $"({instanceId}): FORCED PAUSE. Distance increased! " +
                             $"Citizen instance {instanceId}. dist={doorSqrDist}");
@@ -721,7 +721,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                         $"({instanceId}): Citizen instance {instanceId} is currently " +
                         $"reaching their parked car (dist={doorSqrDist}, " +
@@ -734,7 +734,7 @@ namespace TrafficManager.Manager.Impl {
 
             extInstance.pathMode = ExtPathMode.RequiresCarPath;
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     "AdvancedParkingManager.CitizenApproachingParkedCarSimulationStep" +
                     $"({instanceId}): Citizen instance {instanceId} reached parking position " +
                     $"(dist={doorSqrDist}). Calculating remaining path now. " +
@@ -848,7 +848,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
             if ((instanceData.m_flags & CitizenInstance.Flags.WaitingPath) !=
                 CitizenInstance.Flags.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     extendedLogParkingAi,
                     () => $"AdvancedParkingManager.CitizenApproachingTargetSimulationStep({instanceId}): " +
                     $"citizen instance {instanceId} is waiting for path-finding to complete.");
@@ -859,7 +859,7 @@ namespace TrafficManager.Manager.Impl {
             if (extInstance.pathMode != ExtPathMode.WalkingToTarget &&
                 extInstance.pathMode != ExtPathMode.TaxiToTarget) {
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"AdvancedParkingManager.CitizenApproachingTargetSimulationStep({instanceId}): " +
                         $"citizen instance {instanceId} is not reaching target ({extInstance.pathMode})");
                 }
@@ -881,7 +881,7 @@ namespace TrafficManager.Manager.Impl {
                                              out _))) {
                 extCitInstMan.Reset(ref extInstance);
                 if (logParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"AdvancedParkingManager.CitizenApproachingTargetSimulationStep({instanceId}): " +
                         $"Citizen instance {instanceId} reached target. " +
                         $"CurrentDepartureMode={extInstance.pathMode}");
@@ -928,7 +928,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Path-finding succeeded for citizen instance {instanceId}. " +
                     $"Path: {instanceData.m_path} vehicle={citizenData.m_vehicle}");
@@ -937,7 +937,7 @@ namespace TrafficManager.Manager.Impl {
             if (citizenData.m_vehicle == 0) {
                 // citizen does not already have a vehicle assigned
                 if (extInstance.pathMode == ExtPathMode.TaxiToTarget) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         extendedLogParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                           "Citizen uses a taxi. Decreasing public transport demand and " +
@@ -994,7 +994,7 @@ namespace TrafficManager.Manager.Impl {
                      // path) discard parking space information since the cim has to park near the
                      // public transport stop (instead of parking in the vicinity of the target building).
                      // TODO we could check if the path looks like "source -> walk -> use public transport -> walk -> drive -> [walk ->] target" (in this case parking space information would still be valid)
-                    Log._DebugIf(
+                    Log._TraceIf(
                         extendedLogParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         "Citizen uses their car together with public transport. " +
@@ -1088,7 +1088,7 @@ namespace TrafficManager.Manager.Impl {
             extInstance.pathMode = ExtPathMode.WalkingToTarget;
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Citizen instance {instanceId} is now travelling by foot to their final " +
                     $"target. CurrentDepartureMode={extInstance.pathMode}, " +
@@ -1110,7 +1110,7 @@ namespace TrafficManager.Manager.Impl {
             // path to parked vehicle has been calculated...
             if (parkedVehicleId == 0) {
                 // ... but the parked vehicle has vanished
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Citizen instance {instanceId} shall walk to their parked vehicle but it " +
@@ -1123,7 +1123,7 @@ namespace TrafficManager.Manager.Impl {
 
             extInstance.pathMode = ExtPathMode.WalkingToParkedCar;
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Citizen instance {instanceId} is now on their way to its parked vehicle. " +
                     $"CurrentDepartureMode={extInstance.pathMode}, " +
@@ -1150,7 +1150,7 @@ namespace TrafficManager.Manager.Impl {
         {
             if (usesCar) {
                 // parked car should be reached now
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Path for citizen instance {instanceId} contains passenger car section and " +
@@ -1163,7 +1163,7 @@ namespace TrafficManager.Manager.Impl {
                             extInstance.pathMode = ExtPathMode.DrivingToAltParkPos;
                             extInstance.parkingPathStartPosition = null;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                     "Path to an alternative parking position is READY! " +
                                     $"CurrentPathMode={extInstance.pathMode}");
@@ -1175,7 +1175,7 @@ namespace TrafficManager.Manager.Impl {
                         case ExtPathMode.CalculatingCarPathToTarget: {
                             extInstance.pathMode = ExtPathMode.DrivingToTarget;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                     $"Car path is READY! CurrentPathMode={extInstance.pathMode}");
                             }
@@ -1186,7 +1186,7 @@ namespace TrafficManager.Manager.Impl {
                         case ExtPathMode.CalculatingCarPathToKnownParkPos: {
                             extInstance.pathMode = ExtPathMode.DrivingToKnownParkPos;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                     "Car path to known parking position is READY! " +
                                     $"CurrentPathMode={extInstance.pathMode}");
@@ -1202,7 +1202,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (parkedVehicleId == 0) {
                     // error! could not find/spawn parked car
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         $"Citizen instance {instanceId} still does not have a parked vehicle! " +
@@ -1216,7 +1216,7 @@ namespace TrafficManager.Manager.Impl {
                 if (sqrDistToParkedVehicle >
                     4f * GlobalConfig.Instance.ParkingAI.MaxParkedCarInstanceSwitchSqrDistance) {
                     // error! parked car is too far away
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         $"Citizen instance {instanceId} cannot enter parked vehicle because it is " +
@@ -1241,7 +1241,7 @@ namespace TrafficManager.Manager.Impl {
                     extCitizen.transportMode |= ExtTransportMode.Car;
 
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                             $"Citizen instance {instanceId} has entered their car and is now " +
                             $"travelling by car (vehicleId={vehicleId}). " +
@@ -1255,7 +1255,7 @@ namespace TrafficManager.Manager.Impl {
 
                 // error! parked car could not be entered (reached vehicle limit?): try to walk to target
                 if (logParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         $"Entering parked vehicle {parkedVehicleId} failed for citizen " +
                         $"instance {instanceId}. Trying to walk to target. " +
@@ -1271,7 +1271,7 @@ namespace TrafficManager.Manager.Impl {
             switch (extInstance.pathMode) {
                 case ExtPathMode.CalculatingCarPathToTarget: {
                     // ... and the path can be reused for walking
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         "A direct car path was queried that does not contain a car section. " +
@@ -1307,7 +1307,7 @@ namespace TrafficManager.Manager.Impl {
                 default: {
                     // ... and a path to a parking spot was calculated: dismiss path and
                     // restart path-finding for walking
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     "A parking space car path was queried but it turned out that no car is " +
@@ -1341,7 +1341,7 @@ namespace TrafficManager.Manager.Impl {
 
             ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
             if (usesCar) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Path for citizen instance {instanceId} contains passenger car " +
@@ -1354,7 +1354,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (parkedVehicleId == 0) {
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                             $"Citizen {instanceData.m_citizen} (citizen instance {instanceId}), " +
                             $"source building {sourceBuildingId} does not have a parked " +
@@ -1379,7 +1379,7 @@ namespace TrafficManager.Manager.Impl {
 
                     if (vehicleInfo != null) {
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                 $"Citizen {instanceData.m_citizen} (citizen instance {instanceId}), " +
                                 $"source building {sourceBuildingId} is using their own passenger car. " +
@@ -1395,7 +1395,7 @@ namespace TrafficManager.Manager.Impl {
                         if (currentBuildingId != 0) {
                             currentPos = buildingsBuffer[currentBuildingId].m_position;
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                     $"Taking current position from current building {currentBuildingId} " +
                                     $"for citizen {instanceData.m_citizen} (citizen instance {instanceId}): " +
@@ -1405,7 +1405,7 @@ namespace TrafficManager.Manager.Impl {
                             currentBuildingId = sourceBuildingId;
                             currentPos = instanceData.GetLastFramePosition();
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                     "Taking current position from last frame position for citizen " +
                                     $"{instanceData.m_citizen} (citizen instance {instanceId}): " +
@@ -1426,7 +1426,7 @@ namespace TrafficManager.Manager.Impl {
                             parkedVehicleId = Singleton<CitizenManager>
                                               .instance.m_citizens.m_buffer[instanceData.m_citizen]
                                               .m_parkedVehicle;
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logParkingAi,
                                 () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                 $"Parked vehicle for citizen {instanceData.m_citizen} " +
@@ -1440,7 +1440,7 @@ namespace TrafficManager.Manager.Impl {
                                     parkingAiConf.MaxSpawnedCarParkingSpaceDemandDelta);
                             }
                         } else {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logParkingAi,
                                 () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                                 $">> Failed to spawn parked vehicle for citizen {instanceData.m_citizen} " +
@@ -1455,7 +1455,7 @@ namespace TrafficManager.Manager.Impl {
                             }
                         }
                     } else {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                             $"Citizen {instanceData.m_citizen} (citizen instance {instanceId}), " +
@@ -1465,7 +1465,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (parkedVehicleId != 0) {
                     // citizen has to reach their parked vehicle first
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                         $"Calculating path to reach parked vehicle {parkedVehicleId} for citizen " +
@@ -1476,7 +1476,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 // error! could not find/spawn parked car
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): " +
                     $"Citizen instance {instanceId} still does not have a parked vehicle! " +
@@ -1487,7 +1487,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             // path does not contain a car section: path can be reused for walking
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"AdvancedParkingManager.OnCitizenPathFindSuccess({instanceId}): A direct car " +
                 "path OR initial path was queried that does not contain a car section. " +
@@ -1550,7 +1550,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): Path-finding " +
                     $"failed for citizen instance {extInstance.instanceId}. " +
                     $"CurrentPathMode={extInstance.pathMode}");
@@ -1566,7 +1566,7 @@ namespace TrafficManager.Manager.Impl {
                 if ((instanceData.m_flags & CitizenInstance.Flags.CannotUseTransport) ==
                     CitizenInstance.Flags.None) {
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                             "Increasing public transport demand of target building " +
                             $"{instanceData.m_targetBuilding} and source building " +
@@ -1638,7 +1638,7 @@ namespace TrafficManager.Manager.Impl {
                                                                  .m_buffer[parkedVehicleId]
                                                                  .m_position;
                         if (extendedLogParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                                 $"Relocated parked car {parkedVehicleId} to a closer location (old pos/distance: " +
                                 $"{oldParkedVehiclePos}/{parkedToCitizen}, new pos/distance: " +
@@ -1653,7 +1653,7 @@ namespace TrafficManager.Manager.Impl {
                     // could not move car
                     // -> despawn parked car, walk to target or use public transport
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                             $"Releasing unreachable parked vehicle {parkedVehicleId} for citizen " +
                             $"instance {extInstance.instanceId}. CurrentPathMode={extInstance.pathMode}");
@@ -1670,7 +1670,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathMode.CalculatingCarPathToKnownParkPos:
                 case ExtPathMode.CalculatingWalkingPathToParkedCar: {
                     // try to walk to target
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                         "Path failed but it may be retried to walk to the target.");
@@ -1680,7 +1680,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 default: {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                         "Path failed and walking to target is not an option. Resetting ext. instance.");
@@ -1690,7 +1690,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCitizenPathFindFailure({instanceId}): " +
                     $"Setting CurrentPathMode for citizen instance {extInstance.instanceId} " +
                     $"to {extInstance.pathMode}, ret={ret}");
@@ -1739,7 +1739,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCarPathFindFailure({vehicleId}): Path-finding failed " +
                     $"for driver citizen instance {driverExtInstance.instanceId}. " +
                     $"CurrentPathMode={driverExtInstance.pathMode}");
@@ -1752,7 +1752,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtPathMode.CalculatingCarPathToKnownParkPos: {
                     // could not reach target building by driving: increase parking space demand
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"AdvancedParkingManager.OnCarPathFindFailure({vehicleId}): " +
                             "Increasing parking space demand of target building " +
                             $"{driverInstanceData.m_targetBuilding}");
@@ -1777,7 +1777,7 @@ namespace TrafficManager.Manager.Impl {
                     // try to drive directly to the target if public transport is allowed
                     if ((driverInstanceData.m_flags & CitizenInstance.Flags.CannotUseTransport) ==
                         CitizenInstance.Flags.None) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => $"AdvancedParkingManager.OnCarPathFindFailure({vehicleId}): " +
                             "Path failed but it may be retried to drive directly to the target " +
@@ -1791,7 +1791,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 default: {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"AdvancedParkingManager.OnCarPathFindFailure({vehicleId}): Path failed " +
                         "and a direct target is not an option. Resetting driver ext. instance.");
@@ -1801,7 +1801,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"AdvancedParkingManager.OnCarPathFindFailure({vehicleId}): Setting " +
                     $"CurrentPathMode for driver citizen instance {driverExtInstance.instanceId} " +
                     $"to {driverExtInstance.pathMode}, ret={ret}");
@@ -1893,7 +1893,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (extendedLogParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"Citizen instance {extDriverInstance.instanceId} " +
                     $"(CurrentPathMode={extDriverInstance.pathMode}) can still use their passenger " +
                     "car and is either not a tourist or wants to find an alternative parking spot. " +
@@ -1924,7 +1924,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (extendedLogParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"Found a parking spot for citizen instance {extDriverInstance.instanceId} " +
                     $"(CurrentPathMode={extDriverInstance.pathMode}) before starting car path: " +
                     $"{knownParkingSpaceLocation} @ {knownParkingSpaceLocationId}");
@@ -1934,7 +1934,7 @@ namespace TrafficManager.Manager.Impl {
                 case ExtParkingSpaceLocation.RoadSide: {
                     // found segment with parking space
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"Found segment {knownParkingSpaceLocationId} for road-side parking " +
                             $"position for citizen instance {extDriverInstance.instanceId}!");
                     }
@@ -1957,7 +1957,7 @@ namespace TrafficManager.Manager.Impl {
                         // extDriverInstance.CurrentPathMode = successMode;
                         // ExtCitizenInstance.PathMode.CalculatingKnownCarPath;
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 "Found an parking spot sidewalk position for citizen instance " +
                                 $"{extDriverInstance.instanceId} @ segment {knownParkingSpaceLocationId}, " +
                                 $"laneId {laneId}, laneIndex {laneIndex}, offset={endPathPos.m_offset}! " +
@@ -1968,7 +1968,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             "Could not find an alternative parking spot sidewalk position for " +
                             $"citizen instance {extDriverInstance.instanceId}! " +
                             $"CurrentPathMode={extDriverInstance.pathMode}");
@@ -1995,7 +1995,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"Navigating citizen instance {extDriverInstance.instanceId} to parking " +
                             $"building {knownParkingSpaceLocationId}! segment={endPathPos.m_segment}, " +
                             $"laneIndex={endPathPos.m_lane}, offset={endPathPos.m_offset}. " +
@@ -2025,7 +2025,7 @@ namespace TrafficManager.Manager.Impl {
             // const bool logParkingAi = false;
             const bool extendedLogParkingAi = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi && homeId != 0,
                 () => $"Trying to spawn parked passenger car for citizen {citizenId}, " +
                 $"home {homeId} @ {refPos}");
@@ -2084,7 +2084,7 @@ namespace TrafficManager.Manager.Impl {
             // const bool extendedLogParkingAi = false;
 #endif
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"Trying to spawn parked passenger car at road side for citizen {citizenId} @ {refPos}");
 
@@ -2117,7 +2117,7 @@ namespace TrafficManager.Manager.Impl {
                         &= (ushort)(VehicleParked.Flags.All & ~VehicleParked.Flags.Parking);
 
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             "[SUCCESS] Spawned parked passenger car at road side for citizen " +
                             $"{citizenId}: {parkedVehicleId} @ {parkPos}");
                     }
@@ -2131,7 +2131,7 @@ namespace TrafficManager.Manager.Impl {
                 reason = ParkingError.NoSpaceFound;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"[FAIL] Failed to spawn parked passenger car at road side for citizen {citizenId}");
             return false;
@@ -2152,7 +2152,7 @@ namespace TrafficManager.Manager.Impl {
             const bool extendedLogParkingAi = false;
 #endif
 
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi && homeId != 0,
                 () => "Trying to spawn parked passenger car next to building for citizen " +
                 $"{citizenId} @ {refPos}");
@@ -2187,7 +2187,7 @@ namespace TrafficManager.Manager.Impl {
                         &= (ushort)(VehicleParked.Flags.All & ~VehicleParked.Flags.Parking);
 
                     if (extendedLogParkingAi && homeId != 0) {
-                        Log._Debug(
+                        Log._Trace(
                             "[SUCCESS] Spawned parked passenger car next to building for citizen " +
                             $"{citizenId}: {parkedVehicleId} @ {parkPos}");
                     }
@@ -2201,7 +2201,7 @@ namespace TrafficManager.Manager.Impl {
                 reason = ParkingError.NoSpaceFound;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi && homeId != 0,
                 () => "[FAIL] Failed to spawn parked passenger car next to building " +
                 $"for citizen {citizenId}");
@@ -2263,7 +2263,7 @@ namespace TrafficManager.Manager.Impl {
                         && rng.Int32(GlobalConfig.Instance.ParkingAI.VicinityParkingSpaceSelectionRand) != 0) {
                         // road parking space is closer
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => "Found an (alternative) road-side parking position for " +
                             $"vehicle {vehicleId} @ segment {parkingSpaceSegmentId} after comparing " +
@@ -2278,7 +2278,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     // choose building parking space
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"Found an alternative building parking position for vehicle {vehicleId} " +
                         $"at building {parkingBuildingId} after comparing distance with a road-side " +
@@ -2293,7 +2293,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 // road-side but no building parking space found
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => "Found an alternative road-side parking position for vehicle " +
                     $"{vehicleId} @ segment {parkingSpaceSegmentId}!");
@@ -2308,7 +2308,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (parkingBuildingId != 0) {
                 // building but no road-side parking space found
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"Found an alternative building parking position for vehicle {vehicleId} " +
                     $"at building {parkingBuildingId}!");
@@ -2327,7 +2327,7 @@ namespace TrafficManager.Manager.Impl {
             parkPos = default;
             parkRot = default;
             parkOffset = -1f;
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"Could not find a road-side or building parking position for vehicle {vehicleId}!");
             return false;
@@ -2428,7 +2428,7 @@ namespace TrafficManager.Manager.Impl {
                                     out Quaternion innerParkRot,
                                     out float innerParkOffset))
                                 {
-                                    Log._DebugIf(
+                                    Log._TraceIf(
                                         logParkingAi,
                                         () => "FindParkingSpaceRoadSide: Found a parking space for " +
                                         $"refPos {refPos}, segment center {segCenter} " +
@@ -2468,7 +2468,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (foundSegmentId == 0) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"FindParkingSpaceRoadSide: Could not find a parking space for refPos {refPos}!");
                 return 0;
@@ -2577,7 +2577,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (foundBuildingId == 0) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi && homeID != 0,
                     () => $"FindParkingSpaceBuilding: Could not find a parking space for homeID {homeID}!");
                 return 0;
@@ -2616,21 +2616,21 @@ namespace TrafficManager.Manager.Impl {
             parkRot = default;
 
             if ((building.m_flags & Building.Flags.Created) == Building.Flags.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"Refusing to find parking space at building {buildingId}! Building is not created.");
                 return false;
             }
 
             if ((building.m_problems & Notification.Problem.TurnedOff) != Notification.Problem.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"Refusing to find parking space at building {buildingId}! Building is not active.");
                 return false;
             }
 
             if ((building.m_flags & Building.Flags.Collapsed) != Building.Flags.None) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"Refusing to find parking space at building {buildingId}! Building is collapsed.");
                 return false;
@@ -2716,7 +2716,7 @@ namespace TrafficManager.Manager.Impl {
             if (result && propMinDistance <= maxDistance) {
                 maxDistance = propMinDistance; // NON-STOCK CODE
                 if (logParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"Found parking space prop in range ({maxDistance}) at building {buildingId}.");
                 }
 
@@ -2725,7 +2725,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 // check if building is accessible from the given segment
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"Calculating unspawn position of building {buildingId} for segment {segmentId}.");
 
@@ -2747,7 +2747,7 @@ namespace TrafficManager.Manager.Impl {
                         out int laneIndex,
                         out float laneOffset))
                 {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => "Succeeded in finding unspawn position lane offset for building " +
                         $"{buildingId}, segment {segmentId}, unspawnPos={unspawnPos}! " +
@@ -2764,7 +2764,7 @@ namespace TrafficManager.Manager.Impl {
 
                     parkOffset = laneOffset;
                 } else {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logParkingAi,
                         () => $"Could not find unspawn position lane offset for building {buildingId}, " +
                         $"segment {segmentId}, unspawnPos={unspawnPos}!");
@@ -2774,7 +2774,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (result && logParkingAi) {
-                Log._Debug(
+                Log._Trace(
                     $"Could not find parking space prop in range ({maxDistance}) " +
                     $"at building {buildingId}.");
             }
@@ -2828,7 +2828,7 @@ namespace TrafficManager.Manager.Impl {
                             out parkRot,
                             out parkOffset)) {
                             if (logParkingAi) {
-                                Log._Debug(
+                                Log._Trace(
                                     "FindParkingSpaceRoadSideForVehiclePos: Found a parking space " +
                                     $"for refPos {refPos} @ {parkPos}, laneId {laneId}, " +
                                     $"laneIndex {laneIndex}!");

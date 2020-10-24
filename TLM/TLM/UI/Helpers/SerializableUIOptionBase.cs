@@ -35,7 +35,7 @@ namespace TrafficManager.UI.Helpers {
 
         public void DefaultOnValueChanged(TVal newVal) {
             Options.IsGameLoaded();
-            Log._Debug($"{Label} changed to {newVal}");
+            Log._Trace($"{Label} changed to {newVal}");
             Value = newVal;
         }
     }

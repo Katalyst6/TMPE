@@ -414,7 +414,7 @@ namespace TrafficManager.UI.SubTools.PrioritySigns {
                         && clicked)
                     {
                         prioMan.RemovePrioritySignsFromNode(nodeId);
-                        Log._Debug($"PrioritySignsTool.ShowGUI: Removed priority signs from node {nodeId}");
+                        Log._Trace($"PrioritySignsTool.ShowGUI: Removed priority signs from node {nodeId}");
                         removedNodeId = nodeId;
                     }
                 } // foreach node
@@ -434,12 +434,12 @@ namespace TrafficManager.UI.SubTools.PrioritySigns {
 
             // check for restrictions
             if (!MayNodeHavePrioritySigns(nodeId)) {
-                Log._Debug($"PrioritySignsTool.SetPrioritySign: MayNodeHavePrioritySigns({nodeId})=false");
+                Log._Trace($"PrioritySignsTool.SetPrioritySign: MayNodeHavePrioritySigns({nodeId})=false");
                 return false;
             }
 
             bool success = TrafficPriorityManager.Instance.SetPrioritySign(segmentId, startNode, sign);
-            Log._Debug($"PrioritySignsTool.SetPrioritySign: SetPrioritySign({segmentId}, " +
+            Log._Trace($"PrioritySignsTool.SetPrioritySign: SetPrioritySign({segmentId}, " +
                        $"{startNode}, {sign})={success}");
 
             if (!success || (sign != PriorityType.Stop && sign != PriorityType.Yield)) {
@@ -447,7 +447,7 @@ namespace TrafficManager.UI.SubTools.PrioritySigns {
             }
 
             // make all undefined segments a main road
-            Log._Debug("PrioritySignsTool.SetPrioritySign: flagging remaining segments at node " +
+            Log._Trace("PrioritySignsTool.SetPrioritySign: flagging remaining segments at node " +
                        $"{nodeId} as main road.");
 
             for (int i = 0; i < 8; ++i) {
@@ -468,7 +468,7 @@ namespace TrafficManager.UI.SubTools.PrioritySigns {
                 if (TrafficPriorityManager.Instance.GetPrioritySign(otherSegmentId, otherStartNode)
                     == PriorityType.None)
                 {
-                    Log._Debug("PrioritySignsTool.SetPrioritySign: setting main priority sign " +
+                    Log._Trace("PrioritySignsTool.SetPrioritySign: setting main priority sign " +
                                $"for segment {otherSegmentId} @ {nodeId}");
                     TrafficPriorityManager.Instance.SetPrioritySign(
                         otherSegmentId,

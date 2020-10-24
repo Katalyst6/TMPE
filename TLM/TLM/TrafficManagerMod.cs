@@ -95,7 +95,7 @@ namespace TrafficManager {
                 }
             }
 
-            Log._Debug("Scene is " + SceneManager.GetActiveScene().name);
+            Log._Trace("Scene is " + SceneManager.GetActiveScene().name);
 
             Instance = this;
             InGameHotReload = InGame();

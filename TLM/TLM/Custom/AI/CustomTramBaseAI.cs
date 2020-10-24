@@ -259,7 +259,7 @@ namespace TrafficManager.Custom.AI {
 #else
             var logLogic = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logLogic,
                 () => $"CustomTramBaseAI.CustomCalculateSegmentPosition({vehicleId}) called.\n" +
                 $"\trefPosition.m_segment={refPosition.m_segment}, " +
@@ -431,7 +431,7 @@ namespace TrafficManager.Custom.AI {
 #if DEBUG
             Vector3 logFramePos = frameData.m_position;
             Vector3 logSwayPos = frameData.m_swayPosition;
-            Log._DebugIf(
+            Log._TraceIf(
                 logLogic,
                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                 "================================================\n" +
@@ -628,7 +628,7 @@ namespace TrafficManager.Custom.AI {
                         1f);
                     afterRotToTargetPos1DiffSqrMag = 0f;
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): dot < 0");
                 }
@@ -636,7 +636,7 @@ namespace TrafficManager.Custom.AI {
 #if DEBUG
                 Vector4 logTargetPos0 = vehicleData.m_targetPos0;
                 Vector4 logTargetPos1 = vehicleData.m_targetPos1;
-                Log._DebugIf(
+                Log._TraceIf(
                     logLogic,
                     () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                     $"Leading vehicle is 0. vehicleData.m_targetPos0={logTargetPos0} " +
@@ -683,7 +683,7 @@ namespace TrafficManager.Custom.AI {
                     afterRotToTargetPos1DiffSqrMag = afterRotToTargetPos1Diff.sqrMagnitude;
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLogic,
                     () => $"CustomTramBaseAI.SimulationStep({vehicleId}): posIndex={posIndex} " +
                     $"hasValidPathTargetPos={hasValidPathTargetPos}");
@@ -700,7 +700,7 @@ namespace TrafficManager.Custom.AI {
 
                     float leaderLen = 1f + leaderData.CalculateTotalLength(leaderId, out int noise);
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                         $"leaderPathPosIndex={leaderPathPosIndex} " +
@@ -788,7 +788,7 @@ namespace TrafficManager.Custom.AI {
                 float maxSpeed;
                 if ((leaderData.m_flags & Vehicle.Flags.Stopped) != 0) {
                     maxSpeed = 0f;
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                         $"Vehicle is stopped. maxSpeed={maxSpeed}");
@@ -796,19 +796,19 @@ namespace TrafficManager.Custom.AI {
                     maxSpeed = Mathf.Min(
                         vehicleData.m_targetPos1.w,
                         GetMaxSpeed(leaderId, ref leaderData));
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                         $"Vehicle is not stopped. maxSpeed={maxSpeed}");
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLogic,
                     () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                     $"Start of second part. curSpeed={curSpeed} curInvRot={curInvRot}");
 
                 afterRotToTargetPos1Diff = curInvRot * afterRotToTargetPos1Diff;
-                Log._DebugIf(
+                Log._TraceIf(
                     logLogic,
                     () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                     $"afterRotToTargetPos1Diff={afterRotToTargetPos1Diff} " +
@@ -819,7 +819,7 @@ namespace TrafficManager.Custom.AI {
                 float forwardLen = 0f;
                 if (afterRotToTargetPos1DiffSqrMag > 1f) { // TODO why is this not recalculated?
                     forward = VectorUtils.NormalizeXZ(afterRotToTargetPos1Diff, out forwardLen);
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                         $"afterRotToTargetPos1DiffSqrMag > 1f. forward={forward} " +
@@ -829,7 +829,7 @@ namespace TrafficManager.Custom.AI {
                         Vector3 fwd = afterRotToTargetPos1Diff;
                         maxSpeedAdd = Mathf.Max(curSpeed, 2f);
                         maxSpeedAddSqr = maxSpeedAdd * maxSpeedAdd;
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                             $"forwardLen > 1f. fwd={fwd} maxSpeedAdd={maxSpeedAdd} maxSpeedAddSqr={maxSpeedAddSqr}");
@@ -839,7 +839,7 @@ namespace TrafficManager.Custom.AI {
                             fwd.x *= fwdLimiter;
                             fwd.y *= fwdLimiter;
 
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logLogic,
                                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                 $"afterRotToTargetPos1DiffSqrMag > maxSpeedAddSqr. " +
@@ -848,7 +848,7 @@ namespace TrafficManager.Custom.AI {
                         }
 
                         if (fwd.z < -1f) { // !!!
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logLogic,
                                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                 $"fwd.z < -1f. fwd={fwd}");
@@ -857,7 +857,7 @@ namespace TrafficManager.Custom.AI {
                                 Vector3 targetPos0TargetPos1Diff = vehicleData.m_targetPos1 - vehicleData.m_targetPos0;
                                 if ((curInvRot * targetPos0TargetPos1Diff).z < -0.01f) {
                                     // !!!
-                                    Log._DebugIf(
+                                    Log._TraceIf(
                                         logLogic,
                                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                         $"(curInvRot * targetPos0TargetPos1Diff).z < -0.01f. " +
@@ -866,7 +866,7 @@ namespace TrafficManager.Custom.AI {
 
                                     if (afterRotToTargetPos1Diff.z < Mathf.Abs(afterRotToTargetPos1Diff.x) * -10f) {
                                         // !!!
-                                        Log._DebugIf(
+                                        Log._TraceIf(
                                             logLogic,
                                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                             $"afterRotToTargetPos1Diff.z < Mathf.Abs" +
@@ -879,7 +879,7 @@ namespace TrafficManager.Custom.AI {
                                         afterRotToTargetPos1Diff = Vector3.zero;*/
                                         maxSpeed = 0.5f; // NON-STOCK CODE
 
-                                        Log._DebugIf(
+                                        Log._TraceIf(
                                             logLogic,
                                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): (1) " +
                                               $"set maxSpeed={maxSpeed}");
@@ -908,7 +908,7 @@ namespace TrafficManager.Custom.AI {
                                                 vehicleData.m_targetPos0) + 1f,
                                             1f);
 
-                                        Log._DebugIf(
+                                        Log._TraceIf(
                                             logLogic,
                                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                             $"afterRotToTargetPos1Diff.z >= Mathf.Abs" +
@@ -940,7 +940,7 @@ namespace TrafficManager.Custom.AI {
                                     fwd.z = 0f;
                                     afterRotToTargetPos1Diff = Vector3.zero;
                                     maxSpeed = 0f;
-                                    Log._DebugIf(
+                                    Log._TraceIf(
                                         logLogic,
                                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                         $"Vehicle is waiting for a path. posIndex={posIndex} " +
@@ -951,7 +951,7 @@ namespace TrafficManager.Custom.AI {
                             }
 
                             motionFactor = 0f;
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logLogic,
                                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                 $"Reset motion factor. motionFactor={motionFactor}");
@@ -965,7 +965,7 @@ namespace TrafficManager.Custom.AI {
                         }
 
                         float targetDist = forwardLen;
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                             $"targetDist={targetDist} fwd={fwd} curve={curve} maxSpeed={maxSpeed}");
@@ -984,7 +984,7 @@ namespace TrafficManager.Custom.AI {
                                 CalculateTargetSpeed(vehicleId, ref vehicleData, 1000f, curve));
                         }
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): [1] maxSpeed={maxSpeed}");
 
@@ -994,7 +994,7 @@ namespace TrafficManager.Custom.AI {
                                 targetDist,
                                 vehicleData.m_targetPos2.w,
                                 braking * 0.9f));
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): [2] maxSpeed={maxSpeed}");
 
@@ -1005,7 +1005,7 @@ namespace TrafficManager.Custom.AI {
                                 targetDist,
                                 vehicleData.m_targetPos3.w,
                                 braking * 0.9f));
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): [3] maxSpeed={maxSpeed}");
 
@@ -1022,7 +1022,7 @@ namespace TrafficManager.Custom.AI {
                                 0f,
                                 braking * 0.9f));
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): [4] maxSpeed={maxSpeed}");
 
@@ -1036,7 +1036,7 @@ namespace TrafficManager.Custom.AI {
                             estimatedFrameDist,
                             braking * 0.9f,
                             lodPhysics);
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLogic,
                             () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                             $"CheckOtherVehicles finished. blocked={blocked}");
@@ -1044,7 +1044,7 @@ namespace TrafficManager.Custom.AI {
                         if (maxSpeed < curSpeed) {
                             float brake = Mathf.Max(acceleration, Mathf.Min(braking, curSpeed));
                             targetSpeed = Mathf.Max(maxSpeed, curSpeed - brake);
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logLogic,
                                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                 $"maxSpeed < curSpeed. maxSpeed={maxSpeed} curSpeed={curSpeed} " +
@@ -1052,7 +1052,7 @@ namespace TrafficManager.Custom.AI {
                         } else {
                             float accel = Mathf.Max(acceleration, Mathf.Min(braking, -curSpeed));
                             targetSpeed = Mathf.Min(maxSpeed, curSpeed + accel);
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logLogic,
                                 () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                                 $"maxSpeed >= curSpeed. maxSpeed={maxSpeed} curSpeed={curSpeed} " +
@@ -1068,7 +1068,7 @@ namespace TrafficManager.Custom.AI {
                 }
 
                 if ((leaderData.m_flags & Vehicle.Flags.Stopped) == 0 && maxSpeed < 0.1f) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLogic,
                         () => $"CustomTramBaseAI.SimulationStep({vehicleId}): " +
                         $"Vehicle is not stopped but maxSpeed < 0.1. maxSpeed={maxSpeed}");

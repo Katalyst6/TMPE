@@ -98,7 +98,7 @@ namespace TrafficManager.UI.Localization {
 #if DUMP_TRANSLATIONS
             DumpTranslationsToCsv();
 #endif
-            Log._Debug($"Loaded {AllLanguages.Count} different languages for {Name}");
+            Log._Trace($"Loaded {AllLanguages.Count} different languages for {Name}");
         }
 
         /// <summary>

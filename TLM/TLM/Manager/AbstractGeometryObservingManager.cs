@@ -75,13 +75,13 @@ namespace TrafficManager.Manager {
 
                 if (!seg.valid) {
                     if (logGeometry) {
-                        Log._Debug($"{GetType().Name}.HandleInvalidSegment({seg.segmentId})");
+                        Log._Trace($"{GetType().Name}.HandleInvalidSegment({seg.segmentId})");
                     }
 
                     HandleInvalidSegment(ref seg);
                 } else {
                     if (logGeometry) {
-                        Log._Debug($"{GetType().Name}.HandleValidSegment({seg.segmentId})");
+                        Log._Trace($"{GetType().Name}.HandleValidSegment({seg.segmentId})");
                     }
 
                     HandleValidSegment(ref seg);
@@ -91,31 +91,31 @@ namespace TrafficManager.Manager {
                 ushort nodeId = (ushort)update.nodeId;
                 Services.NetService.ProcessNode(
                     nodeId,
-                    (ushort nId, ref NetNode node) => {
+                    (GenericGameBridge.Service.NetNodeHandler)((ushort nId, ref NetNode node) => {
                         if ((node.m_flags &
                              (NetNode.Flags.Created | NetNode.Flags.Deleted)) ==
                             NetNode.Flags.Created) {
                             if (logGeometry) {
-                                Log._Debug($"{GetType().Name}.HandleValidNode({nodeId})");
+                                Log._Trace((string)$"{GetType().Name}.HandleValidNode({nodeId})");
                             }
 
                             HandleValidNode(nodeId, ref node);
                         } else {
                             if (logGeometry) {
-                                Log._Debug($"{GetType().Name}.HandleInvalidNode({nodeId})");
+                                Log._Trace((string)$"{GetType().Name}.HandleInvalidNode({nodeId})");
                             }
 
                             HandleInvalidNode(nodeId, ref node);
                         }
 
                         return true;
-                    });
+                    }));
             } else {
                 // Handle a segment end replacement
                 IExtSegmentEndManager segEndMan = Constants.ManagerFactory.ExtSegmentEndManager;
 
                 if (logGeometry) {
-                    Log._Debug(
+                    Log._Trace(
                         $"{GetType().Name}.HandleSegmentReplacement({update.replacement.oldSegmentEndId} " +
                         $"-> {update.replacement.newSegmentEndId})");
                 }

@@ -325,7 +325,7 @@ namespace TrafficManager.UI.MainMenu {
                     if (laneInfo.m_vehicleType == VehicleInfo.VehicleType.None) {
                         laneInfo.m_vehicleType = VehicleInfo.VehicleType.Car;
                         laneInfo.m_laneType = NetInfo.LaneType.Vehicle;
-                        Log._Debug(
+                        Log._Trace(
                             $"Changing vehicle type of lane {k} @ {info.name} from None to Car, " +
                             $"lane type from None to Vehicle");
 
@@ -370,7 +370,7 @@ namespace TrafficManager.UI.MainMenu {
                         continue;
                     }
 
-                    Log._Debug($"Resetting vehicle type of lane {index} @ {info.name}");
+                    Log._Trace($"Resetting vehicle type of lane {index} @ {info.name}");
 
                     info.m_lanes[index].m_vehicleType = VehicleInfo.VehicleType.None;
                     info.m_lanes[index].m_laneType = NetInfo.LaneType.None;

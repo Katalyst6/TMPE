@@ -87,7 +87,7 @@ namespace TrafficManager.Util {
                 throw new InstructionNotFoundException(" Did not found instruction[s]. Comperator =  " + comperator);
             }
             if(VERBOSE)
-                Log._Debug("Found : \n" + new[] { codes[index], codes[index + 1] }.IL2STR());
+                Log._Trace("Found : \n" + new[] { codes[index], codes[index + 1] }.IL2STR());
             return index;
         }
 
@@ -104,18 +104,18 @@ namespace TrafficManager.Util {
                     throw new Exception("Bad Instructions:\n" + insertion.IL2STR());
             }
             if (VERBOSE)
-                Log._Debug($"Insert point:\n between: <{codes[index - 1]}>  and  <{codes[index]}>");
+                Log._Trace($"Insert point:\n between: <{codes[index - 1]}>  and  <{codes[index]}>");
 
             MoveLabels(codes[index], insertion[0]);
             codes.InsertRange(index, insertion);
 
             if (VERBOSE) {
-                Log._Debug("\n" + insertion.IL2STR());
+                Log._Trace("\n" + insertion.IL2STR());
                 int start = index - 4;
                 if (start < 0) start = 0;
                 int count = insertion.Length + 12;
                 if (count + start >= codes.Count) count = codes.Count - start - 1;
-                Log._Debug("PEEK:\n" + codes.GetRange(start, count).IL2STR());
+                Log._Trace("PEEK:\n" + codes.GetRange(start, count).IL2STR());
             }
         }
     }

@@ -8,7 +8,7 @@ namespace TrafficManager.UI.Helpers {
 
         public GuideHandler() {
             foreach (string localeKey in LoadingExtension.TranslationDatabase.GetGuides()) {
-                Log._Debug($"calling AddGuide(localeKey={localeKey}) ...");
+                Log._Trace($"calling AddGuide(localeKey={localeKey}) ...");
                 AddGuide(localeKey);
             }
         }

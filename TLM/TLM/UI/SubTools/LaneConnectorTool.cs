@@ -380,7 +380,7 @@ namespace TrafficManager.UI.SubTools {
                         }
                     }
 
-                    Log._Debug($"stayInLane:{stayInLane} stayInLaneMode:{stayInLaneMode}\n" +
+                    Log._Trace($"stayInLane:{stayInLane} stayInLaneMode:{stayInLaneMode}\n" +
                         $"GetMarkerSelectionMode()={GetSelectionMode()} SelectedNodeId={SelectedNodeId}");
 
                     if (stayInLane) {
@@ -421,7 +421,7 @@ namespace TrafficManager.UI.SubTools {
         /// <returns><c>true</c> if the scenario is supported</returns>
         private static bool ArrangeOneWay(ushort nodeId, List<ushort> segments) {
             if(verbose_)
-                Log._Debug($"called ArrangeOneWay({nodeId}, {segments.ToSTR()}");
+                Log._Trace($"called ArrangeOneWay({nodeId}, {segments.ToSTR()}");
             if (nodeId.ToNode().CountSegments() > 4)
                 return false;
             foreach (var segmentId in segments) {
@@ -553,7 +553,7 @@ namespace TrafficManager.UI.SubTools {
         /// <param name="mode">determines for which side to connect lanes.</param>
         /// <returns><c>true</c> if any lanes were connectde, <c>false</c> otherwise</returns>
         public static bool StayInLane(ushort nodeId, StayInLaneMode mode = StayInLaneMode.None) {
-            Log._Debug($"Stay In Lane called node:{nodeId} mode:{mode}");
+            Log._Trace($"Stay In Lane called node:{nodeId} mode:{mode}");
             LaneConnectionManager.Instance.RemoveLaneConnectionsFromNode(nodeId);
 
             GetSortedSegments(nodeId, out List<ushort> segments);
@@ -605,7 +605,7 @@ namespace TrafficManager.UI.SubTools {
             ushort minorSegmentId,
             ushort minorSegment2Id) {
             if (verbose_) {
-                Log._Debug($"StayInLane(nodeId:{nodeId}, " +
+                Log._Trace($"StayInLane(nodeId:{nodeId}, " +
                     $"mainSegmentSourceId:{mainSegmentSourceId}, mainSegmentTargetId:{mainSegmentTargetId}, " +
                     $"minorSegmentId:{minorSegmentId}, minorSegment2Id:{minorSegment2Id})");
             }
@@ -620,7 +620,7 @@ namespace TrafficManager.UI.SubTools {
             bool splitOuter = oneway && minorSegmentId == 0 && minorSegment2Id != 0;
             bool splitInner = !splitMiddle && !splitOuter;
             if (verbose_) {
-                Log._Debug($"splitOuter={splitOuter}  " +
+                Log._Trace($"splitOuter={splitOuter}  " +
                     $"splitInner={splitInner} " +
                     $"splitMiddle={splitMiddle}");
             }
@@ -638,7 +638,7 @@ namespace TrafficManager.UI.SubTools {
 
             if (verbose_) {
                 bool laneArithmaticWorks = totalSource == totalTarget && laneCountMainSource >= laneCountMinorTarget;
-                Log._Debug($"StayInLane: " +
+                Log._Trace($"StayInLane: " +
                     $"laneCountMinorSource={laneCountMinorSource} " +
                     $"laneCountMinorTarget={laneCountMinorTarget} " +
                     $"laneCountMainSource={laneCountMainSource} " +
@@ -796,7 +796,7 @@ namespace TrafficManager.UI.SubTools {
 #else
             const bool logLaneConn = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logLaneConn,
                 () => $"LaneConnectorTool: OnPrimaryClickOverlay. SelectedNodeId={SelectedNodeId} " +
                 $"SelectedSegmentId={SelectedSegmentId} HoveredNodeId={HoveredNodeId} " +
@@ -808,13 +808,13 @@ namespace TrafficManager.UI.SubTools {
 
             if (GetSelectionMode() == SelectionMode.None) {
                 if (HoveredNodeId != 0) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneConn,
                         () => "LaneConnectorTool: HoveredNode != 0");
 
                     if (NetManager.instance.m_nodes.m_buffer[HoveredNodeId].CountSegments() < 2) {
                         // this node cannot be configured (dead end)
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneConn,
                             () => "LaneConnectorTool: Node is a dead end");
 
@@ -826,7 +826,7 @@ namespace TrafficManager.UI.SubTools {
                     }
 
                     if (SelectedNodeId != HoveredNodeId) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneConn,
                             () => $"Node {HoveredNodeId} has been selected. Creating markers.");
 
@@ -847,7 +847,7 @@ namespace TrafficManager.UI.SubTools {
                         // this.allNodeMarkers[SelectedNodeId] = GetNodeMarkers(SelectedNodeId);
                     }
                 } else {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneConn,
                         () => $"LaneConnectorTool: Node {SelectedNodeId} has been deselected.");
 
@@ -869,7 +869,7 @@ namespace TrafficManager.UI.SubTools {
             //-----------------------------------
             stayInLaneMode = StayInLaneMode.None;
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logLaneConn,
                 () => $"LaneConnectorTool: hoveredMarker != null. selMode={GetSelectionMode()}");
 
@@ -877,7 +877,7 @@ namespace TrafficManager.UI.SubTools {
             if (GetSelectionMode() == SelectionMode.SelectSource) {
                 // select source marker
                 selectedLaneEnd = hoveredLaneEnd;
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneConn,
                     () => "LaneConnectorTool: set selected marker");
                 MainTool.RequestOnscreenDisplayUpdate();
@@ -891,7 +891,7 @@ namespace TrafficManager.UI.SubTools {
 
                     // try to remove connection
                     selectedLaneEnd.ConnectedLaneEnds.Remove(hoveredLaneEnd);
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneConn,
                         () => $"LaneConnectorTool: removed lane connection: {selectedLaneEnd.LaneId}, " +
                         $"{hoveredLaneEnd.LaneId}");
@@ -903,7 +903,7 @@ namespace TrafficManager.UI.SubTools {
                     selectedLaneEnd.StartNode)) {
                     // try to add connection
                     selectedLaneEnd.ConnectedLaneEnds.Add(hoveredLaneEnd);
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneConn,
                         () => $"LaneConnectorTool: added lane connection: {selectedLaneEnd.LaneId}, " +
                         $"{hoveredLaneEnd.LaneId}");
@@ -935,7 +935,7 @@ namespace TrafficManager.UI.SubTools {
             switch (GetSelectionMode()) {
                 // also: case MarkerSelectionMode.None:
                 default: {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneConn,
                             () => "LaneConnectorTool: OnSecondaryClickOverlay: nothing to do");
                         stayInLaneMode = StayInLaneMode.None;
@@ -945,7 +945,7 @@ namespace TrafficManager.UI.SubTools {
 
                 case SelectionMode.SelectSource: {
                         // deselect node
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneConn,
                             () => "LaneConnectorTool: OnSecondaryClickOverlay: selected node id = 0");
                         SelectedNodeId = 0;
@@ -955,7 +955,7 @@ namespace TrafficManager.UI.SubTools {
 
                 case SelectionMode.SelectTarget: {
                         // deselect source marker
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneConn,
                             () => "LaneConnectorTool: OnSecondaryClickOverlay: switch to selected source mode");
                         selectedLaneEnd = null;
@@ -970,7 +970,7 @@ namespace TrafficManager.UI.SubTools {
 #if DEBUG
             bool logLaneConn = DebugSwitch.LaneConnections.Get();
             if (logLaneConn) {
-                Log._Debug("LaneConnectorTool: OnActivate");
+                Log._Trace("LaneConnectorTool: OnActivate");
             }
 #endif
             SelectedNodeId = 0;

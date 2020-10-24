@@ -22,13 +22,7 @@ namespace TrafficManager.Custom.PathFinding {
     using State.ConfigData;
 #endif
 
-    /// <summary>
-    /// This replaces game PathFind class if PF_DIJKSTRA is defined
-    /// This is ALL targets except Benchmark
-    /// </summary>
-#if PF_DIJKSTRA
     [TargetType(typeof(PathFind))]
-#endif
     public class CustomPathFind : PathFind {
         private const float BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR = Constants.BYTE_TO_FLOAT_SCALE;
 
@@ -241,9 +235,7 @@ namespace TrafficManager.Custom.PathFinding {
             }
         }
 
-#if PF_DIJKSTRA
         [RedirectMethod]
-#endif
         public new bool CalculatePath(uint unit, bool skipQueue) {
             return ExtCalculatePath(unit, skipQueue);
         }
@@ -884,7 +876,7 @@ namespace TrafficManager.Custom.PathFinding {
 
         [Conditional("DEBUG")]
         private void DebugLog(uint unit, string message) {
-            Log._Debug(
+            Log._Trace(
                     $"PF T#({Thread.CurrentThread.ManagedThreadId}) IDX#({pathFindIndex_}):\n"
                     + $"UNIT({unit})\n"
                     + message);
@@ -892,7 +884,7 @@ namespace TrafficManager.Custom.PathFinding {
 
         [Conditional("DEBUG")]
         private void DebugLog(uint unit, BufferItem item, string message) {
-            Log._Debug(
+            Log._Trace(
                     $"PF T#({Thread.CurrentThread.ManagedThreadId}) IDX#({pathFindIndex_}):\n"
                     + $"UNIT({unit}): s#({item.Position.m_segment}), l#({item.Position.m_lane})\n"
                     + $"ITEM({item})\n"
@@ -901,7 +893,7 @@ namespace TrafficManager.Custom.PathFinding {
 
         [Conditional("DEBUG")]
         private void DebugLog(uint unit, BufferItem item, ushort nextSegmentId, string message) {
-            Log._Debug(
+            Log._Trace(
                 $"PF T#({Thread.CurrentThread.ManagedThreadId}) IDX#({pathFindIndex_}):\n"
                 + $"UNIT({unit}): s#({item.Position.m_segment}), l#({item.Position.m_lane}) -> " +
                 $"s#({nextSegmentId})\nITEM({item})\n"
@@ -915,7 +907,7 @@ namespace TrafficManager.Custom.PathFinding {
                               int nextLaneIndex,
                               uint nextLaneId,
                               string message) {
-            Log._Debug(
+            Log._Trace(
                     $"PF T#({Thread.CurrentThread.ManagedThreadId}) IDX#({pathFindIndex_}):\n"
                     + $"UNIT({unit}): s#({item.Position.m_segment}), l#({item.Position.m_lane}) -> " +
                     $"s#({nextSegmentId}), l#({nextLaneIndex}), lid#({nextLaneId})\n"

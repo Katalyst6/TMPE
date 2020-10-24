@@ -74,9 +74,9 @@
         }
 
         public void PrintDebugInfo() {
-            Log._Debug($"=== {GetType().Name}.PrintDebugInfo() *START* ===");
+            Log._Trace($"=== {GetType().Name}.PrintDebugInfo() *START* ===");
             InternalPrintDebugInfo();
-            Log._Debug($"=== {GetType().Name}.PrintDebugInfo() *END* ===");
+            Log._Trace($"=== {GetType().Name}.PrintDebugInfo() *END* ===");
         }
     }
 }

@@ -117,7 +117,7 @@ namespace TrafficManager.State {
         /// </summary>
         internal static void RebuildMenu() {
             if (ModUI.Instance != null) {
-                Log._Debug("Rebuilding the TM:PE menu...");
+                Log._Trace("Rebuilding the TM:PE menu...");
                 ModUI.Instance.RebuildMenu();
 
                 // TM:PE main button also needs to be uidated
@@ -128,7 +128,7 @@ namespace TrafficManager.State {
                 LoadingExtension.TranslationDatabase.ReloadTutorialTranslations();
                 LoadingExtension.TranslationDatabase.ReloadGuideTranslations();
             } else {
-                Log._Debug("Rebuilding the TM:PE menu: ignored, ModUI is null");
+                Log._Trace("Rebuilding the TM:PE menu: ignored, ModUI is null");
             }
         }
 
@@ -215,7 +215,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug("Informing the main OptionsPanel about the locale change...");
+            Log._Trace("Informing the main OptionsPanel about the locale change...");
             onChangedHandler.Invoke(
                 UIView.library.Get<OptionsMainPanel>("OptionsPanel"),
                 new object[] { });

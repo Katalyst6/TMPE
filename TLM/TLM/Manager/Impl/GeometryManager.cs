@@ -61,7 +61,7 @@
             if (!onlyFirstPass && (netManager.m_segmentsUpdated || netManager.m_nodesUpdated)) {
                 // TODO maybe refactor NetManager use (however this could influence performance)
                 if (logGeometry) {
-                    Log._Debug(
+                    Log._Trace(
                         $"GeometryManager.SimulationStep(): Skipping! stateUpdated={stateUpdated}, " +
                         $"m_segmentsUpdated={netManager.m_segmentsUpdated}, " +
                         $"m_nodesUpdated={netManager.m_nodesUpdated}");
@@ -108,7 +108,7 @@
                             }
 
                             if (logGeometry) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"GeometryManager.SimulationStep(): Notifying observers about " +
                                     $"segment {segmentId}. Valid? {seg.valid} First pass? {firstPass}");
                             }
@@ -150,7 +150,7 @@
                             }
 
                             if (logGeometry) {
-                                Log._Debug(
+                                Log._Trace(
                                     "GeometryManager.SimulationStep(): Notifying observers about " +
                                     $"node {nodeId}. Valid? {valid} First pass? {firstPass}");
                             }
@@ -169,7 +169,7 @@
                     SegmentEndReplacement replacement = segmentReplacements.Dequeue();
 
                     if (logGeometry) {
-                        Log._Debug(
+                        Log._Trace(
                             "GeometryManager.SimulationStep(): Notifying observers about " +
                             $"segment end replacement {replacement}");
                     }
@@ -198,7 +198,7 @@
         public void MarkAsUpdated(ref ExtSegment seg, bool updateNodes = true) {
 #if DEBUG
             if (DebugSwitch.GeometryDebug.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"GeometryManager.MarkAsUpdated(segment {seg.segmentId}): Marking segment as updated");
             }
 #endif
@@ -226,7 +226,7 @@
         public void MarkAsUpdated(ushort nodeId, bool updateSegments = false) {
 #if DEBUG
             if (DebugSwitch.GeometryDebug.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"GeometryManager.MarkAsUpdated(node {nodeId}): Marking node as updated");
             }
 #endif
@@ -265,7 +265,7 @@
         public void OnSegmentEndReplacement(SegmentEndReplacement replacement) {
 #if DEBUG
             if (DebugSwitch.GeometryDebug.Get()) {
-                Log._Debug(
+                Log._Trace(
                     "GeometryManager.OnSegmentEndReplacement(): Detected segment replacement: " +
                     $"{replacement.oldSegmentEndId.SegmentId} -> {replacement.newSegmentEndId.SegmentId}");
             }
@@ -284,7 +284,7 @@
         public IDisposable Subscribe(IObserver<GeometryUpdate> observer) {
 #if DEBUG
             if (DebugSwitch.GeometryDebug.Get()) {
-                Log._Debug(
+                Log._Trace(
                     $"GeometryManager.Subscribe(): Subscribing observer {observer.GetType().Name}");
             }
 #endif

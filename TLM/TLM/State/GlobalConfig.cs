@@ -82,7 +82,7 @@ namespace TrafficManager.State {
         }
 
         private static GlobalConfig WriteDefaultConfig(GlobalConfig oldConfig, bool resetAll, out DateTime modifiedTime) {
-            Log._Debug($"Writing default config...");
+            Log._Trace($"Writing default config...");
             GlobalConfig conf = new GlobalConfig();
 
             if (!resetAll && oldConfig != null) {

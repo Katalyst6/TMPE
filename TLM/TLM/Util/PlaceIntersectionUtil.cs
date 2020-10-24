@@ -37,7 +37,7 @@ namespace TrafficManager.Util {
             /*************************
              * Prepration: */
 
-            Log._Debug($"PlaceIntersectionUtil.ApplyTrafficRules({intersectionInfo?.ToString() ?? "null"})");
+            Log._Trace($"PlaceIntersectionUtil.ApplyTrafficRules({intersectionInfo?.ToString() ?? "null"})");
 
             if (!Shortcuts.InSimulationThread()) {
                 Log.Error("must be called from simulation thread");
@@ -51,7 +51,7 @@ namespace TrafficManager.Util {
             var map = new Dictionary<InstanceID, InstanceID>();
 
             var Asset2Data = AssetDataExtension.Instance.Asset2Data;
-            Log._Debug("PlaceIntersectionUtil.ApplyTrafficRules(): Asset2Data.keys=" +
+            Log._Trace("PlaceIntersectionUtil.ApplyTrafficRules(): Asset2Data.keys=" +
                 Asset2Data.Select(item => item.Key).ToSTR());
 
             if (Asset2Data.TryGetValue(intersectionInfo, out var assetData)) {

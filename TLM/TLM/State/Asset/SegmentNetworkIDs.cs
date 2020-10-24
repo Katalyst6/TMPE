@@ -41,7 +41,7 @@ namespace TrafficManager.State.Asset {
 
             var lanes = newSegmentId.ToSegment().Info.m_lanes;
             uint laneId = newSegmentId.ToSegment().m_lanes;
-            Log._Debug($"lanes.Length={lanes.Length} laneIDs.Length={laneIDs.Length} segment.m_lanes={laneId} ");
+            Log._Trace($"lanes.Length={lanes.Length} laneIDs.Length={laneIDs.Length} segment.m_lanes={laneId} ");
 
             for (int laneIndex = 0; laneIndex < lanes.Length && laneId != 0; ++laneIndex) {
                 map[new InstanceID { NetLane = laneIDs[laneIndex] }] =
@@ -56,7 +56,7 @@ namespace TrafficManager.State.Asset {
                 return 0;
             }
 
-            Log._Debug($"SegmentNetworkIDs.MapInstanceIDs: " +
+            Log._Trace($"SegmentNetworkIDs.MapInstanceIDs: " +
                 $"[{StartNodeId} .- {SegmentId} -. {EndNodeId}] -> " +
                 $"[{newSegmentId.ToSegment().m_startNode} .- {newSegmentId} -. {newSegmentId.ToSegment().m_endNode}]\n" +
                 $"lanes: {laneIDs.ToSTR()} -> " + $"[{laneIDs.Select(id => MappedLane(id)).ToSTR()}");

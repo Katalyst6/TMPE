@@ -273,14 +273,14 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
 
         /// <summary>Resets tool into its initial state for new use.</summary>
         public override void ActivateTool() {
-            Log._Debug("LaneArrow: Activated tool");
+            Log._Trace("LaneArrow: Activated tool");
             fsm_ = InitFiniteStateMachine();
             this.OnEnterSelectState(); // FSM does not call enter on initial state
         }
 
         /// <summary>Cleans up when tool is deactivated or user switched to another tool.</summary>
         public override void DeactivateTool() {
-            Log._Debug("LaneArrow: Deactivated tool");
+            Log._Trace("LaneArrow: Deactivated tool");
             DestroyToolWindow();
             SelectedNodeId = 0;
             SelectedSegmentId = 0;
@@ -314,7 +314,7 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
                 return; // ignore clicks landing into some UI, only consume map clicks
             }
 
-            Log._Debug($"LaneArrow({fsm_.State}): left click");
+            Log._Trace($"LaneArrow({fsm_.State}): left click");
             switch (fsm_.State) {
                 case State.Select:
                     OnToolLeftClick_Select();
@@ -389,9 +389,9 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
 
             // Right click might reset fsm_ to null, so check again
             if (fsm_ != null) {
-                Log._Debug($"LaneArrow right click state={oldState}, new={fsm_.State}");
+                Log._Trace($"LaneArrow right click state={oldState}, new={fsm_.State}");
             } else {
-                Log._Debug($"LaneArrow(fsm=null): right click");
+                Log._Trace($"LaneArrow(fsm=null): right click");
             }
         }
 
@@ -497,7 +497,7 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
             ExtSegmentEndManager segEndMan = ExtSegmentEndManager.Instance;
             int segmentEndId = segEndMan.GetIndex(segmentId, nodeId);
             if (segmentEndId < 0) {
-                Log._Debug($"Node {nodeId} is not connected to segment {segmentId}");
+                Log._Trace($"Node {nodeId} is not connected to segment {segmentId}");
                 return false;
             }
             ExtSegmentEnd segEnd = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, nodeId)];
@@ -620,7 +620,7 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
                 return;
             }
 
-            Log._Debug(
+            Log._Trace(
                 "deleting lane arrows: " +
                 $"SelectedSegmentId={SelectedSegmentId} SelectedNodeId={SelectedNodeId} startNode={startNode}");
             LaneArrowManager.Instance.ResetLaneArrows(SelectedSegmentId, startNode);

@@ -191,7 +191,7 @@ namespace TrafficManager.State {
         }
 
         private static void OnLockButtonChanged(bool newValue) {
-            Log._Debug($"Button lock changed to {newValue}");
+            Log._Trace($"Button lock changed to {newValue}");
             if (Options.IsGameLoaded(false)) {
                 ModUI.Instance.MainMenuButton.SetPosLock(newValue);
             }
@@ -201,7 +201,7 @@ namespace TrafficManager.State {
         }
 
         private static void OnLockMenuChanged(bool newValue) {
-            Log._Debug($"Menu lock changed to {newValue}");
+            Log._Trace($"Menu lock changed to {newValue}");
             if (Options.IsGameLoaded(false)) {
                 ModUI.Instance.MainMenu.SetPosLock(newValue);
             }
@@ -211,19 +211,19 @@ namespace TrafficManager.State {
         }
 
         private static void OnEnableTutorialsChanged(bool newValue) {
-            Log._Debug($"Enable tutorial messages changed to {newValue}");
+            Log._Trace($"Enable tutorial messages changed to {newValue}");
             GlobalConfig.Instance.Main.EnableTutorial = newValue;
             GlobalConfig.WriteConfig();
         }
 
         private static void OnShowCompatibilityCheckErrorChanged(bool newValue) {
-            Log._Debug($"Show mod compatibility error changed to {newValue}");
+            Log._Trace($"Show mod compatibility error changed to {newValue}");
             GlobalConfig.Instance.Main.ShowCompatibilityCheckErrorMessage = newValue;
             GlobalConfig.WriteConfig();
         }
 
         private static void OnScanForKnownIncompatibleModsChanged(bool newValue) {
-            Log._Debug($"Show incompatible mod checker warnings changed to {newValue}");
+            Log._Trace($"Show incompatible mod checker warnings changed to {newValue}");
             GlobalConfig.Instance.Main.ScanForKnownIncompatibleModsAtStartup = newValue;
             if (newValue) {
                 GlobalConfig.WriteConfig();
@@ -248,7 +248,7 @@ namespace TrafficManager.State {
             }
 
             GlobalConfig.WriteConfig();
-            Log._Debug($"GuiTransparency changed to {GlobalConfig.Instance.Main.GuiOpacity}");
+            Log._Trace($"GuiTransparency changed to {GlobalConfig.Instance.Main.GuiOpacity}");
         }
 
         private static void OnGuiScaleChanged(float newVal) {
@@ -262,7 +262,7 @@ namespace TrafficManager.State {
             }
 
             GlobalConfig.WriteConfig();
-            Log._Debug($"GuiScale changed to {GlobalConfig.Instance.Main.GuiScale}");
+            Log._Trace($"GuiScale changed to {GlobalConfig.Instance.Main.GuiScale}");
         }
 
         private static void OnOverlayTransparencyChanged(float newVal) {
@@ -279,17 +279,17 @@ namespace TrafficManager.State {
                 _overlayTransparencySlider.RefreshTooltip();
             }
 
-            Log._Debug($"Overlay transparency changed to {GlobalConfig.Instance.Main.OverlayTransparency}");
+            Log._Trace($"Overlay transparency changed to {GlobalConfig.Instance.Main.OverlayTransparency}");
         }
 
         private static void OnIgnoreDisabledModsChanged(bool newValue) {
-            Log._Debug($"Ignore disabled mods changed to {newValue}");
+            Log._Trace($"Ignore disabled mods changed to {newValue}");
             GlobalConfig.Instance.Main.IgnoreDisabledMods = newValue;
             GlobalConfig.WriteConfig();
         }
 
         private static void OnDisplayMphChanged(bool newValue) {
-            Log._Debug($"Display MPH changed to {newValue}");
+            Log._Trace($"Display MPH changed to {newValue}");
             GlobalConfig.Instance.Main.DisplaySpeedLimitsMph = newValue;
             GlobalConfig.WriteConfig();
         }
@@ -316,7 +316,7 @@ namespace TrafficManager.State {
                     break;
             }
 
-            Log._Debug($"Road Sign theme changed to {newStyle}");
+            Log._Trace($"Road Sign theme changed to {newStyle}");
             GlobalConfig.Instance.Main.MphRoadSignStyle = newStyle;
         }
 
@@ -325,7 +325,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Simulation accuracy changed to {newAccuracy}");
+            Log._Trace($"Simulation accuracy changed to {newAccuracy}");
             Options.simulationAccuracy = (SimulationAccuracy)newAccuracy;
         }
 
@@ -334,7 +334,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Instant effects changed to {newValue}");
+            Log._Trace($"Instant effects changed to {newValue}");
             Options.instantEffects = newValue;
         }
 

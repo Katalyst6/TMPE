@@ -230,7 +230,7 @@ namespace TrafficManager.Util {
         }
 
         private static void HandleSplitAvenue(List<ushort> segmentList, ushort nodeId) {
-            Log._Debug($"HandleSplitAvenue(segmentList, {nodeId}) was called");
+            Log._Trace($"HandleSplitAvenue(segmentList, {nodeId}) was called");
             void SetArrows(ushort segmentIdSrc, ushort segmentIdDst) {
                 LaneArrows arrow = ToLaneArrows(GetDirection(segmentIdSrc, segmentIdDst, nodeId));
                 IList<LanePos> lanes = netService.GetSortedLanes(
@@ -291,7 +291,7 @@ namespace TrafficManager.Util {
             }
 
             if (nodeSegments.Count < 3) {
-                Log._Debug("FixJunction: This is not a junction. nodeID=" + nodeId);
+                Log._Trace("FixJunction: This is not a junction. nodeID=" + nodeId);
                 return;
             }
 
@@ -314,7 +314,7 @@ namespace TrafficManager.Util {
             var nodeSegments = GetNodeSegments(nodeId);
 
             if (nodeSegments.Count < 3) {
-                Log._Debug("FixJunction: This is not a junction. nodeID=" + nodeId);
+                Log._Trace("FixJunction: This is not a junction. nodeID=" + nodeId);
                 return;
             }
 
@@ -332,7 +332,7 @@ namespace TrafficManager.Util {
             }
 
             if (CompareSegments(nodeSegments[1], nodeSegments[2]) == 0) {
-                Log._Debug("FixJunction: cannot determine which road should be treaded as the main road.\n" +
+                Log._Trace("FixJunction: cannot determine which road should be treaded as the main road.\n" +
                     "segmentList=" + nodeSegments.ToSTR());
                 return;
             }
@@ -397,7 +397,7 @@ namespace TrafficManager.Util {
         }
 
         private static void FixMajorSegmentRules(ushort segmentId, ushort nodeId) {
-            Log._Debug($"FixMajorSegmentRules({segmentId}, {nodeId}) was called");
+            Log._Trace($"FixMajorSegmentRules({segmentId}, {nodeId}) was called");
             bool startNode = (bool)netService.IsStartNode(segmentId, nodeId);
             JunctionRestrictionsManager.Instance.SetEnteringBlockedJunctionAllowed(segmentId, startNode, true);
             if (!OptionsMassEditTab.PriorityRoad_CrossMainR) {
@@ -408,7 +408,7 @@ namespace TrafficManager.Util {
 
 
         private static void FixMinorSegmentRules(ushort segmentId, ushort nodeId, List<ushort> segmentList) {
-            Log._Debug($"FixMinorSegmentRules({segmentId}, {nodeId}, segmentList) was called");
+            Log._Trace($"FixMinorSegmentRules({segmentId}, {nodeId}, segmentList) was called");
             bool startNode = (bool)netService.IsStartNode(segmentId, nodeId);
             if (OptionsMassEditTab.PriorityRoad_EnterBlockedYeild) {
                 JunctionRestrictionsManager.Instance.SetEnteringBlockedJunctionAllowed(segmentId, startNode, true);
@@ -454,13 +454,13 @@ namespace TrafficManager.Util {
                 MainToward = seg.GetLeftSegment(nodeId);
             }
 
-            Log._Debug($"HasAccelerationLane: segmentId:{segmentId} MainToward={MainToward} MainAgainst={MainAgainst} ");
+            Log._Trace($"HasAccelerationLane: segmentId:{segmentId} MainToward={MainToward} MainAgainst={MainAgainst} ");
             if (IsMain(MainToward) && IsMain(MainAgainst)) {
                 int Yt = CountLanesTowardJunction(segmentId, nodeId); // Yeild Toward.
                 int Mt = CountLanesTowardJunction(MainToward, nodeId); // Main Toward.
                 int Ma = CountLanesAgainstJunction(MainAgainst, nodeId); // Main Against.
                 bool ret = Yt > 0 && Yt + Mt <= Ma;
-                Log._Debug($"HasAccelerationLane: Yt={Yt}  Mt={Mt} Ma={Ma} ret={ret} : Yt + Mt <= Ma ");
+                Log._Trace($"HasAccelerationLane: Yt={Yt}  Mt={Mt} Ma={Ma} ret={ret} : Yt + Mt <= Ma ");
                 return ret;
             }
 
@@ -468,10 +468,10 @@ namespace TrafficManager.Util {
         }
 
         private static void FixMajorSegmentLanes(ushort segmentId, ushort nodeId) {
-            Log._Debug($"FixMajorSegmentLanes({segmentId}, {nodeId}) was called");
+            Log._Trace($"FixMajorSegmentLanes({segmentId}, {nodeId}) was called");
 
             if (SeparateTurningLanesUtil.CanChangeLanes(segmentId, nodeId) != SetLaneArrow_Result.Success) {
-                Log._Debug("FixMajorSegmentLanes: can't change lanes");
+                Log._Trace("FixMajorSegmentLanes: can't change lanes");
                 return;
             }
 
@@ -490,7 +490,7 @@ namespace TrafficManager.Util {
                     LaneArrowManager.VEHICLE_TYPES,
                     !lht);
             int srcLaneCount = laneList.Count;
-            Log._Debug($"FixMajorSegmentLanes: segment:{segmentId} laneList:" + laneList.ToSTR());
+            Log._Trace($"FixMajorSegmentLanes: segment:{segmentId} laneList:" + laneList.ToSTR());
 
             bool bLeft, bRight, bForward;
             ref ExtSegmentEnd segEnd = ref GetSegEnd(segmentId, nodeId);
@@ -520,7 +520,7 @@ namespace TrafficManager.Util {
         }
 
         private static void FixMinorSegmentLanes(ushort segmentId, ushort nodeId, List<ushort> segmentList) {
-            Log._Debug($"FixMinorSegmentLanes({segmentId}, {nodeId}, segmentList) was called");
+            Log._Trace($"FixMinorSegmentLanes({segmentId}, {nodeId}, segmentList) was called");
             if (SeparateTurningLanesUtil.CanChangeLanes(segmentId, nodeId) != SetLaneArrow_Result.Success) {
                 Debug.Log("FixMinorSegmentLanes(): can't change lanes");
                 return;

@@ -40,30 +40,30 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Lane traffic data:");
+            Log._Trace("Lane traffic data:");
 
             if (LaneTrafficData == null) {
-                Log._Debug("\t<null>");
+                Log._Trace("\t<null>");
             } else {
                 for (var i = 0; i < LaneTrafficData.Length; ++i) {
                     if (LaneTrafficData[i] == null) {
                         continue;
                     }
 
-                    Log._Debug($"\tSegment {i}:");
+                    Log._Trace($"\tSegment {i}:");
                     for (var k = 0; k < LaneTrafficData[i].Length; ++k) {
-                        Log._Debug($"\t\tLane {k}: {LaneTrafficData[i][k]}");
+                        Log._Trace($"\t\tLane {k}: {LaneTrafficData[i][k]}");
                     }
                 }
             }
 
-            Log._Debug("Segment direction traffic data:");
+            Log._Trace("Segment direction traffic data:");
 
             if (SegmentDirTrafficData == null) {
-                Log._Debug("\t<null>");
+                Log._Trace("\t<null>");
             } else {
                 for (var i = 0; i < SegmentDirTrafficData.Length; ++i) {
-                    Log._Debug($"\tIndex {i}: {SegmentDirTrafficData[i]}");
+                    Log._Trace($"\tIndex {i}: {SegmentDirTrafficData[i]}");
                 }
             }
         }

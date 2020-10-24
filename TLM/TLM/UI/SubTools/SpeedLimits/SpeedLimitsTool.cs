@@ -394,7 +394,7 @@ namespace TrafficManager.UI.SubTools.SpeedLimits {
             List<NetInfo> mainNetInfos = SpeedLimitManager.Instance.GetCustomizableNetInfos();
 
             if ((mainNetInfos == null) || (mainNetInfos.Count <= 0)) {
-                Log._Debug($"mainNetInfos={mainNetInfos?.Count}");
+                Log._Trace($"mainNetInfos={mainNetInfos?.Count}");
                 DragWindow(ref defaultsWindowRect);
                 return;
             }
@@ -404,7 +404,7 @@ namespace TrafficManager.UI.SubTools.SpeedLimits {
             if ((currentInfoIndex < 0) || (currentInfoIndex >= mainNetInfos.Count)) {
                 currentInfoIndex = 0;
                 updateRoadTex = true;
-                Log._Debug($"set currentInfoIndex to 0");
+                Log._Trace($"set currentInfoIndex to 0");
             }
 
             NetInfo info = mainNetInfos[currentInfoIndex];
@@ -416,7 +416,7 @@ namespace TrafficManager.UI.SubTools.SpeedLimits {
             if (currentSpeedLimit.GameUnits < 0f) {
                 currentSpeedLimit = new SpeedValue(
                     SpeedLimitManager.Instance.GetCustomNetInfoSpeedLimit(info));
-                Log._Debug($"set currentSpeedLimit to {currentSpeedLimit}");
+                Log._Trace($"set currentSpeedLimit to {currentSpeedLimit}");
             }
 
             // Log._Debug($"currentInfoIndex={currentInfoIndex} currentSpeedLimitIndex={currentSpeedLimitIndex}");

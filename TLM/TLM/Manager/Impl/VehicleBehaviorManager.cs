@@ -144,7 +144,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (prohibitPocketCars) {
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomPassengerCarAI.ExtParkVehicle({0}): Vehicle {1} tries to park on " +
                             "a parking position now (flags: {2})! CurrentPathMode={3} path={4} " +
                             "pathPositionIndex={5} segmentId={6} laneIndex={7} offset={8} nextPath={9} " +
@@ -170,7 +170,7 @@ namespace TrafficManager.Manager.Impl {
                         || driverExtInstance.pathMode == ExtPathMode.DrivingToKnownParkPos) {
                         // try to use previously found parking space
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "Vehicle {0} tries to park on an (alternative) parking position now! " +
                                 "CurrentPathMode={1} altParkingSpaceLocation={2} altParkingSpaceLocationId={3}",
                                 vehicleID,
@@ -184,7 +184,7 @@ namespace TrafficManager.Manager.Impl {
                         switch (driverExtInstance.parkingSpaceLocation) {
                             case ExtParkingSpaceLocation.RoadSide: {
                                 if (logParkingAi) {
-                                    Log._Debug($"Vehicle {vehicleID} wants to park road-side @ " +
+                                    Log._Trace($"Vehicle {vehicleID} wants to park road-side @ " +
                                                $"segment {driverExtInstance.parkingSpaceLocationId}");
                                 }
 
@@ -206,7 +206,7 @@ namespace TrafficManager.Manager.Impl {
                                 float maxDist = 9999f;
 
                                 if (logParkingAi) {
-                                    Log._Debug($"Vehicle {vehicleID} wants to park @ " +
+                                    Log._Trace($"Vehicle {vehicleID} wants to park @ " +
                                                $"building {driverExtInstance.parkingSpaceLocationId}");
                                 }
 
@@ -266,7 +266,7 @@ namespace TrafficManager.Manager.Impl {
                             out parkOffset);
 
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Found parking space? " +
                             $"{foundParkingSpace}. parkPos={parkPos}, parkRot={parkRot}, parkOffset={parkOffset}");
                     }
@@ -282,7 +282,7 @@ namespace TrafficManager.Manager.Impl {
                                             parkRot,
                                             driverCitizenId);
                 if (logParkingAi) {
-                    Log._Debug($"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): " +
+                    Log._Trace($"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): " +
                                $"Parked car created? {parkedCarCreated}");
                 }
 
@@ -291,7 +291,7 @@ namespace TrafficManager.Manager.Impl {
                     // we have reached a parking position
                     float sqrDist = (refPos - parkPos).sqrMagnitude;
                     if (extendedLogParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Vehicle {vehicleID} " +
                             $"succeeded in parking! CurrentPathMode={driverExtInstance.pathMode} sqrDist={sqrDist}");
                     }
@@ -325,7 +325,7 @@ namespace TrafficManager.Manager.Impl {
                         driverExtInstance.parkingSpaceLocationId = 0;
 
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Vehicle {vehicleID} " +
                                 "has reached an (alternative) parking position! " +
                                 $"CurrentPathMode={driverExtInstance.pathMode} position={parkPos}");
@@ -341,7 +341,7 @@ namespace TrafficManager.Manager.Impl {
                         <= GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance)
                     {
                         // vehicle is at target and target is an outside connection: accept despawn
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Driver citizen " +
                             $"instance {driverCitizenInstanceId} wants to park at an outside connection. Aborting.");
@@ -366,14 +366,14 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (!foundParkingSpace) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking failed " +
                             $"for vehicle {vehicleID}: Could not find parking space. ABORT.");
 
                         ++driverExtInstance.failedParkingAttempts;
                     } else {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logParkingAi,
                             () => $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking failed " +
                             $"for vehicle {vehicleID}: Parked car could not be created. ABORT.");
@@ -385,7 +385,7 @@ namespace TrafficManager.Manager.Impl {
                     driverExtInstance.parkingPathStartPosition = pathPos;
 
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomPassengerCarAI.ExtParkVehicle({0}): Parking failed for vehicle {1}! " +
                             "(flags: {2}) pathPos segment={3}, lane={4}, offset={5}. Trying to find " +
                             "parking space in the vicinity. FailedParkingAttempts={6}, " +
@@ -421,7 +421,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 
                                 if (logParkingAi) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "CustomPassengerCarAI.ExtParkVehicle({0}): Releasing path " +
                                         "for citizen instance {1} sitting in vehicle {2} (was {3}).",
                                         vehicleID,
@@ -432,7 +432,7 @@ namespace TrafficManager.Manager.Impl {
 
                                 if (citizenInstanceId != driverCitizenInstanceId) {
                                     if (logParkingAi) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "CustomPassengerCarAI.ExtParkVehicle({0}): Resetting pathmode " +
                                             "for passenger citizen instance {1} sitting in " +
                                             "vehicle {2} (was {3}).",
@@ -498,7 +498,7 @@ namespace TrafficManager.Manager.Impl {
                         if (prohibitPocketCars) {
                             if (driverExtInstance.pathMode == ExtPathMode.RequiresWalkingPathToTarget) {
                                 if (logParkingAi) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking succeeded: " +
                                         $"Doing nothing for citizen instance {citizenInstanceId}! " +
                                         $"path: {citizenManager.m_instances.m_buffer[citizenInstanceId].m_path}");
@@ -523,7 +523,7 @@ namespace TrafficManager.Manager.Impl {
                         citizenManager.m_instances.m_buffer[citizenInstanceId].m_lastPathOffset = segmentOffset;
 
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking succeeded " +
                                   $"(default): Setting path of citizen instance {citizenInstanceId} to {nextPath}!");
                         }
@@ -543,7 +543,7 @@ namespace TrafficManager.Manager.Impl {
             if (prohibitPocketCars) {
                 if (driverExtInstance.pathMode == ExtPathMode.RequiresWalkingPathToTarget) {
                     if (logParkingAi) {
-                        Log._Debug(
+                        Log._Trace(
                             $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking succeeded " +
                             $"(alternative parking spot): Citizen instance {driverExtInstance} has " +
                             "to walk for the remaining path!");
@@ -644,7 +644,7 @@ namespace TrafficManager.Manager.Impl {
                     startBothWays = false;
 
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomPassengerCarAI.ExtStartPathFind({0}): PathMode was " +
                             "RequiresDirectCarPathToTarget: Parking spaces will NOT be searched " +
                             "beforehand. Setting pathMode={1}",
@@ -660,7 +660,7 @@ namespace TrafficManager.Manager.Impl {
                     driverExtInstance.pathMode = ExtPathMode.CalculatingCarPathToTarget;
 
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomPassengerCarAI.ExtStartPathFind({0}): PathMode was not ParkingFailed " +
                             "and target is outside connection: Setting pathMode={1}",
                             vehicleID,
@@ -671,7 +671,7 @@ namespace TrafficManager.Manager.Impl {
                         driverExtInstance.pathMode == ExtPathMode.DrivingToKnownParkPos ||
                         driverExtInstance.pathMode == ExtPathMode.ParkingFailed) {
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): Skipping queue. pathMode={1}",
                                 vehicleID,
                                 driverExtInstance.pathMode);
@@ -690,7 +690,7 @@ namespace TrafficManager.Manager.Impl {
                         searchAtCurrentPos = true;
 
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): Vehicle {1} shall move " +
                                 "to an alternative parking position! CurrentPathMode={2} FailedParkingAttempts={3}",
                                 vehicleID,
@@ -705,7 +705,7 @@ namespace TrafficManager.Manager.Impl {
                             foundStartingPos = true;
 
                             if (logParkingAi) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "CustomPassengerCarAI.ExtStartPathFind({0}): Setting starting pos " +
                                     "for {1} to segment={2}, laneIndex={3}, offset={4}",
                                     vehicleID,
@@ -721,7 +721,7 @@ namespace TrafficManager.Manager.Impl {
                         if (driverExtInstance.failedParkingAttempts
                             > GlobalConfig.Instance.ParkingAI.MaxParkingAttempts) {
                             // maximum number of parking attempts reached
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logParkingAi,
                                 () =>
                                     $"CustomPassengerCarAI.ExtStartPathFind({vehicleID}): Reached " +
@@ -735,7 +735,7 @@ namespace TrafficManager.Manager.Impl {
                         }
 
                         if (extendedLogParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): Increased number of " +
                                 "parking attempts for vehicle {1}: {2}/{3}",
                                 vehicleID,
@@ -748,7 +748,7 @@ namespace TrafficManager.Manager.Impl {
                             ExtPathMode.CalculatingCarPathToKnownParkPos;
 
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): No parking involved: " +
                                 "Setting pathMode={1}",
                                 vehicleID,
@@ -780,7 +780,7 @@ namespace TrafficManager.Manager.Impl {
                                 parkPos,
                                 returnPos)) {
                             if (logParkingAi) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "CustomPassengerCarAI.ExtStartPathFind({0}): Could not calculate " +
                                     "return path for citizen instance {1}, vehicle {2}. Resetting instance.",
                                     vehicleID,
@@ -795,7 +795,7 @@ namespace TrafficManager.Manager.Impl {
                                ExtPathMode.CalculatingCarPathToAltParkPos) {
                         // no alternative parking spot found: abort
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): No alternative parking " +
                                 "spot found for vehicle {1}, citizen instance {2} with CurrentPathMode={3}! " +
                                 "GIVING UP.",
@@ -810,7 +810,7 @@ namespace TrafficManager.Manager.Impl {
                     } else {
                         // calculate a direct path to target
                         if (logParkingAi) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "CustomPassengerCarAI.ExtStartPathFind({0}): No alternative parking " +
                                 "spot found for vehicle {1}, citizen instance {2} with CurrentPathMode={3}! " +
                                 "Setting CurrentPathMode to 'CalculatingCarPath'.",
@@ -873,7 +873,7 @@ namespace TrafficManager.Manager.Impl {
                 randomParking = true;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 extendedLogParkingAi,
                 () => $"CustomPassengerCarAI.ExtStartPathFind({vehicleID}): Requesting path-finding for " +
                 $"passenger car {vehicleID}, startPos={startPos}, endPos={endPos}, extPathType={extPathType}");
@@ -949,7 +949,7 @@ namespace TrafficManager.Manager.Impl {
                     args))
                 {
                     if (logParkingAi) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "CustomPassengerCarAI.ExtStartPathFind({0}): Path-finding starts for " +
                             "passenger car {1}, path={2}, startPosA.segment={3}, startPosA.lane={4}, " +
                             "startPosA.offset={5}, startPosB.segment={6}, startPosB.lane={7}, " +
@@ -1176,7 +1176,7 @@ namespace TrafficManager.Manager.Impl {
                 {
                     // vehicle is not moving. reset allowance to leave junction
                     if (logPriority) {
-                        Log._Debug(
+                        Log._Trace(
                             $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): Setting " +
                             "JunctionTransitState from LEAVE to BLOCKED (speed to low)");
                     }
@@ -1218,7 +1218,7 @@ namespace TrafficManager.Manager.Impl {
                  (VehicleInfo.VehicleType.Train | VehicleInfo.VehicleType.Metro |
                   VehicleInfo.VehicleType.Monorail)) == VehicleInfo.VehicleType.None) {
                 // check if to check space
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"CustomVehicleAI.MayChangeSegment: Vehicle {frontVehicleId} is not a train.");
 
@@ -1283,7 +1283,7 @@ namespace TrafficManager.Manager.Impl {
                         }
 
                         if (!sufficientSpace) {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logPriority,
                                 () => $"Vehicle {frontVehicleId}: Setting JunctionTransitState to BLOCKED");
                             return VehicleJunctionTransitState.Blocked;
@@ -1297,7 +1297,7 @@ namespace TrafficManager.Manager.Impl {
 
                 checkTrafficLights = !isJoinedJunction || isLevelCrossing;
             } else {
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"CustomVehicleAI.MayChangeSegment: Vehicle {frontVehicleId} is " +
                     "a train/metro/monorail.");
@@ -1318,7 +1318,7 @@ namespace TrafficManager.Manager.Impl {
             VehicleJunctionTransitState transitState = extVehicle.junctionTransitState;
 
             if (extVehicle.junctionTransitState == VehicleJunctionTransitState.Blocked) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"Vehicle {frontVehicleId}: Setting JunctionTransitState from BLOCKED to APPROACH");
 
@@ -1330,7 +1330,7 @@ namespace TrafficManager.Manager.Impl {
 
             if ((vehicleData.m_flags & Vehicle.Flags.Emergency2) == 0 || isLevelCrossing) {
                 if (hasTrafficLight && checkTrafficLights) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): Node " +
                         $"{targetNodeId} has a traffic light.");
@@ -1360,7 +1360,7 @@ namespace TrafficManager.Manager.Impl {
                         vehicleLightState = RoadBaseAI.TrafficLightState.Green;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): Vehicle " +
                               $"{frontVehicleId} has TL state {vehicleLightState} at node {targetNodeId} " +
@@ -1453,7 +1453,7 @@ namespace TrafficManager.Manager.Impl {
                                     isTargetStartNode)))
                         {
                             if (logPriority) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                                     $"Vehicle may turn on red to target segment {position.m_segment}, " +
                                     $"lane {position.m_lane}");
@@ -1481,7 +1481,7 @@ namespace TrafficManager.Manager.Impl {
 
                         if (!hasPriority) {
                             // green light but other cars are incoming and they have priority: stop
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logPriority,
                                 () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                                 "Green traffic light (or turn on red allowed) but detected traffic with " +
@@ -1492,7 +1492,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (stopCar) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): Setting " +
                             "JunctionTransitState to STOP");
@@ -1509,7 +1509,7 @@ namespace TrafficManager.Manager.Impl {
                         return VehicleJunctionTransitState.Stop;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                               $"Setting JunctionTransitState to LEAVE ({vehicleLightState})");
@@ -1529,7 +1529,7 @@ namespace TrafficManager.Manager.Impl {
                     VehicleInfo.VehicleType.Monorail)
                 {
                     if (logPriority) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "VehicleBehaviorManager.MayChangeSegment({0}): Vehicle is arriving @ seg. " +
                             "{1} ({2}, {3}), node {4} which is not a traffic light.",
                             frontVehicleId,
@@ -1543,7 +1543,7 @@ namespace TrafficManager.Manager.Impl {
 
                     if (sign != PriorityType.None && sign != PriorityType.Main) {
                         if (logPriority) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "VehicleBehaviorManager.MayChangeSegment({0}): Vehicle is arriving " +
                                 "@ seg. {1} ({2}, {3}), node {4} which is not a traffic light and is " +
                                 "a priority segment.\nVehicleBehaviorManager.MayChangeSegment({5}): " +
@@ -1558,7 +1558,7 @@ namespace TrafficManager.Manager.Impl {
                         }
 
                         if (transitState == VehicleJunctionTransitState.None) {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logPriority,
                                 () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                                       "Setting JunctionTransitState to APPROACH (prio)");
@@ -1581,7 +1581,7 @@ namespace TrafficManager.Manager.Impl {
                                     return VehicleJunctionTransitState.Stop;
                                 }
                             } else {
-                                Log._DebugIf(
+                                Log._TraceIf(
                                     logPriority,
                                     () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                                           "Vehicle has come to a full stop.");
@@ -1595,7 +1595,7 @@ namespace TrafficManager.Manager.Impl {
                             * GlobalConfig.Instance.PriorityRules.MaxYieldVelocity ||
                             Options.simulationAccuracy >= SimulationAccuracy.Medium) {
                             if (logPriority) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "VehicleBehaviorManager.MayChangeSegment({0}): {1} sign. waittime={2}",
                                     frontVehicleId,
                                     sign,
@@ -1611,7 +1611,7 @@ namespace TrafficManager.Manager.Impl {
                                 GlobalConfig.Instance.PriorityRules.MaxPriorityWaitTime) {
                                 extVehicle.waitTime++;
 
-                                Log._DebugIf(
+                                Log._TraceIf(
                                     logPriority,
                                     () =>
                                         $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
@@ -1630,7 +1630,7 @@ namespace TrafficManager.Manager.Impl {
                                     ref position,
                                     ref targetNode);
 
-                                Log._DebugIf(
+                                Log._TraceIf(
                                     logPriority,
                                     () =>
                                         $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
@@ -1641,7 +1641,7 @@ namespace TrafficManager.Manager.Impl {
                                     return VehicleJunctionTransitState.Stop;
                                 }
 
-                                Log._DebugIf(
+                                Log._TraceIf(
                                     logPriority,
                                     () =>
                                         $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
@@ -1649,7 +1649,7 @@ namespace TrafficManager.Manager.Impl {
                                 return VehicleJunctionTransitState.Leave;
                             }
 
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logPriority,
                                 () =>
                                     $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
@@ -1657,7 +1657,7 @@ namespace TrafficManager.Manager.Impl {
                             return VehicleJunctionTransitState.Leave;
                         }
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"VehicleBehaviorManager.MayChangeSegment({frontVehicleId}): " +
                                   $"Vehicle has not yet reached yield speed (sqrVelocity={sqrVelocity})");
@@ -1860,7 +1860,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                 if (logLaneSelection) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "VehicleBehaviorManager.FindBestLane({0}): currentLaneId={1}, currentPathPos=[seg={2}, " +
                         "lane={3}, off={4}] next1PathPos=[seg={5}, lane={6}, off={7}] next2PathPos=[seg={8}, " +
                         "lane={9}, off={10}] next3PathPos=[seg={11}, lane={12}, off={13}] " +
@@ -1889,7 +1889,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (vehicleState.lastAltLaneSelSegmentId == currentPathPos.m_segment) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping " +
                         "alternative lane selection: Already calculated.");
@@ -1919,7 +1919,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                 if (!RoutingManager.Instance.LaneEndForwardRoutings[currentFwdRoutingIndex].routed) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): No forward routing " +
                               "for next path position available.");
@@ -1931,7 +1931,7 @@ namespace TrafficManager.Manager.Impl {
                     = RoutingManager.Instance.LaneEndForwardRoutings[currentFwdRoutingIndex].transitions;
 
                 if (currentFwdTransitions == null) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): No forward " +
                               $"transitions found for current lane {currentLaneId} at startNode {startNode}.");
@@ -1964,7 +1964,7 @@ namespace TrafficManager.Manager.Impl {
                 int numReachableNext2Lanes = 0;
                 int numReachableNext3Lanes = 0;
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): Starting lane-finding " +
                       $"algorithm now. vehicleMaxSpeed={vehicleMaxSpeed}, vehicleCurSpeed={vehicleCurSpeed} " +
@@ -1984,7 +1984,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     if (currentFwdTransitions[i].distance > 1) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping current " +
                             $"transition {currentFwdTransitions[i]} (distance too large)");
@@ -1998,7 +1998,7 @@ namespace TrafficManager.Manager.Impl {
                             currentFwdTransitions[i].laneIndex,
                             next1SegInfo)) {
                         if (logLaneSelection) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping current " +
                                 $"transition {currentFwdTransitions[i]} (vehicle restrictions)");
                         }
@@ -2029,7 +2029,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                         if (logLaneSelection) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "VehicleBehaviorManager.FindBestLane({0}): Exploring transitions for " +
                                 "next1 lane id={1}, seg.={2}, index={3}, startNode={4}: {5}",
                                 vehicleId,
@@ -2069,7 +2069,7 @@ namespace TrafficManager.Manager.Impl {
 
                             if (next1FwdTransitions[j].distance > 1) {
                                 if (logLaneSelection) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping " +
                                         $"next1 transition {next1FwdTransitions[j]} (distance too large)");
                                 }
@@ -2083,7 +2083,7 @@ namespace TrafficManager.Manager.Impl {
                                     next2SegInfo))
                             {
                                 if (logLaneSelection) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping " +
                                         $"next1 transition {next1FwdTransitions[j]} (vehicle restrictions)");
                                 }
@@ -2108,7 +2108,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 #endif
                                 if (logLaneSelection) {
-                                    Log._DebugFormat(
+                                    Log._TraceFormat(
                                         "VehicleBehaviorManager.FindBestLane({0}): Exploring transitions " +
                                         "for next2 lane id={1}, seg.={2}, index={3}, startNode={4}: {5}",
                                         vehicleId,
@@ -2151,7 +2151,7 @@ namespace TrafficManager.Manager.Impl {
 
                                     if (next2FwdTransitions[k].distance > 1) {
                                         if (logLaneSelection) {
-                                            Log._Debug(
+                                            Log._Trace(
                                                 $"VehicleBehaviorManager.FindBestLane({vehicleId}): " +
                                                 $"Skipping next2 transition {next2FwdTransitions[k]} " +
                                                 "(distance too large)");
@@ -2167,7 +2167,7 @@ namespace TrafficManager.Manager.Impl {
                                             next3SegInfo))
                                     {
                                         if (logLaneSelection) {
-                                            Log._Debug(
+                                            Log._Trace(
                                                 $"VehicleBehaviorManager.FindBestLane({vehicleId}): " +
                                                 $"Skipping next2 transition {next2FwdTransitions[k]} " +
                                                 "(vehicle restrictions)");
@@ -2199,7 +2199,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                                         if (logLaneSelection) {
-                                            Log._DebugFormat(
+                                            Log._TraceFormat(
                                                 "VehicleBehaviorManager.FindBestLane({0}): Exploring " +
                                                 "transitions for next3 lane id={1}, seg.={2}, index={3}, " +
                                                 "startNode={4}: {5}",
@@ -2246,7 +2246,7 @@ namespace TrafficManager.Manager.Impl {
 
                                             if (next3FwdTransitions[l].distance > 1) {
                                                 if (logLaneSelection) {
-                                                    Log._Debug(
+                                                    Log._Trace(
                                                         $"VehicleBehaviorManager.FindBestLane({vehicleId}): " +
                                                         $"Skipping next3 transition {next3FwdTransitions[l]} " +
                                                         "(distance too large)");
@@ -2270,7 +2270,7 @@ namespace TrafficManager.Manager.Impl {
                                                 }
 
                                                 if (logLaneSelection) {
-                                                    Log._DebugFormat(
+                                                    Log._TraceFormat(
                                                         "VehicleBehaviorManager.FindBestLane({0}): Found candidate transition with totalLaneDist={1}: {2} -> {3} -> {4} -> {5} -> {6}",
                                                         vehicleId,
                                                         totalLaneDist,
@@ -2347,7 +2347,7 @@ namespace TrafficManager.Manager.Impl {
                      * Check if next1 lane is clear
                      */
                     if (logLaneSelection) {
-                        Log._Debug(
+                        Log._Trace(
                             $"VehicleBehaviorManager.FindBestLane({vehicleId}): Checking for traffic " +
                             $"on next1 lane id={currentFwdTransitions[i].laneId}.");
                     }
@@ -2425,7 +2425,7 @@ namespace TrafficManager.Manager.Impl {
 
                             if (next1BackTransitions[j].distance > 1) {
                                 if (logLaneSelection) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"VehicleBehaviorManager.FindBestLane({vehicleId}): Skipping " +
                                         $"next1 backward transition {next1BackTransitions[j]} " +
                                         "(distance too large)");
@@ -2435,7 +2435,7 @@ namespace TrafficManager.Manager.Impl {
                             }
 
                             if (logLaneSelection) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "VehicleBehaviorManager.FindBestLane({0}): Checking for upcoming " +
                                     "traffic in front of next1 lane id={1}. Checking back transition {2}",
                                     vehicleId,
@@ -2453,7 +2453,7 @@ namespace TrafficManager.Manager.Impl {
 
                             if (!prevLanesClear) {
                                 if (logLaneSelection) {
-                                    Log._Debug(
+                                    Log._Trace(
                                         $"VehicleBehaviorManager.FindBestLane({vehicleId}): Back lane " +
                                         $"{next1BackTransitions[j].laneId} is not clear!");
                                 }
@@ -2461,14 +2461,14 @@ namespace TrafficManager.Manager.Impl {
                             }
 
                             if (logLaneSelection) {
-                                Log._Debug(
+                                Log._Trace(
                                     $"VehicleBehaviorManager.FindBestLane({vehicleId}): Back lane " +
                                     $"{next1BackTransitions[j].laneId} is clear!");
                             }
                         }
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): Checking for coming " +
                               $"up traffic in front of next1 lane. prevLanesClear={prevLanesClear}");
@@ -2559,7 +2559,7 @@ namespace TrafficManager.Manager.Impl {
                     float speedDiff = next1MeanSpeed - targetSpeed;
 
                     if (logLaneSelection) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "VehicleBehaviorManager.FindBestLane({0}): Calculated metric for next1 lane {1}: " +
                             "next1MaxSpeed={2} next1MeanSpeed={3} targetSpeed={4} speedDiff={5} " +
                             "bestSpeedDiff={6} bestStaySpeedDiff={7}",
@@ -2614,7 +2614,7 @@ namespace TrafficManager.Manager.Impl {
                 } // for i
 
                 if (logLaneSelection) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "VehicleBehaviorManager.FindBestLane({0}): best lane index: {1}, best stay " +
                         "lane index: {2}, path lane index: {3})\nbest speed diff: {4}, best stay " +
                         "speed diff: {5}\nfoundClearBackLane=XXfoundClearBackLaneXX, " +
@@ -2633,7 +2633,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (float.IsInfinity(bestStaySpeedDiff)) {
                     // no continuous lane found
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> no continuous " +
                         $"lane found -- selecting bestOptNext1LaneIndex={bestOptNext1LaneIndex}");
@@ -2643,7 +2643,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (float.IsInfinity(bestOptSpeedDiff)) {
                     // no lane change found
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> no lane " +
                         $"change found -- selecting bestStayNext1LaneIndex={bestStayNext1LaneIndex}");
@@ -2656,7 +2656,7 @@ namespace TrafficManager.Manager.Impl {
                 // vanishing lane change opportunity detection
                 int vehSel = vehicleId % 12;
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): vehMod4={vehSel} " +
                     $"numReachableNext2Lanes={numReachableNext2Lanes} " +
@@ -2669,7 +2669,7 @@ namespace TrafficManager.Manager.Impl {
                     (numReachableNext2Lanes == 1 && vehSel <= 9))
                 {
                     // vehicle must reach a certain lane since lane changing opportunities will vanish
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): vanishing lane change " +
                         $"opportunities detected: numReachableNext2Lanes={numReachableNext2Lanes} " +
@@ -2678,7 +2678,7 @@ namespace TrafficManager.Manager.Impl {
                         $"={bestStayTotalLaneDist}");
 
                     if (bestOptTotalLaneDist < bestStayTotalLaneDist) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> vanishing " +
                             $"lane change opportunities -- selecting bestOptTotalLaneDist={bestOptTotalLaneDist}");
@@ -2686,7 +2686,7 @@ namespace TrafficManager.Manager.Impl {
                         return bestOptNext1LaneIndex;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> vanishing lane " +
                         $"change opportunities -- selecting bestStayTotalLaneDist={bestStayTotalLaneDist}");
@@ -2702,7 +2702,7 @@ namespace TrafficManager.Manager.Impl {
                     //   (2) best mean speed is near zero
                     //---------------------------------------
                     if (logLaneSelection) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "VehicleBehaviorManager.FindBestLane({0}): ===> edge case: continuous lane " +
                             "is optimal ({1}) / best mean speed is near zero ({2}) -- selecting " +
                             "bestStayNext1LaneIndex={3}",
@@ -2721,14 +2721,14 @@ namespace TrafficManager.Manager.Impl {
                 {
                     // best route contains more lane changes than allowed: choose lane with the
                     // least number of future lane changes
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): maximum best total " +
                         $"lane distance = {Math.Max(bestStayTotalLaneDist, bestOptTotalLaneDist)} > " +
                         "AltLaneSelectionMaxOptLaneChanges");
 
                     if (bestOptTotalLaneDist < bestStayTotalLaneDist) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> selecting " +
                             "lane change option for minimizing number of future lane changes -- selecting " +
@@ -2737,7 +2737,7 @@ namespace TrafficManager.Manager.Impl {
                         return bestOptNext1LaneIndex;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> selecting stay " +
                         "option for minimizing number of future lane changes -- selecting " +
@@ -2756,7 +2756,7 @@ namespace TrafficManager.Manager.Impl {
                     float optImprovementSpeed = bestOptSpeedDiff - bestStaySpeedDiff;
 
                     if (logLaneSelection) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "VehicleBehaviorManager.FindBestLane({0}): a lane change for speed " +
                             "improvement is possible. optImprovementInKmH={1} speedDiff={2} " +
                             "(bestOptMeanSpeed={3}, vehicleCurVelocity={4}, foundSafeLaneChange={5})",
@@ -2772,7 +2772,7 @@ namespace TrafficManager.Manager.Impl {
                         (foundSafeLaneChange || (speedDiff <= vehicleState.maxUnsafeSpeedDiff)))
                     {
                         // speed improvement is significant
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> found a " +
                             "faster lane to change to and speed improvement is significant -- selecting " +
@@ -2783,7 +2783,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     // insufficient improvement
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> found a faster " +
                         "lane to change to but speed improvement is NOT significant OR lane change " +
@@ -2800,14 +2800,14 @@ namespace TrafficManager.Manager.Impl {
                     float optimization =
                         100f * ((bestStaySpeedDiff - bestOptSpeedDiff) /
                                 ((bestStayMeanSpeed + bestOptMeanSpeed) / 2f));
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): found a lane " +
                         $"change that optimizes overall traffic. optimization={optimization}%");
 
                     if (optimization >= vehicleState.minSafeTrafficImprovement) {
                         // traffic optimization is significant
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> found a " +
                             "lane that optimizes overall traffic and traffic optimization is significant " +
@@ -2817,7 +2817,7 @@ namespace TrafficManager.Manager.Impl {
                     }
 
                     // insufficient optimization
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> found a lane " +
                         "that optimizes overall traffic but optimization is NOT significant -- selecting " +
@@ -2827,7 +2827,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 // suboptimal safe lane change
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.FindBestLane({vehicleId}): ===> suboptimal safe " +
                     $"lane change detected -- selecting bestStayNext1LaneIndex={bestStayNext1LaneIndex}");
@@ -2867,7 +2867,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                 if (logLaneSelection) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                     "VehicleBehaviorManager.FindBestEmergencyLane({0}): currentLaneId={1}, " +
                     "currentPathPos=[seg={2}, lane={3}, off={4}] nextPathPos=[seg={5}, lane={6}, off={7}]",
                     vehicleId,
@@ -2907,7 +2907,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
 
                 if (!RoutingManager.Instance.LaneEndForwardRoutings[currentFwdRoutingIndex].routed) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): " +
                         "No forward routing for next path position available.");
@@ -2919,7 +2919,7 @@ namespace TrafficManager.Manager.Impl {
                     = RoutingManager.Instance.LaneEndForwardRoutings[currentFwdRoutingIndex].transitions;
 
                 if (currentFwdTransitions == null) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): No forward " +
                         $"transitions found for current lane {currentLaneId} at startNode {startNode}.");
@@ -2927,7 +2927,7 @@ namespace TrafficManager.Manager.Impl {
                     return nextPathPos.m_lane;
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): Starting " +
                     $"lane-finding algorithm now. vehicleLength={vehicleLength}");
@@ -2953,7 +2953,7 @@ namespace TrafficManager.Manager.Impl {
                             currentFwdTransitions[i].laneIndex,
                             nextSegInfo))
                     {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logLaneSelection,
                             () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): " +
                             $"Skipping current transition {currentFwdTransitions[i]} (vehicle restrictions)");
@@ -2966,14 +2966,14 @@ namespace TrafficManager.Manager.Impl {
                     //---------------------------
                     // Check reserved space on next lane
                     //---------------------------
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logLaneSelection,
                         () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): Checking " +
                         $"for traffic on next lane id={currentFwdTransitions[i].laneId}.");
 
                     Services.NetService.ProcessLane(
                         currentFwdTransitions[i].laneId,
-                        (uint nextLaneId, ref NetLane nextLane) => {
+                        (GenericGameBridge.Service.NetLaneHandler)((uint nextLaneId, ref NetLane nextLane) => {
                             // similar to stock code in VehicleAI.FindBestLane
                             float cost = nextLane.GetReservedSpace();
 
@@ -2987,17 +2987,17 @@ namespace TrafficManager.Manager.Impl {
                                 minCost = cost;
                                 bestNextLaneIndex = currentFwdTransitions[i].laneIndex;
 
-                                Log._DebugIf(
-                                    logLaneSelection,
-                                    () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): " +
-                                    $"Found better lane: bestNextLaneIndex={bestNextLaneIndex}, minCost={minCost}");
+                                Log._TraceIf(
+                                    (bool)logLaneSelection,
+                                    (Func<string>)(() => (string)($"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): " +
+                                    $"Found better lane: bestNextLaneIndex={bestNextLaneIndex}, minCost={minCost}")));
                             }
 
                             return true;
-                        });
+                        }));
                 } // for each forward transition
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.FindBestEmergencyLane({vehicleId}): Best lane identified: " +
                     $"bestNextLaneIndex={bestNextLaneIndex}, minCost={minCost}");
@@ -3017,14 +3017,14 @@ namespace TrafficManager.Manager.Impl {
                  && (DebugSettings.VehicleId == 0 || DebugSettings.VehicleId == vehicleId);
 
             if (logLaneSelection) {
-                Log._Debug($"VehicleBehaviorManager.MayFindBestLane({vehicleId}) called.");
+                Log._Trace($"VehicleBehaviorManager.MayFindBestLane({vehicleId}) called.");
             }
 #else
             const bool logLaneSelection = false;
 #endif
 
             if (!Options.advancedAI) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.MayFindBestLane({vehicleId}): Skipping lane checking. " +
                     "Advanced Vehicle AI is disabled.");
@@ -3033,7 +3033,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (vehicleState.heavyVehicle) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.MayFindBestLane({vehicleId}): Skipping lane checking. " +
                     "Vehicle is heavy.");
@@ -3043,7 +3043,7 @@ namespace TrafficManager.Manager.Impl {
 
             if ((vehicleState.vehicleType & (ExtVehicleType.RoadVehicle & ~ExtVehicleType.Bus)) == ExtVehicleType.None) {
                 if (logLaneSelection) {
-                    Log._Debug($"VehicleBehaviorManager.MayFindBestLane({vehicleId}): Skipping lane " +
+                    Log._Trace($"VehicleBehaviorManager.MayFindBestLane({vehicleId}): Skipping lane " +
                                $"checking. vehicleType={vehicleState.vehicleType}");
                 }
 
@@ -3053,7 +3053,7 @@ namespace TrafficManager.Manager.Impl {
             uint vehicleRand = Constants.ManagerFactory.ExtVehicleManager.GetStaticVehicleRand(vehicleId);
 
             if (vehicleRand < 100 - Options.altLaneSelectionRatio) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logLaneSelection,
                     () => $"VehicleBehaviorManager.MayFindBestLane({vehicleId}): Skipping lane checking " +
                     "(randomization).");

@@ -153,7 +153,7 @@ namespace TrafficManager.TrafficLight.Impl {
             // StepDone(false);
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TimedTrafficLightsStep.isEndTransitionDone() called for master NodeId={0}. " +
                     "CurrentStep={1} getCurrentFrame()={2} endTransitionStart={3} stepDone={4} ret={5}",
                     timedNode.NodeId,
@@ -182,7 +182,7 @@ namespace TrafficManager.TrafficLight.Impl {
             // StepDone(false);
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TimedTrafficLightsStep.isInEndTransition() called for master NodeId={0}. " +
                     "CurrentStep={1} getCurrentFrame()={2} endTransitionStart={3} stepDone={4} ret={5}",
                     timedNode.NodeId,
@@ -205,7 +205,7 @@ namespace TrafficManager.TrafficLight.Impl {
             bool ret = GetCurrentFrame() == startFrame && !stepDone; //!StepDone(false);
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TimedTrafficLightsStep.isInStartTransition() called for master NodeId={0}. " +
                     "CurrentStep={1} getCurrentFrame()={2} startFrame={3} stepDone={4} ret={5}",
                     timedNode.NodeId,
@@ -255,7 +255,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public void Start(int previousStepRefIndex = -1) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug(
+                Log._Trace(
                     $"TimedTrafficLightsStep.Start: Starting step {timedNode.CurrentStep} @ {timedNode.NodeId}");
             }
 #endif
@@ -450,7 +450,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         ICustomSegmentLight liveSegmentLight = liveSegmentLights.GetCustomLight(vehicleType);
 
                         if (liveSegmentLight == null) {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logTrafficLights,
                                 () => $"Timed step @ seg. {segmentId}, node {timedNode.NodeId} has " +
                                 $"a traffic light for {vehicleType} but the live segment does not have one.");
@@ -512,7 +512,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
 #if DEBUG
                         if (logTrafficLights) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "TimedTrafficLightsStep.SetLights({0})     -> *SETTING* LightLeft={1} " +
                                 "LightMain={2} LightRight={3} for segmentId={4} @ NodeId={5} for vehicle {6}",
                                 noTransition,
@@ -569,14 +569,14 @@ namespace TrafficManager.TrafficLight.Impl {
         /// Updates timed segment lights according to "real-world" traffic light states
         /// </summary>
         public void UpdateLights() {
-            Log._Debug("TimedTrafficLightsStep.UpdateLights: Updating lights of timed traffic " +
+            Log._Trace("TimedTrafficLightsStep.UpdateLights: Updating lights of timed traffic " +
                        $"light step @ {timedNode.NodeId}");
 
             foreach (KeyValuePair<ushort, ICustomSegmentLights> e in CustomSegmentLights) {
                 ushort segmentId = e.Key;
                 ICustomSegmentLights segLights = e.Value;
 
-                Log._Debug("TimedTrafficLightsStep.UpdateLights: Updating lights of timed traffic " +
+                Log._Trace("TimedTrafficLightsStep.UpdateLights: Updating lights of timed traffic " +
                            $"light step at seg. {e.Key} @ {timedNode.NodeId}");
 
                 // if (segment == 0) continue;
@@ -595,7 +595,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 }
 
                 segLights.SetLights(liveSegLights);
-                Log._Debug(
+                Log._Trace(
                     $"TimedTrafficLightsStep.UpdateLights: Segment {segmentId} " +
                     $"AutoPedState={segLights.AutoPedestrianLightState} live={liveSegLights.AutoPedestrianLightState}");
             }
@@ -628,7 +628,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #else
             const bool logTrafficLights = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"StepDone: called for node {timedNode.NodeId} @ step {timedNode.CurrentStep}");
 
@@ -648,7 +648,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             if (GetCurrentFrame() >= startFrame + MaxTime) {
                 // maximum time reached. switch!
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"StepDone: step finished @ {timedNode.NodeId}");
 
@@ -822,7 +822,7 @@ namespace TrafficManager.TrafficLight.Impl {
                             sourceSegmentId,
                             out IDictionary<ushort, ArrowDirection> directions))
                     {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "calcWaitFlow: No arrow directions defined for segment " +
                             $"{sourceSegmentId} @ {timedNodeId}");
@@ -868,7 +868,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     ExtVehicleType?[] vehTypeByLaneIndex = segLights.VehicleTypeByLaneIndex;
 
                     if (logTrafficLights) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "calcWaitFlow: Seg. {0} @ {1}, vehTypeByLaneIndex={2}",
                             sourceSegmentId,
                             timedNodeId,
@@ -905,14 +905,14 @@ namespace TrafficManager.TrafficLight.Impl {
                         IDictionary<ushort, uint> allVehiclesMetric = allVehiclesMetrics[laneIndex];
 
                         if (allVehiclesMetrics == null) {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logTrafficLights,
                                 () => "TimedTrafficLightsStep.calcWaitFlow: No cars on lane " +
                                 $"{laneIndex} @ seg. {sourceSegmentId}. Vehicle types: {vehicleType}");
                             continue;
                         }
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => $"TimedTrafficLightsStep.calcWaitFlow: Checking lane {laneIndex} " +
                             $"@ seg. {sourceSegmentId}. Vehicle types: {vehicleType}");
@@ -928,7 +928,7 @@ namespace TrafficManager.TrafficLight.Impl {
                             uint numVehicles = f.Value;
 
                             if (!directions.TryGetValue(targetSegmentId, out ArrowDirection dir)) {
-                                Log._Debug("TimedTrafficLightsStep.calcWaitFlow: Direction undefined " +
+                                Log._Trace("TimedTrafficLightsStep.calcWaitFlow: Direction undefined " +
                                            $"for target segment {targetSegmentId} @ {timedNodeId}");
                                 continue;
                             }
@@ -938,7 +938,7 @@ namespace TrafficManager.TrafficLight.Impl {
                                     ? movingVehiclesMetric[f.Key]
                                     : numVehicles;
 
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logTrafficLights,
                                 () => "TimedTrafficLightsStep.calcWaitFlow: Total num of cars on seg. " +
                                 $"{sourceSegmentId}, lane {laneIndex} going to seg. {targetSegmentId}: " +
@@ -975,7 +975,7 @@ namespace TrafficManager.TrafficLight.Impl {
                             if (addToFlow) {
                                 curTotalLaneFlow += numMovingVehicles;
                                 ++numLaneFlows;
-                                Log._DebugIf(
+                                Log._TraceIf(
                                     logTrafficLights,
                                     () => "TimedTrafficLightsStep.calcWaitFlow: ## Vehicles @ " +
                                     $"lane {laneIndex}, seg. {sourceSegmentId} going to seg. " +
@@ -983,14 +983,14 @@ namespace TrafficManager.TrafficLight.Impl {
                             } else {
                                 curTotalLaneWait += numVehicles;
                                 ++numLaneWaits;
-                                    Log._DebugIf(
+                                    Log._TraceIf(
                                         logTrafficLights,
                                         () => "TimedTrafficLightsStep.calcWaitFlow: ## Vehicles @ " +
                                         $"lane {laneIndex}, seg. {sourceSegmentId} going to seg. " +
                                         $"{targetSegmentId}: COUTING as WAITING -- numVehicles={numVehicles}");
                             }
 
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logTrafficLights,
                                 () => "TimedTrafficLightsStep.calcWaitFlow: >>>>> Vehicles @ " +
                                 $"lane {laneIndex}, seg. {sourceSegmentId} going to seg. {targetSegmentId}: " +
@@ -1038,7 +1038,7 @@ namespace TrafficManager.TrafficLight.Impl {
                             }
                         }
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "TimedTrafficLightsStep.calcWaitFlow: >>>> Vehicles @ lane " +
                             $"{laneIndex}, seg. {sourceSegmentId}: meanLaneFlow={meanLaneFlow}, " +
@@ -1087,7 +1087,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         }
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => $"TimedTrafficLightsStep.calcWaitFlow: >>> Vehicles @ seg. {sourceSegmentId}: " +
                         $"meanSegFlow={meanSegFlow}, meanSegWait={meanSegWait} // " +
@@ -1135,7 +1135,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     }
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => "TimedTrafficLightsStep.calcWaitFlow: Calculated flow for source node " +
                     $"{timedNodeId}: meanNodeFlow={meanNodeFlow} meanNodeWait={meanNodeWait} // " +
@@ -1150,7 +1150,7 @@ namespace TrafficManager.TrafficLight.Impl {
             flow = meanFlow;
 
             if (logTrafficLights) {
-                Log._Debug(
+                Log._Trace(
                     "TimedTrafficLightsStep.calcWaitFlow: ***CALCULATION FINISHED*** for master " +
                     $"node {timedNode.NodeId}: flow={flow} wait={wait}");
             }
@@ -1169,7 +1169,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public ICustomSegmentLights RemoveSegmentLights(ushort segmentId) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.RemoveSegmentLights({segmentId}) called.");
+                Log._Trace($"TimedTrafficLightsStep.RemoveSegmentLights({segmentId}) called.");
             }
 #endif
 
@@ -1183,7 +1183,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public ICustomSegmentLights GetSegmentLights(ushort segmentId) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.GetSegmentLights({segmentId}) called.");
+                Log._Trace($"TimedTrafficLightsStep.GetSegmentLights({segmentId}) called.");
             }
 #endif
 
@@ -1193,7 +1193,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public ICustomSegmentLights GetSegmentLights(ushort nodeId, ushort segmentId) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.GetSegmentLights({nodeId}, {segmentId}) called.");
+                Log._Trace($"TimedTrafficLightsStep.GetSegmentLights({nodeId}, {segmentId}) called.");
             }
 #endif
 
@@ -1216,7 +1216,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public bool RelocateSegmentLights(ushort sourceSegmentId, ushort targetSegmentId) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug(
+                Log._Trace(
                     $"TimedTrafficLightsStep.RelocateSegmentLights({sourceSegmentId}, " +
                     $"{targetSegmentId}) called.");
             }
@@ -1256,7 +1256,7 @@ namespace TrafficManager.TrafficLight.Impl {
             sourceLights.Relocate(targetSegmentId, (bool)startNode, this);
             CustomSegmentLights[targetSegmentId] = sourceLights;
 
-            Log._Debug(
+            Log._Trace(
                 $"TimedTrafficLightsStep.RelocateSegmentLights({sourceSegmentId}, {targetSegmentId}): " +
                 $"Relocated lights: {sourceSegmentId} -> {targetSegmentId} @ node {timedNode.NodeId}");
             return true;
@@ -1269,7 +1269,7 @@ namespace TrafficManager.TrafficLight.Impl {
         internal bool AddSegment(ushort segmentId, bool startNode, bool makeRed) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.AddSegment({segmentId}, {startNode}, {makeRed}) " +
+                Log._Trace($"TimedTrafficLightsStep.AddSegment({segmentId}, {startNode}, {makeRed}) " +
                            $"called @ node {timedNode.NodeId}.");
             }
 #endif
@@ -1308,7 +1308,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public bool SetSegmentLights(ushort nodeId, ushort segmentId, ICustomSegmentLights lights) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.SetSegmentLights({nodeId}, {segmentId}, {lights}) called.");
+                Log._Trace($"TimedTrafficLightsStep.SetSegmentLights({nodeId}, {segmentId}, {lights}) called.");
             }
 #endif
 
@@ -1325,7 +1325,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public bool SetSegmentLights(ushort segmentId, ICustomSegmentLights lights) {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == timedNode.NodeId) {
-                Log._Debug($"TimedTrafficLightsStep.SetSegmentLights({segmentId}, {lights}) called.");
+                Log._Trace($"TimedTrafficLightsStep.SetSegmentLights({segmentId}, {lights}) called.");
             }
 #endif
 
@@ -1348,7 +1348,7 @@ namespace TrafficManager.TrafficLight.Impl {
             lights.Relocate(segmentId, (bool)startNode, this);
             CustomSegmentLights[segmentId] = lights;
 
-            Log._Debug(
+            Log._Trace(
                 $"TimedTrafficLightsStep.SetSegmentLights: Set lights @ seg. {segmentId}, " +
                 $"node {timedNode.NodeId}");
             return true;

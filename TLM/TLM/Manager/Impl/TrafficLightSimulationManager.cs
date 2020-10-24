@@ -43,14 +43,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Traffic light simulations:");
+            Log._Trace($"Traffic light simulations:");
 
             for (int i = 0; i < TrafficLightSimulations.Length; ++i) {
                 if (!TrafficLightSimulations[i].HasSimulation()) {
                     continue;
                 }
 
-                Log._Debug($"Simulation {i}: {TrafficLightSimulations[i]}");
+                Log._Trace($"Simulation {i}: {TrafficLightSimulations[i]}");
             }
         }
 
@@ -188,7 +188,7 @@ namespace TrafficManager.Manager.Impl {
                 pedestrianLightState = lights.PedestrianLightState ?? TrafficLightState.Green;
             } else {
                 pedestrianLightState = TrafficLightState.Green;
-                Log._Debug($"GetTrafficLightState: No pedestrian light @ node {nodeId}, " +
+                Log._Trace($"GetTrafficLightState: No pedestrian light @ node {nodeId}, " +
                            $"segment {fromSegmentId} found.");
             }
 
@@ -315,7 +315,7 @@ namespace TrafficManager.Manager.Impl {
                                              bool destroyGroup,
                                              bool removeTrafficLight)
         {
-            Log._Debug($"TrafficLightSimulationManager.RemoveNodeFromSimulation({nodeId}, " +
+            Log._Trace($"TrafficLightSimulationManager.RemoveNodeFromSimulation({nodeId}, " +
                        $"{destroyGroup}, {removeTrafficLight}) called.");
 
             if (!TrafficLightSimulations[nodeId].HasSimulation()) {
@@ -389,7 +389,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         private void RemoveNodeFromSimulation(ushort nodeId) {
-            Log._Debug($"TrafficLightSimulationManager.RemoveNodeFromSimulation({nodeId}) called.");
+            Log._Trace($"TrafficLightSimulationManager.RemoveNodeFromSimulation({nodeId}) called.");
             Destroy(ref TrafficLightSimulations[nodeId]);
         }
 
@@ -493,7 +493,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!TrafficLightSimulations[nodeId].HasSimulation()) {
                 if (logTrafficLights) {
-                    Log._Debug($"TrafficLightSimulationManager.HandleValidNode({nodeId}): " +
+                    Log._Trace($"TrafficLightSimulationManager.HandleValidNode({nodeId}): " +
                                "Node is not controlled by a custom traffic light simulation.");
                 }
 
@@ -502,7 +502,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!Flags.MayHaveTrafficLight(nodeId)) {
                 if (logTrafficLights) {
-                    Log._Debug(
+                    Log._Trace(
                         $"TrafficLightSimulationManager.HandleValidNode({nodeId}): Node must not " +
                         "have a traffic light: Removing traffic light simulation.");
                 }
@@ -521,7 +521,7 @@ namespace TrafficManager.Manager.Impl {
                     (bool)Constants.ServiceFactory.NetService.IsStartNode(segmentId, nodeId);
 
                 if (logTrafficLights) {
-                    Log._Debug($"TrafficLightSimulationManager.HandleValidNode({nodeId}): Adding " +
+                    Log._Trace($"TrafficLightSimulationManager.HandleValidNode({nodeId}): Adding " +
                                $"live traffic lights to segment {segmentId}");
                 }
 

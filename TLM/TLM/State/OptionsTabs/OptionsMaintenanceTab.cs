@@ -155,15 +155,15 @@ namespace TrafficManager.State {
 
             ConfirmPanel.ShowModal(T("Maintenance.Dialog.Title:Remove all traffic lights"),
                                    T("Maintenance.Dialog.Text:Remove all traffic lights, Confirmation"),
-                                   (_, result) => {
+                                   (UIView.ModalPoppedReturnCallback)((_, result) => {
                 if(result != 1)
                 {
                     return;
                 }
 
-                Log._Debug("Removing all existing Traffic Lights");
-                Constants.ServiceFactory.SimulationService.AddAction(() => TrafficLightManager.Instance.RemoveAllExistingTrafficLights());
-            });
+                                       Log._Trace((string)"Removing all existing Traffic Lights");
+                                       Constants.ServiceFactory.SimulationService.AddAction(() => TrafficLightManager.Instance.RemoveAllExistingTrafficLights());
+            }));
         }
 
         private static void OnClickResetSpeedLimits() {
@@ -187,7 +187,7 @@ namespace TrafficManager.State {
             if (!Options.IsGameLoaded())
                 return;
 
-            Log._Debug($"Show path-find stats changed to {newVal}");
+            Log._Trace($"Show path-find stats changed to {newVal}");
             Options.showPathFindStats = newVal;
             Options.RebuildMenu();
         }

@@ -22,7 +22,7 @@ namespace TrafficManager.Util.Caching {
         }
 
         public void Add(TValue value) {
-            Log._DebugIf(
+            Log._TraceIf(
                 Size >= maxSize_,
                 () => $"Adding {value} to GenericArrayCache over the capacity {maxSize_}");
             Values[Size] = value;

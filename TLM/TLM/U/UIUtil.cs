@@ -62,7 +62,7 @@ namespace TrafficManager.U {
             pos += new Vector3(xMotion, yMotion, 0f);
             window.absolutePosition = pos;
 
-            Log._Debug(
+            Log._Trace(
                 $"Clamping origRect={origRect} to new={clampedRect} "
                 + $"moving by {xMotion};{yMotion} newpos={pos}");
             return true;

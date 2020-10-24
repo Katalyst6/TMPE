@@ -40,17 +40,17 @@ namespace TrafficManager.Manager.Impl {
             const bool logTrafficLights = false;
 #endif
             if (logTrafficLights) {
-                Log._Debug($"TrafficLightManager.SetTrafficLight: called for node {nodeId}, flag={flag}");
+                Log._Trace($"TrafficLightManager.SetTrafficLight: called for node {nodeId}, flag={flag}");
             }
 
             if (!CanToggleTrafficLight(nodeId, flag, ref node, out reason)) {
                 if (logTrafficLights) {
-                    Log._Debug($"TrafficLightManager.SetTrafficLight: Traffic light @ {nodeId} is not toggleable");
+                    Log._Trace($"TrafficLightManager.SetTrafficLight: Traffic light @ {nodeId} is not toggleable");
                 }
 
                 if (reason != ToggleTrafficLightError.HasTimedLight || !flag) {
                     if (logTrafficLights) {
-                        Log._Debug("TrafficLightManager.SetTrafficLight: ... but has timed light " +
+                        Log._Trace("TrafficLightManager.SetTrafficLight: ... but has timed light " +
                                    "and we want to enable it");
                     }
 
@@ -61,21 +61,21 @@ namespace TrafficManager.Manager.Impl {
             NetNode.Flags flags = node.m_flags | NetNode.Flags.CustomTrafficLights;
             if (flag) {
                 if (logTrafficLights) {
-                    Log._Debug($"Adding traffic light @ node {nodeId}");
+                    Log._Trace($"Adding traffic light @ node {nodeId}");
                 }
 
                 flags |= NetNode.Flags.TrafficLights;
                 TrafficPriorityManager.Instance.RemovePrioritySignsFromNode(nodeId);
             } else {
                 if (logTrafficLights) {
-                    Log._Debug($"Removing traffic light @ node {nodeId}");
+                    Log._Trace($"Removing traffic light @ node {nodeId}");
                 }
 
                 flags &= ~NetNode.Flags.TrafficLights;
             }
 
             if (logTrafficLights) {
-                Log._Debug("TrafficLightManager.SetTrafficLight: Setting traffic light at " +
+                Log._Trace("TrafficLightManager.SetTrafficLight: Setting traffic light at " +
                            $"node {nodeId} -- flags={flags}");
             }
 
@@ -135,7 +135,7 @@ namespace TrafficManager.Manager.Impl {
             if (!flag && TrafficLightSimulationManager.Instance.HasTimedSimulation(nodeId)) {
                 reason = ToggleTrafficLightError.HasTimedLight;
                 if (logTrafficLights) {
-                    Log._Debug($"Cannot toggle traffic lights at node {nodeId}: Node has a timed traffic light");
+                    Log._Trace($"Cannot toggle traffic lights at node {nodeId}: Node has a timed traffic light");
                 }
 
                 return false;
@@ -148,7 +148,7 @@ namespace TrafficManager.Manager.Impl {
                 reason = ToggleTrafficLightError.NoJunction;
 
                 if (logTrafficLights) {
-                    Log._Debug($"Cannot toggle traffic lights at node {nodeId}: Node is not a junction");
+                    Log._Trace($"Cannot toggle traffic lights at node {nodeId}: Node is not a junction");
                 }
 
                 return false;
@@ -158,7 +158,7 @@ namespace TrafficManager.Manager.Impl {
                 reason = ToggleTrafficLightError.IsLevelCrossing;
 
                 if (logTrafficLights) {
-                    Log._Debug($"Cannot toggle traffic lights at node {nodeId}: Node is a level crossing");
+                    Log._Trace($"Cannot toggle traffic lights at node {nodeId}: Node is a level crossing");
                 }
 
                 return false;
@@ -191,7 +191,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (numRoads >= 2 || numTrainTracks >= 2 || numMonorailTracks >= 2 || numPedSegments != 0) {
                 if (logTrafficLights) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "Can toggle traffic lights at node {0}: numRoads={1} numTrainTracks={2} " +
                         "numMonorailTracks={3} numPedSegments={4}",
                         nodeId,
@@ -206,7 +206,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logTrafficLights) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "Cannot toggle traffic lights at node {0}: Insufficient segments. numRoads={1} " +
                     "numTrainTracks={2} numMonorailTracks={3} numPedSegments={4}",
                     nodeId,

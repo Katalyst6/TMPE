@@ -144,14 +144,14 @@
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Extended building data:");
+            Log._Trace("Extended building data:");
 
             for (var i = 0; i < ExtBuildings.Length; ++i) {
                 if (!IsValid((ushort)i)) {
                     continue;
                 }
 
-                Log._Debug($"Building {i}: {ExtBuildings[i]}");
+                Log._Trace($"Building {i}: {ExtBuildings[i]}");
             }
         }
 

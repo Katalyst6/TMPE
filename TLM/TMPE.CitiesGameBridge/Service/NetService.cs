@@ -400,7 +400,7 @@ namespace CitiesGameBridge.Service {
         }
 
         public void PublishSegmentChanges(ushort segmentId) {
-            Log._Debug($"NetService.PublishSegmentChanges({segmentId}) called.");
+            Log._Trace($"NetService.PublishSegmentChanges({segmentId}) called.");
             ISimulationService simService = SimulationService.Instance;
 
             ProcessSegment(

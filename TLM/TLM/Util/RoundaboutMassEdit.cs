@@ -200,12 +200,12 @@ namespace TrafficManager.Util {
         public bool FixRoundabout(ushort initialSegmentId, out IRecordable record) {
             bool isRoundabout = TraverseLoop(initialSegmentId, out var segList);
             if (!isRoundabout) {
-                Log._Debug($"segment {initialSegmentId} not a roundabout.");
+                Log._Trace($"segment {initialSegmentId} not a roundabout.");
                 record = null;
                 return false;
             }
             int count = segList.Count;
-            Log._Debug($"\n segmentId={initialSegmentId} seglist.count={count}\n");
+            Log._Trace($"\n segmentId={initialSegmentId} seglist.count={count}\n");
 
             record = FixRoundabout(segList);
             return true;
@@ -438,7 +438,7 @@ namespace TrafficManager.Util {
         private static SpeedValue? CalculatePreferedSpeed(ushort segmentId) {
             float r = CalculateRadius(ref segmentId.ToSegment());
             float kmph = 11.3f * Mathf.Sqrt(r); // see https://github.com/CitiesSkylinesMods/TMPE/issues/793#issue-589462235
-            Log._Debug($"CalculatePreferedSpeed radius:{r} -> kmph:{kmph}");
+            Log._Trace($"CalculatePreferedSpeed radius:{r} -> kmph:{kmph}");
             if (float.IsNaN(kmph) || float.IsInfinity(kmph) || kmph < 1f) {
                 return null;
             }

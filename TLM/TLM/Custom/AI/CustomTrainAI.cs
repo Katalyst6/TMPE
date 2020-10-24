@@ -928,7 +928,7 @@ namespace TrafficManager.Custom.AI {
                                || DebugSettings.VehicleId == vehicleId);
 
             if (logLogic) {
-                Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}) called.\n" +
+                Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}) called.\n" +
                            $"\trefPosition.m_segment={refPosition.m_segment}, " +
                            $"refPosition.m_offset={refPosition.m_offset}\n" +
                            $"\tnextPosition.m_segment={nextPosition.m_segment}, " +
@@ -956,7 +956,7 @@ namespace TrafficManager.Custom.AI {
 
 #if DEBUG
             if (logLogic) {
-                Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                            $"lastPos={lastFrameData.m_position} " +
                            $"lastPosMinusRot={lastPosMinusRot} " +
                            $"lastPosPlusRot={lastPosPlusRot} " +
@@ -973,7 +973,7 @@ namespace TrafficManager.Custom.AI {
                 if (VehicleBehaviorManager.Instance.MayDespawn(ref vehMan.m_vehicles.m_buffer[firstVehicleId]) || vehMan.m_vehicles.m_buffer[firstVehicleId].m_blockCounter < 100) {*/ // NON-STOCK CODE
 #if DEBUG
                 if (logLogic) {
-                    Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                    Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                $"Checking for free space on lane {nextLaneId}.");
                 }
 #endif
@@ -981,7 +981,7 @@ namespace TrafficManager.Custom.AI {
                 if (!netManager.m_lanes.m_buffer[nextLaneId].CheckSpace(1000f, vehicleId)) {
 #if DEBUG
                     if (logLogic) {
-                        Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                        Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                    $"No space available on lane {nextLaneId}. ABORT.");
                     }
 #endif
@@ -1000,7 +1000,7 @@ namespace TrafficManager.Custom.AI {
 
 #if DEBUG
                 if (logLogic) {
-                    Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                    Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                $"Checking for overlap (1). segment.a={segment.a} segment.b={segment.b}");
                 }
 #endif
@@ -1010,7 +1010,7 @@ namespace TrafficManager.Custom.AI {
                     if (CheckOverlap(vehicleId, ref vehicleData, segment, vehicleId)) {
 #if DEBUG
                         if (logLogic) {
-                            Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                            Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                        $"Overlap detected (1). segment.LengthSqr()={segment.LengthSqr()} " +
                                        $"segment.a={segment.a} ABORT.");
                         }
@@ -1025,7 +1025,7 @@ namespace TrafficManager.Custom.AI {
                 segment = new Segment3(bezierMiddlePoint, bezier.d);
 #if DEBUG
                 if (logLogic) {
-                    Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                    Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                $"Checking for overlap (2). segment.a={segment.a} segment.b={segment.b}");
                 }
 #endif
@@ -1033,7 +1033,7 @@ namespace TrafficManager.Custom.AI {
                     && CheckOverlap(vehicleId, ref vehicleData, segment, vehicleId)) {
 #if DEBUG
                     if (logLogic) {
-                        Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                        Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                    $"Overlap detected (2). ABORT.");
                     }
 #endif
@@ -1050,7 +1050,7 @@ namespace TrafficManager.Custom.AI {
                 }
 #if DEBUG
                 if (logLogic) {
-                    Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                    Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                $"Checking if vehicle is allowed to change segment.");
                 }
 #endif
@@ -1070,7 +1070,7 @@ namespace TrafficManager.Custom.AI {
                         out maxSpeed)) {
 #if DEBUG
                     if (logLogic) {
-                        Log._Debug($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
+                        Log._Trace($"CustomTrainAI.CustomCheckNextLane({vehicleId}): " +
                                    $"Vehicle is NOT allowed to change segment. ABORT.");
                     }
 #endif

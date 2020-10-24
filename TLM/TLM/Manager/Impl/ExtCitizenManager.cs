@@ -34,14 +34,14 @@
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Extended citizen data:");
+            Log._Trace($"Extended citizen data:");
 
             for (var i = 0; i < ExtCitizens.Length; ++i) {
                 if (!IsValid((uint)i)) {
                     continue;
                 }
 
-                Log._Debug($"Citizen {i}: {ExtCitizens[i]}");
+                Log._Trace($"Citizen {i}: {ExtCitizens[i]}");
             }
         }
 
@@ -57,14 +57,14 @@
             bool extendedLogParkingAi = DebugSwitch.ExtendedParkingAILog.Get() && citizenDebug;
 
             if (extendedLogParkingAi) {
-                Log._Debug($"ExtCitizenManager.OnArriveAtDestination({citizenId}) called");
+                Log._Trace($"ExtCitizenManager.OnArriveAtDestination({citizenId}) called");
             }
 #else
             const bool extendedLogParkingAi = false;
 #endif
             if (ExtCitizens[citizenId].lastLocation == Citizen.Location.Home) {
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtCitizenManager.OnArriveAtDestination({citizenId}): setting " +
                         $"lastTransportMode=transportMode={ExtCitizens[citizenId].transportMode}");
                 }
@@ -85,7 +85,7 @@
             if (citizenData.CurrentLocation != Citizen.Location.Moving) {
                 ExtCitizens[citizenId].lastLocation = citizenData.CurrentLocation;
                 if (extendedLogParkingAi) {
-                    Log._Debug(
+                    Log._Trace(
                         $"ExtCitizenManager.OnArriveAtDestination({citizenId}): setting " +
                         $"lastLocation={ExtCitizens[citizenId].lastLocation}");
                 }

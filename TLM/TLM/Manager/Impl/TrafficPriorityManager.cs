@@ -39,14 +39,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug("Priority signs:");
+            Log._Trace("Priority signs:");
 
             for (int i = 0; i < PrioritySegments.Length; ++i) {
                 if (PrioritySegments[i].IsDefault()) {
                     continue;
                 }
 
-                Log._Debug($"Segment {i}: {PrioritySegments[i]}");
+                Log._Trace($"Segment {i}: {PrioritySegments[i]}");
             }
         }
 
@@ -73,7 +73,7 @@ namespace TrafficManager.Manager.Impl {
                     NetNode.Flags.Junction,
                     NetNode.Flags.Created | NetNode.Flags.Junction)) {
                 reason = SetPrioritySignError.NoJunction;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MayNodeHavePrioritySigns: nodeId={nodeId}, " +
                     "result=false, reason=NoJunction");
@@ -84,7 +84,7 @@ namespace TrafficManager.Manager.Impl {
             if (TrafficLightSimulationManager.Instance.HasTimedSimulation(nodeId)) {
                 reason = SetPrioritySignError.HasTimedLight;
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MayNodeHavePrioritySigns: nodeId={nodeId}, " +
                     "result=false, reason=HasTimedLight");
@@ -112,7 +112,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
             if (!Services.NetService.IsSegmentValid(segmentId)) {
                 reason = SetPrioritySignError.InvalidSegment;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                     $"startNode={startNode}, result=false, reason=InvalidSegment");
@@ -123,7 +123,7 @@ namespace TrafficManager.Manager.Impl {
                     Services.NetService.GetSegmentNodeId(segmentId, startNode),
                     out reason)) {
                 var reasonCopy = reason;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                     $"startNode={startNode}, result=false, reason={reasonCopy}");
@@ -137,14 +137,14 @@ namespace TrafficManager.Manager.Impl {
             if (segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].outgoing &&
                 segMan.ExtSegments[segmentId].oneWay) {
                 reason = SetPrioritySignError.NotIncoming;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                     $"startNode={startNode}, result=false, reason=NotIncoming");
                 return false;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                 $"startNode={startNode}, result=true");
@@ -168,7 +168,7 @@ namespace TrafficManager.Manager.Impl {
 #endif
             if (!Services.NetService.IsSegmentValid(segmentId)) {
                 reason = SetPrioritySignError.InvalidSegment;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                     "result=false, reason=InvalidSegment");
@@ -179,7 +179,7 @@ namespace TrafficManager.Manager.Impl {
                 MaySegmentHavePrioritySign(segmentId, true, out reason)
                 || MaySegmentHavePrioritySign(segmentId, false, out reason);
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => "TrafficPriorityManager.MaySegmentHavePrioritySign: segmentId={segmentId}, " +
                 "result={ret}, reason={reason}");
@@ -214,7 +214,7 @@ namespace TrafficManager.Manager.Impl {
                     return true;
                 });
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.HasNodePrioritySign: nodeId={nodeId}, result={ret}");
             return ret;
@@ -241,7 +241,7 @@ namespace TrafficManager.Manager.Impl {
             if (type != PriorityType.None &&
                 !MaySegmentHavePrioritySign(segmentId, startNode, out reason)) {
                 var reasonCopy = reason;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.SetPrioritySign: Segment {segmentId} " +
                     $"@ {startNode} may not have a priority sign: {reasonCopy}");
@@ -268,7 +268,7 @@ namespace TrafficManager.Manager.Impl {
 
             SegmentEndManager.Instance.UpdateSegmentEnd(segmentId, startNode);
             if (logPriority) {
-                Log._Debug(
+                Log._Trace(
                     $"TrafficPriorityManager.SetPrioritySign: segmentId={segmentId}, " +
                     $"startNode={startNode}, type={type}, result={ret}, reason={reason}");
             }
@@ -283,7 +283,7 @@ namespace TrafficManager.Manager.Impl {
 #else
             const bool logPriority = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.RemovePrioritySignsFromNode: nodeId={nodeId}");
 
@@ -305,7 +305,7 @@ namespace TrafficManager.Manager.Impl {
 #else
             const bool logPriority = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.RemovePrioritySignsFromSegment: segmentId={segmentId}");
 
@@ -321,7 +321,7 @@ namespace TrafficManager.Manager.Impl {
 #else
             const bool logPriority = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.RemovePrioritySignFromSegment: segmentId={segmentId}, " +
                       $"startNode={startNode}");
@@ -361,7 +361,7 @@ namespace TrafficManager.Manager.Impl {
 
                     return true;
                 });
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.CountPrioritySignsAtNode: nodeId={nodeId}, " +
                       $"sign={sign}, result={ret}");
@@ -407,7 +407,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logPriority = false;
 #endif
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TrafficPriorityManager.HasPriority({0}): Checking vehicle {1} at node {2}. " +
                     "Coming from seg. {3}, start {4}, lane {5}, going to seg. {6}, lane {7}",
                     vehicleId,
@@ -429,7 +429,7 @@ namespace TrafficManager.Manager.Impl {
 
             if ((vehicle.m_flags & Vehicle.Flags.Emergency2) != 0) {
                 // target vehicle is on emergency
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.HasPriority({vehicleId}): Vehicle is on emergency.");
                 return true;
@@ -437,7 +437,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (vehicle.Info.m_vehicleType == VehicleInfo.VehicleType.Monorail) {
                 // monorails do not obey priority signs
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.HasPriority({vehicleId}): Vehicle is a monorail.");
                 return true;
@@ -446,7 +446,7 @@ namespace TrafficManager.Manager.Impl {
             PriorityType curSign = GetPrioritySign(curPos.m_segment, startNode);
             if (curSign == PriorityType.None) {
                 if (logPriority) {
-                    Log._Debug(
+                    Log._Trace(
                         $"TrafficPriorityManager.HasPriority({vehicleId}): Sign is None @ seg. " +
                         $"{curPos.m_segment}, start {startNode} -> setting to Main");
                 }
@@ -474,7 +474,7 @@ namespace TrafficManager.Manager.Impl {
                                               : 0;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.HasPriority({vehicleId}): estimated target time to " +
                 $"transit node {transitNodeId} is {targetTimeToTransitNode} for vehicle {vehicleId}");
@@ -526,7 +526,7 @@ namespace TrafficManager.Manager.Impl {
                 // absolute incoming direction of incoming vehicle
                 ArrowDirection incomingFromDir = extSegEndMan.GetDirection( ref curEnd, otherSegmentId);
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.HasPriority({vehicleId}): checking other " +
                     $"segment {otherSegmentId} @ {transitNodeId}");
@@ -536,7 +536,7 @@ namespace TrafficManager.Manager.Impl {
                 int numIter = 0;
 
                 while (incomingVehicleId != 0) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"\nTrafficPriorityManager.HasPriority({vehicleId}): checking other " +
                         $"vehicle {incomingVehicleId} @ seg. {otherSegmentId}");
@@ -563,7 +563,7 @@ namespace TrafficManager.Manager.Impl {
                         otherLights,
                         incomingFromDir))
                     {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"TrafficPriorityManager.HasPriority({vehicleId}): incoming " +
                             $"vehicle {incomingVehicleId} is conflicting.");
@@ -581,7 +581,7 @@ namespace TrafficManager.Manager.Impl {
                     }
                 }
             }
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"TrafficPriorityManager.HasPriority({vehicleId}): No conflicting incoming vehicles found.");
             return true;
@@ -608,7 +608,7 @@ namespace TrafficManager.Manager.Impl {
                                           ArrowDirection incomingFromDir)
         {
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TrafficPriorityManager.IsConflictingVehicle({0}, {1}): Checking against other " +
                     "vehicle {2}.\nTrafficPriorityManager.IsConflictingVehicle({3}, {4}): TARGET is " +
                     "coming from seg. {5}, start {6}, lane {7}, going to seg. {8}, lane {9}\n" +
@@ -644,7 +644,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (incomingVehicle.Info.m_vehicleType == VehicleInfo.VehicleType.Monorail) {
                 // monorails and cars do not collide
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                     $"{incomingVehicleId}): Incoming vehicle is a monorail.");
@@ -660,7 +660,7 @@ namespace TrafficManager.Manager.Impl {
             if (incomingLights != null) {
                 ICustomSegmentLight incomingLight = incomingLights.GetCustomLight(incomingState.currentLaneIndex);
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "TrafficPriorityManager.IsConflictingVehicle({0}, {1}): Detected traffic " +
                         "light. Incoming state ({2}): {3}",
                         vehicleId,
@@ -670,7 +670,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (incomingLight.IsRed(incomingToRelDir)) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                         $"{incomingVehicleId}): Incoming traffic light is red.");
@@ -695,7 +695,7 @@ namespace TrafficManager.Manager.Impl {
                         if (!incomingStateChangedRecently && incomingSqrSpeed
                             <= GlobalConfig.Instance.PriorityRules.MaxStopVelocity)
                         {
-                            Log._DebugIf(
+                            Log._TraceIf(
                                 logPriority,
                                 () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                                 $"{incomingVehicleId}): Incoming {incomingVehicleId} is " +
@@ -718,7 +718,7 @@ namespace TrafficManager.Manager.Impl {
                     float dot = Vector3.Dot(incomingToNode, incomingVel);
 
                     if (dot <= 0) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                             $"{incomingVehicleId}): Incoming {incomingVehicleId} is moving away from " +
@@ -726,7 +726,7 @@ namespace TrafficManager.Manager.Impl {
                         return false;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                         $"{incomingVehicleId}): Incoming {incomingVehicleId} is moving towards the " +
@@ -753,7 +753,7 @@ namespace TrafficManager.Manager.Impl {
 
                         if (timeDiff > GlobalConfig.Instance.PriorityRules.MaxPriorityApproachTime) {
                             if (logPriority) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "TrafficPriorityManager.IsConflictingVehicle({0}, {1}): Incoming " +
                                     "{2} needs {3} time units to get to the node where target needs {4} " +
                                     "time units (diff = {5}). Difference to large. *IGNORING*",
@@ -769,7 +769,7 @@ namespace TrafficManager.Manager.Impl {
                         }
 
                         if (logPriority) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "TrafficPriorityManager.IsConflictingVehicle({0}, {1}): Incoming {2} " +
                                 "needs {3} time units to get to the node where target needs {4} time " +
                                 "units (diff = {5}). Difference within bounds. Priority check required.",
@@ -781,7 +781,7 @@ namespace TrafficManager.Manager.Impl {
                                 timeDiff);
                         }
                     } else {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                             $"{incomingVehicleId}): Incoming is stopped.");
@@ -793,7 +793,7 @@ namespace TrafficManager.Manager.Impl {
                     // || (incomingState.JunctionTransitState == VehicleJunctionTransitState.Stop
                     // && vehicleId < incomingVehicleId))) {
                     if (logPriority) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "TrafficPriorityManager.IsConflictingVehicle({0}, {1}): Incoming {2} is " +
                             "BLOCKED and has waited a bit or is STOP and targetVehicleId {3} " +
                             "< incomingVehicleId {4}. *IGNORING*",
@@ -828,14 +828,14 @@ namespace TrafficManager.Manager.Impl {
                     incomingFromDir,
                     incomingToRelDir))
                 {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                         $"{incomingVehicleId}): Incoming {incomingVehicleId} is not conflicting.");
                     return false;
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"==========> TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                     $"{incomingVehicleId}): Incoming {incomingVehicleId} IS conflicting.");
@@ -843,7 +843,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logPriority) {
-                Log._Debug(
+                Log._Trace(
                     $"TrafficPriorityManager.IsConflictingVehicle({vehicleId}, " +
                     $"{incomingVehicleId}): Incoming {incomingVehicleId} (main) is not conflicting " +
                     $"({incomingState.junctionTransitState}).");
@@ -883,7 +883,7 @@ namespace TrafficManager.Manager.Impl {
                                         ArrowDirection incomingFromDir,
                                         ArrowDirection incomingToRelDir) {
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "\n  TrafficPriorityManager.HasVehiclePriority({0}, {1}): " +
                     "*** Checking if vehicle {2} (main road = {3}) @ (seg. {4}, start {5}, lane {6}) " +
                     "-> (seg. {7}, lane {8}) has priority over {9} (main road = {10}) " +
@@ -909,7 +909,7 @@ namespace TrafficManager.Manager.Impl {
             if (targetToDir == ArrowDirection.None || incomingFromDir == ArrowDirection.None ||
                 incomingToRelDir == ArrowDirection.None) {
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "  TrafficPriorityManager.HasVehiclePriority({0}, {1}): Invalid directions " +
                         "given: targetToDir={2}, incomingFromDir={3}, incomingToRelDir={4}",
                         vehicleId,
@@ -925,7 +925,7 @@ namespace TrafficManager.Manager.Impl {
             if (curPos.m_segment == incomingState.currentSegmentId) {
                 // both vehicles are coming from the same segment. do not apply priority
                 // rules in this case.
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, " +
                     $"{incomingVehicleId}): Both vehicles come from the same segment. *IGNORING*");
@@ -946,7 +946,7 @@ namespace TrafficManager.Manager.Impl {
             // - Incoming car is coming from `incomingFromDir` (relative to TURN).
             // - Incoming car is going to `incomingToRelDir` (relative to `incomingFromDir`).
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "  TrafficPriorityManager.HasVehiclePriority({0}, {1}): targetToDir: {2}, " +
                     "incomingFromDir: {3}, incomingToRelDir: {4}",
                     vehicleId,
@@ -963,7 +963,7 @@ namespace TrafficManager.Manager.Impl {
                 incomingToRelDir = ArrowDirectionUtil.InvertLeftRight(incomingToRelDir);
 
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "  TrafficPriorityManager.HasVehiclePriority({0}, {1}): LHT! targetToDir: {2}, " +
                         "incomingFromDir: {3}, incomingToRelDir: {4}",
                         vehicleId,
@@ -975,7 +975,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "  TrafficPriorityManager.HasVehiclePriority({0}, {1}): targetToDir={2}, " +
                     "incomingFromDir={3}, incomingToRelDir={4}",
                     vehicleId,
@@ -1004,7 +1004,7 @@ namespace TrafficManager.Manager.Impl {
 
             if (!wouldCollide) {
                 // both vehicles would not collide. allow both to pass.
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                     $"Cars {vehicleId} and {incomingVehicleId} would not collide. NO CONFLICT.");
@@ -1013,7 +1013,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             // -> vehicles would collide
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                 $"Cars {vehicleId} and {incomingVehicleId} would collide. Checking priority rules.");
@@ -1033,7 +1033,7 @@ namespace TrafficManager.Manager.Impl {
                     vehicleId,
                     incomingVehicleId);
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                     $"Cars {vehicleId} and {incomingVehicleId} are on the same priority level. " +
@@ -1041,7 +1041,7 @@ namespace TrafficManager.Manager.Impl {
             } else {
                 // both vehicles are on a different priority level: prioritize vehicle on main road
                 ret = onMain;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                     $"Cars {vehicleId} and {incomingVehicleId} are on a different priority. " +
@@ -1051,7 +1051,7 @@ namespace TrafficManager.Manager.Impl {
             if (ret) {
                 // check if the incoming vehicle is leaving (though the target vehicle has priority)
                 bool incomingIsLeaving = incomingState.junctionTransitState == VehicleJunctionTransitState.Leave;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                     $">>> Car {vehicleId} has priority over {incomingVehicleId}. incomingIsLeaving={incomingIsLeaving}");
@@ -1059,7 +1059,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             // the target vehicle must wait
-            Log._DebugIf(
+            Log._TraceIf(
                 logPriority,
                 () => $"  TrafficPriorityManager.HasVehiclePriority({vehicleId}, {incomingVehicleId}): " +
                 $">>> Car {vehicleId} must wait for {incomingVehicleId}. returning FALSE.");
@@ -1097,14 +1097,14 @@ namespace TrafficManager.Manager.Impl {
 
             if (sameTargets) {
                 // both are going to the same segment
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.DetectCollision({vehicleId}, {incomingVehicleId}): " +
                     "Target and incoming are going to the same segment.");
 
                 if (nextPos.m_lane == incomingState.nextLaneIndex) {
                     // both are going to the same lane: lane order is always incorrect
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"  TrafficPriorityManager.DetectCollision({vehicleId}, {incomingVehicleId}): " +
                         "Target and incoming are going to the same segment AND lane. lane order is incorrect!");
@@ -1112,7 +1112,7 @@ namespace TrafficManager.Manager.Impl {
                     wouldCollide = true;
                 } else {
                     // both are going to a different lane: check lane order
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logPriority,
                             () => $"  TrafficPriorityManager.DetectCollision({vehicleId}, {incomingVehicleId}): " +
                             "Target and incoming are going to the same segment BUT NOT to the same lane. " +
@@ -1131,7 +1131,7 @@ namespace TrafficManager.Manager.Impl {
                                                nextPos.m_lane,
                                                incomingState.nextLaneIndex); // stay left
                             if (logPriority) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "  TrafficPriorityManager.DetectCollision({0}, {1}): Target is going {2}. " +
                                     "Checking if lane {3} is LEFT to {4}. would collide? {5}",
                                     vehicleId,
@@ -1158,7 +1158,7 @@ namespace TrafficManager.Manager.Impl {
                                                        incomingState.nextLaneIndex,
                                                        nextPos.m_lane); // stay right
                                     if (logPriority) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "  TrafficPriorityManager.DetectCollision({0}, {1}): " +
                                             "Target is going {2} and incoming is coming from {3}. " +
                                             "Checking if lane {4} is RIGHT to {5}. would collide? {6}",
@@ -1183,7 +1183,7 @@ namespace TrafficManager.Manager.Impl {
                                                        nextPos.m_lane,
                                                        incomingState.nextLaneIndex); // stay left
                                     if (logPriority) {
-                                        Log._DebugFormat(
+                                        Log._TraceFormat(
                                             "  TrafficPriorityManager.DetectCollision({0}, {1}): Target " +
                                             "is going {2} and incoming is coming from {3}. Checking if " +
                                             "lane {4} is LEFT to {5}. would collide? {6}",
@@ -1225,7 +1225,7 @@ namespace TrafficManager.Manager.Impl {
                                                incomingState.nextLaneIndex,
                                                nextPos.m_lane); // stay right
                             if (logPriority) {
-                                Log._DebugFormat(
+                                Log._TraceFormat(
                                     "  TrafficPriorityManager.DetectCollision({0}, {1}): Target is " +
                                     "going RIGHT. Checking if lane {2} is RIGHT to {3}. would collide? {4}",
                                     vehicleId,
@@ -1238,13 +1238,13 @@ namespace TrafficManager.Manager.Impl {
                             break;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logPriority,
                         () => $"    TrafficPriorityManager.DetectCollision({vehicleId}, " +
                         $"{incomingVehicleId}): >>> would collide? {wouldCollide}");
                 }
             } else {
-                Log._DebugIf(
+                Log._TraceIf(
                     logPriority,
                     () => $"  TrafficPriorityManager.DetectCollision({vehicleId}, {incomingVehicleId}): " +
                     $"Target and incoming are going to different segments.");
@@ -1343,7 +1343,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "  TrafficPriorityManager.DetectCollision({0}, {1}): Target is going {2}, " +
                         "incoming is coming from {3} and going {4}. would collide? {5}",
                         vehicleId,
@@ -1417,7 +1417,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (logPriority) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TrafficPriorityManager.HasPriorityOnSameLevel({0}, {1}): targetToDir={2}, " +
                     "incomingFromDir={3}, incomingToRelDir={4}: ret={5}",
                     vehicleId,
@@ -1474,7 +1474,7 @@ namespace TrafficManager.Manager.Impl {
                 NetInfo.Lane rightLane = segmentInfo.m_lanes[rightLaneIndex];
 
                 if (logPriority) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "    IsLaneOrderConflictFree({0}, {1}, {2}): dir={3}, dir2={4}, dir3={5} " +
                         "laneDir={6}, leftLanePos={7}, rightLanePos={8}",
                         segmentId,
@@ -1538,7 +1538,7 @@ namespace TrafficManager.Manager.Impl {
                 return;
             }
 
-            Log._Debug(
+            Log._Trace(
                 $"TrafficPriorityManager.HandleSegmentEndReplacement({replacement}): " +
                 $"Segment replacement detected: {oldSegmentEndId.SegmentId} -> {newSegmentEndId.SegmentId}\n" +
                 $"Moving priority sign {sign} to new segment.");

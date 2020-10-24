@@ -170,7 +170,7 @@ namespace TrafficManager.UI.SubTools {
 
         public override void OnActivate() {
             base.OnActivate();
-            Log._Debug("LaneConnectorTool: OnActivate");
+            Log._Trace("LaneConnectorTool: OnActivate");
             SelectedNodeId = 0;
             MainTool.RequestOnscreenDisplayUpdate();
             RefreshCurrentRestrictedNodeIds();

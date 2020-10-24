@@ -83,7 +83,7 @@ namespace TrafficManager.UI {
 
             public override void HandleClick(UIMouseEventParameter p) {
                 InstanceID instance = WorldInfoPanel.GetCurrentInstanceID();
-                Log._Debug($"Current vehicle instance: {instance.Vehicle}");
+                Log._Trace($"Current vehicle instance: {instance.Vehicle}");
 
                 if (instance.Vehicle != 0) {
                     Constants.ServiceFactory.SimulationService.AddAction(

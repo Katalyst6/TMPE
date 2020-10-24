@@ -55,7 +55,7 @@ namespace TrafficManager.Custom.AI {
 
 #if DEBUG
                 uint logVehiclePath = vehicleData.m_path;
-                Log._DebugIf(
+                Log._TraceIf(
                     logParkingAi,
                     () => $"CustomCarAI.CustomSimulationStep({vehicleId}): " +
                     $"Path: {logVehiclePath}, mainPathState={mainPathState}");
@@ -76,7 +76,7 @@ namespace TrafficManager.Custom.AI {
 
 #if DEBUG
                     if (logParkingAi) {
-                        Log._Debug($"CustomCarAI.CustomSimulationStep({vehicleId}): " +
+                        Log._Trace($"CustomCarAI.CustomSimulationStep({vehicleId}): " +
                                    $"Applied Parking AI logic. Path: {vehicleData.m_path}, " +
                                    $"mainPathState={mainPathState}, finalPathState={finalPathState}");
                     }
@@ -87,7 +87,7 @@ namespace TrafficManager.Custom.AI {
                     case ExtSoftPathState.Ready: {
 #if DEBUG
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomCarAI.CustomSimulationStep({vehicleId}): Path-finding " +
                                 $"succeeded for vehicle {vehicleId} (finalPathState={finalPathState}). " +
                                 $"Path: {vehicleData.m_path} -- calling CarAI.PathfindSuccess");
@@ -105,7 +105,7 @@ namespace TrafficManager.Custom.AI {
                     case ExtSoftPathState.Ignore: {
 #if DEBUG
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomCarAI.CustomSimulationStep({vehicleId}): Path-finding " +
                                 $"result shall be ignored for vehicle {vehicleId} " +
                                 $"(finalPathState={finalPathState}). Path: {vehicleData.m_path} -- ignoring");
@@ -118,7 +118,7 @@ namespace TrafficManager.Custom.AI {
                     default: {
 #if DEBUG
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomCarAI.CustomSimulationStep({vehicleId}): Path-finding " +
                                 $"result undetermined for vehicle {vehicleId} (finalPathState={finalPathState}). " +
                                 $"Path: {vehicleData.m_path} -- continue");
@@ -130,7 +130,7 @@ namespace TrafficManager.Custom.AI {
                     case ExtSoftPathState.FailedHard: {
 #if DEBUG
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomCarAI.CustomSimulationStep({vehicleId}): HARD path-finding " +
                                 $"failure for vehicle {vehicleId} (finalPathState={finalPathState}). " +
                                 $"Path: {vehicleData.m_path} -- calling CarAI.PathfindFailure");
@@ -146,7 +146,7 @@ namespace TrafficManager.Custom.AI {
                     case ExtSoftPathState.FailedSoft: {
 #if DEBUG
                         if (logParkingAi) {
-                            Log._Debug(
+                            Log._Trace(
                                 $"CustomCarAI.CustomSimulationStep({vehicleId}): SOFT path-finding " +
                                 $"failure for vehicle {vehicleId} (finalPathState={finalPathState}). " +
                                 $"Path: {vehicleData.m_path} -- calling CarAI.InvalidPath");
@@ -292,7 +292,7 @@ namespace TrafficManager.Custom.AI {
                             || DebugSettings.VehicleId == vehicleId);
 
             if (logCalculation) {
-                Log._Debug($"CustomCarAI.CustomCalculateSegmentPosition({vehicleId}) called.\n" +
+                Log._Trace($"CustomCarAI.CustomCalculateSegmentPosition({vehicleId}) called.\n" +
                            $"\tcurPosition.m_segment={curPosition.m_segment}, " +
                            $"curPosition.m_offset={curPosition.m_offset}\n" +
                            $"\tnextPosition.m_segment={nextPosition.m_segment}, " +
@@ -545,7 +545,7 @@ namespace TrafficManager.Custom.AI {
                 return false;
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logParkingAi,
                 () => $"CustomCarAI.CustomStartPathFind({vehicleId}): " +
                 $"Path-finding starts for vehicle {vehicleId}, path={path}, " +
@@ -603,7 +603,7 @@ namespace TrafficManager.Custom.AI {
 #else
             const bool logLogic = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logLogic,
                 () => $"CustomCarAI.CustomCheckOtherVehicle({vehicleId}, {otherID}) called.");
 

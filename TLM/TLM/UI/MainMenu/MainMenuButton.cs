@@ -94,7 +94,7 @@ namespace TrafficManager.UI.MainMenu {
                               || config.Main.MainMenuButtonY != (int)absolutePosition.y;
 
             if (posChanged) {
-                Log._Debug($"Button position changed to {absolutePosition.x}|{absolutePosition.y}");
+                Log._Trace($"Button position changed to {absolutePosition.x}|{absolutePosition.y}");
 
                 config.Main.MainMenuButtonX = (int)absolutePosition.x;
                 config.Main.MainMenuButtonY = (int)absolutePosition.y;
@@ -172,7 +172,7 @@ namespace TrafficManager.UI.MainMenu {
 
         public override void HandleClick(UIMouseEventParameter p) {
             try {
-                Log._Debug($"Current tool: {ToolManager.instance.m_properties.CurrentTool}");
+                Log._Trace($"Current tool: {ToolManager.instance.m_properties.CurrentTool}");
                 ModUI.Instance.ToggleMainMenu();
             }
             catch (Exception e) {

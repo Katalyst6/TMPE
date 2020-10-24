@@ -53,7 +53,7 @@ namespace TrafficManager.Util.Record {
                 var originalLaneInstanceID = new InstanceID { NetLane = originalLaneID };
                 if (map.TryGetValue(originalLaneInstanceID, out var ret))
                     return ret.NetLane;
-                Log._Debug($"Could not map lane:{originalLaneID}. this is expected if move it has not copied all segment[s] from an intersection"); 
+                Log._Trace($"Could not map lane:{originalLaneID}. this is expected if move it has not copied all segment[s] from an intersection"); 
                 return 0;
             }
             var mappedLaneId = MappedLaneId(LaneId);

@@ -22,13 +22,13 @@ namespace TrafficManager.State.Asset {
         public override void OnAssetLoaded(string name, object asset, Dictionary<string, byte[]> userData) {
             Log.Info($"AssetDataExtension.OnAssetLoaded({name}, {asset}, userData) called");
             if (asset is BuildingInfo prefab) {
-                Log._Debug("AssetDataExtension.OnAssetLoaded():  prefab is " + prefab);
+                Log._Trace("AssetDataExtension.OnAssetLoaded():  prefab is " + prefab);
                 if (userData.TryGetValue(TMPE_RECORD_ID, out byte[] data)) {
                     Log.Info("AssetDataExtension.OnAssetLoaded(): extracted data for " + TMPE_RECORD_ID);
                     var assetData = SerializationUtil.Deserialize(data) as AssetData;
                     AssertNotNull(assetData, "assetData");
                     Asset2Data[prefab] = assetData;
-                    Log._Debug("AssetDataExtension.OnAssetLoaded(): Asset Data=" + assetData);
+                    Log._Trace("AssetDataExtension.OnAssetLoaded(): Asset Data=" + assetData);
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace TrafficManager.State.Asset {
             if (asset is BuildingInfo prefab) {
                 Log.Info("AssetDataExtension.OnAssetSaved():  prefab is " + prefab);
                 var assetData = AssetData.GetAssetData(prefab);
-                Log._Debug("AssetDataExtension.OnAssetSaved(): assetData=" + assetData);
+                Log._Trace("AssetDataExtension.OnAssetSaved(): assetData=" + assetData);
                 userData = new Dictionary<string, byte[]>();
                 userData.Add(TMPE_RECORD_ID, SerializationUtil.Serialize(assetData));
             }

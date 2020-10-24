@@ -94,7 +94,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"Reckless driver amount changed to {newRecklessDrivers}");
+            Log._Trace($"Reckless driver amount changed to {newRecklessDrivers}");
             Options.recklessDrivers = newRecklessDrivers;
         }
 
@@ -103,7 +103,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"advancedAI changed to {newAdvancedAi}");
+            Log._Trace($"advancedAI changed to {newAdvancedAi}");
             SetAdvancedAi(newAdvancedAi);
         }
 
@@ -112,7 +112,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"strongerRoadConditionEffects changed to {newStrongerRoadConditionEffects}");
+            Log._Trace($"strongerRoadConditionEffects changed to {newStrongerRoadConditionEffects}");
             Options.strongerRoadConditionEffects = newStrongerRoadConditionEffects;
         }
 
@@ -121,7 +121,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"prohibitPocketCars changed to {newValue}");
+            Log._Trace($"prohibitPocketCars changed to {newValue}");
             Options.parkingAI = newValue;
 
             if (Options.parkingAI) {
@@ -136,7 +136,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"realisticPublicTransport changed to {newValue}");
+            Log._Trace($"realisticPublicTransport changed to {newValue}");
             Options.realisticPublicTransport = newValue;
         }
 
@@ -145,7 +145,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"individualDrivingStyle changed to {value}");
+            Log._Trace($"individualDrivingStyle changed to {value}");
             SetIndividualDrivingStyle(value);
         }
 
@@ -154,7 +154,7 @@ namespace TrafficManager.State {
                 return;
             }
 
-            Log._Debug($"disableDespawning changed to {value}");
+            Log._Trace($"disableDespawning changed to {value}");
             Options.disableDespawning = value;
         }
 
@@ -173,7 +173,7 @@ namespace TrafficManager.State {
                 _altLaneSelectionRatioSlider.RefreshTooltip();
             }
 
-            Log._Debug($"altLaneSelectionRatio changed to {Options.altLaneSelectionRatio}");
+            Log._Trace($"altLaneSelectionRatio changed to {Options.altLaneSelectionRatio}");
         }
 
         public static void SetDLSPercentage(byte val) {

@@ -250,12 +250,12 @@ namespace TrafficManager.UI {
             UI.SubTools.PrioritySigns.MassEditOverlay.Show = true;
             tmTool.SetToolMode(ToolMode.None);
             tmTool.InitializeSubTools();
-            Log._Debug("Mass edit overlay enabled");
+            Log._Trace("Mass edit overlay enabled");
         }
 
         private void HideMassEditOverlay() {
             UI.SubTools.PrioritySigns.MassEditOverlay.Show = false;
-            Log._Debug("Mass edit overlay disabled");
+            Log._Trace("Mass edit overlay disabled");
         }
 
         private void ShowAdvisorOnEvent(UIComponent component, bool value) {

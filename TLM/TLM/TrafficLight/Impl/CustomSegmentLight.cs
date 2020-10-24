@@ -149,7 +149,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 out bool hasForwardSegment,
                 out bool hasRightSegment);
 
-            Log._Debug(
+            Log._Trace(
                 $"ChangeMode. segment {SegmentId} @ node {NodeId}, hasLeftSegment={hasLeftSegment}, " +
                 $"hasForwardSegment={hasForwardSegment}, hasRightSegment={hasRightSegment}");
 
@@ -429,7 +429,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public void MakeRedOrGreen() {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == NodeId)
-                Log._Debug($"CustomSegmentLight.MakeRedOrGreen: called for segment {SegmentId} @ {NodeId}");
+                Log._Trace($"CustomSegmentLight.MakeRedOrGreen: called for segment {SegmentId} @ {NodeId}");
 #endif
 
             RoadBaseAI.TrafficLightState mainState = RoadBaseAI.TrafficLightState.Green;
@@ -454,7 +454,7 @@ namespace TrafficManager.TrafficLight.Impl {
         public void MakeRed() {
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == NodeId)
-                Log._Debug($"CustomSegmentLight.MakeRed: called for segment {SegmentId} @ {NodeId}");
+                Log._Trace($"CustomSegmentLight.MakeRed: called for segment {SegmentId} @ {NodeId}");
 #endif
 
             SetStates(
@@ -488,7 +488,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
 #if DEBUG
             if (DebugSwitch.TimedTrafficLights.Get() && DebugSettings.NodeId == NodeId) {
-                Log._Debug(
+                Log._Trace(
                     $"CustomSegmentLight.SetStates({setMain}, {setLeft}, {setRight}, {calcAutoPedLight}) for segment {SegmentId} @ {NodeId}: Main={LightMain} L={LightLeft} R={LightRight}");
             }
 #endif

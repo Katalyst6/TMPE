@@ -73,7 +73,7 @@ namespace TrafficManager.UI {
             UiScaleObservable = new UIScaleObservable();
             uiOpacityObservable = new UIOpacityObservable();
 
-            Log._Debug("##### Initializing ModUI.");
+            Log._Trace("##### Initializing ModUI.");
 
             CreateMainMenuButtonAndWindow();
 #if DEBUG
@@ -105,7 +105,7 @@ namespace TrafficManager.UI {
         }
 
         public void Destroy() {
-            Log._Debug("ModUI destructor is called.");
+            Log._Trace("ModUI destructor is called.");
             Destroy(MainMenuButton);
             Destroy(MainMenu);
             ReleaseTool();
@@ -217,7 +217,7 @@ namespace TrafficManager.UI {
         }
 
         public static void EnableTool() {
-            Log._Debug("ModUI.EnableTool: called");
+            Log._Trace("ModUI.EnableTool: called");
             TrafficManagerTool tmTool = GetTrafficManagerTool(true);
 
             ToolsModifierControl.toolController.CurrentTool = tmTool;
@@ -225,9 +225,9 @@ namespace TrafficManager.UI {
         }
 
         public static void OnLevelLoaded() {
-            Log._Debug("ModUI.OnLevelLoaded: called");
+            Log._Trace("ModUI.OnLevelLoaded: called");
             if (ModUI.Instance == null) {
-                Log._Debug("Adding UIBase instance.");
+                Log._Trace("Adding UIBase instance.");
                 ModUI.Instance = ToolsModifierControl.toolController
                     .gameObject
                     .AddComponent<ModUI>();
@@ -237,7 +237,7 @@ namespace TrafficManager.UI {
         }
 
         public static void DisableTool() {
-            Log._Debug("ModUI.DisableTool: called");
+            Log._Trace("ModUI.DisableTool: called");
             if (ToolsModifierControl.toolController == null) {
                 Log.Warning("ModUI.DisableTool: ToolsModifierControl.toolController is null!");
             } else if (trafficManagerTool_ == null) {

@@ -175,7 +175,7 @@ namespace TrafficManager.UI {
         private NetTool NetTool {
             get {
                 if (netTool_ == null) {
-                    Log._Debug("NetTool field value is null. Searching for instance...");
+                    Log._Trace("NetTool field value is null. Searching for instance...");
                     netTool_ = ToolsModifierControl.toolController.Tools.OfType<NetTool>().FirstOrDefault();
                 }
 
@@ -230,7 +230,7 @@ namespace TrafficManager.UI {
         }
 
         protected override void Awake() {
-            Log._Debug($"TrafficLightTool: Awake {GetHashCode()}");
+            Log._Trace($"TrafficLightTool: Awake {GetHashCode()}");
             base.Awake();
         }
 
@@ -263,7 +263,7 @@ namespace TrafficManager.UI {
             bool toolModeChanged = newToolMode != toolMode_;
 
             if (!toolModeChanged) {
-                Log._Debug($"SetToolMode: not changed old={oldToolMode} new={newToolMode}");
+                Log._Trace($"SetToolMode: not changed old={oldToolMode} new={newToolMode}");
                 return;
             }
 
@@ -275,12 +275,12 @@ namespace TrafficManager.UI {
                 activeSubTool_ = null;
                 toolMode_ = ToolMode.None;
 
-                Log._Debug($"SetToolMode: reset because toolmode not found {newToolMode}");
+                Log._Trace($"SetToolMode: reset because toolmode not found {newToolMode}");
                 return;
             }
 
             SetToolMode_Activate(newToolMode);
-            Log._Debug($"SetToolMode: changed old={oldToolMode} new={newToolMode}");
+            Log._Trace($"SetToolMode: changed old={oldToolMode} new={newToolMode}");
         }
 
         /// <summary>Resets the tool and calls deactivate on it.</summary>
@@ -324,7 +324,7 @@ namespace TrafficManager.UI {
                 ModUI.Instance.ShowMainMenu();
 
             if (legacySubTools_ != null) {
-                Log._Debug("TrafficManagerTool.OnEnable(): Performing cleanup");
+                Log._Trace("TrafficManagerTool.OnEnable(): Performing cleanup");
                 foreach (KeyValuePair<ToolMode, LegacySubTool> e in legacySubTools_) {
                     e.Value.Cleanup();
                 }
@@ -996,7 +996,7 @@ namespace TrafficManager.UI {
                 return;
             }
 
-            Log._Debug($"TrafficManagerTool.ShowAdvisor({localeKey}) called.");
+            Log._Trace($"TrafficManagerTool.ShowAdvisor({localeKey}) called.");
             TutorialAdvisorPanel tutorialPanel = ToolsModifierControl.advisorPanel;
             string key = Translation.TUTORIAL_KEY_PREFIX + localeKey;
 

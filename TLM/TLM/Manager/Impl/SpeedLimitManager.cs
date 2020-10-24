@@ -638,12 +638,12 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (speedLimit != null) {
-                    Log._Debug(
+                    Log._Trace(
                         $"SpeedLimitManager: Setting speed limit of lane {curLaneId} " +
                         $"to {speedLimit * Constants.SPEED_TO_KMPH}");
                     Flags.SetLaneSpeedLimit(curLaneId, speedLimit);
                 } else {
-                    Log._Debug(
+                    Log._Trace(
                         $"SpeedLimitManager: Setting speed limit of lane {curLaneId} " +
                         $"to default");
                     Flags.RemoveLaneSpeedLimit(curLaneId);
@@ -726,7 +726,7 @@ namespace TrafficManager.Manager.Impl {
                 if (!(info.m_netAI is RoadBaseAI || info.m_netAI is TrainTrackBaseAI || info.m_netAI is MetroTrackAI)) {
 #if DEBUG
                     // Only outputting these in debug as there are loads of them
-                    Log._DebugIf(debugSpeedLimits, () =>
+                    Log._TraceIf(debugSpeedLimits, () =>
                         $"- Skipped: NetInfo #{i} ({infoName}) - m_netAI is not applicable: {info.m_netAI}.");
 #endif
                     continue;
@@ -901,7 +901,7 @@ namespace TrafficManager.Manager.Impl {
                 try {
                     if (!Services.NetService.IsLaneAndItsSegmentValid(laneSpeedLimit.laneId)) {
 #if DEBUG
-                        Log._DebugIf(debugSpeedLimits, () =>
+                        Log._TraceIf(debugSpeedLimits, () =>
                             $"SpeedLimitManager.LoadData: Skipping lane {laneSpeedLimit.laneId}: Lane is invalid");
 #endif
                         continue;
@@ -915,7 +915,7 @@ namespace TrafficManager.Manager.Impl {
                                    .instance.m_segments.m_buffer[segmentId].Info;
                     float customSpeedLimit = GetCustomNetInfoSpeedLimit(info);
 #if DEBUG
-                    Log._DebugIf(debugSpeedLimits, () =>
+                    Log._TraceIf(debugSpeedLimits, () =>
                         $"SpeedLimitManager.LoadData: Handling lane {laneSpeedLimit.laneId}: " +
                         $"Custom speed limit of segment {segmentId} info ({info}, name={info?.name}, " +
                         $"lanes={info?.m_lanes} is {customSpeedLimit}");
@@ -924,7 +924,7 @@ namespace TrafficManager.Manager.Impl {
                     if (IsValidRange(customSpeedLimit)) {
                         // lane speed limit differs from default speed limit
 #if DEBUG
-                        Log._DebugIf(debugSpeedLimits, () =>
+                        Log._TraceIf(debugSpeedLimits, () =>
                             "SpeedLimitManager.LoadData: Loading lane speed limit: " +
                             $"lane {laneSpeedLimit.laneId} = {laneSpeedLimit.speedLimit} km/h");
 #endif
@@ -934,7 +934,7 @@ namespace TrafficManager.Manager.Impl {
                         Flags.SetLaneSpeedLimit(laneSpeedLimit.laneId, kmph);
                     } else {
 #if DEBUG
-                    Log._DebugIf(debugSpeedLimits, () =>
+                    Log._TraceIf(debugSpeedLimits, () =>
                         "SpeedLimitManager.LoadData: " +
                         $"Skipping lane speed limit of lane {laneSpeedLimit.laneId} " +
                         $"({laneSpeedLimit.speedLimit} km/h)");

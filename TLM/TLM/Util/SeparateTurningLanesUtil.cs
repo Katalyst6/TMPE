@@ -184,7 +184,7 @@ namespace TrafficManager.Util {
             int totalLaneCount = nearLanesCount + forwardLanesCount + farLanesCount;
             int numdirs = Convert.ToInt32(nearLanesCount > 0) + Convert.ToInt32(farLanesCount > 0) + Convert.ToInt32(forwardLanesCount > 0);
 
-            Log._Debug($"SeparateSegmentLanes: laneType={laneType} totalLaneCount {totalLaneCount} | numdirs = {numdirs} | outgoingLaneCount = {srcLaneCount}");
+            Log._Trace($"SeparateSegmentLanes: laneType={laneType} totalLaneCount {totalLaneCount} | numdirs = {numdirs} | outgoingLaneCount = {srcLaneCount}");
 
             if (numdirs < 2) {
                 return; // no junction
@@ -222,7 +222,7 @@ namespace TrafficManager.Util {
                     out near);
             }
 
-            Log._Debug($"near=${near} forward={forward} far={far}");
+            Log._Trace($"near=${near} forward={forward} far={far}");
             for (var i = 0; i < laneList.Count; i++) {
                 LaneArrows arrow;
                 if (i < near) {
@@ -266,7 +266,7 @@ namespace TrafficManager.Util {
                 Debug.Assert(numdirs == 3 && total >= 3);
                 DistributeLanes3(total, a, b, c, out x, out y, out z);
             }
-            Log._Debug($"DistributeLanes (by prioirty): {a}=>{x} | {b}=>{y} | {c}=>{z}");
+            Log._Trace($"DistributeLanes (by prioirty): {a}=>{x} | {b}=>{y} | {c}=>{z}");
         }
 
         /// <summary>

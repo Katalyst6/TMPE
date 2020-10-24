@@ -50,7 +50,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logGeometry = false;
 #endif
             if (logGeometry) {
-                Log._Debug($">>> ExtSegmentManager.Recalculate({segmentId}) called.");
+                Log._Trace($">>> ExtSegmentManager.Recalculate({segmentId}) called.");
             }
 
             if (!IsValid(segmentId)) {
@@ -192,14 +192,14 @@ namespace TrafficManager.Manager.Impl {
 
         protected override void InternalPrintDebugInfo() {
             base.InternalPrintDebugInfo();
-            Log._Debug($"Extended segment data:");
+            Log._Trace($"Extended segment data:");
 
             for (int i = 0; i < ExtSegments.Length; ++i) {
                 if (!IsValid((ushort)i)) {
                     continue;
                 }
 
-                Log._Debug($"Segment {i}: {ExtSegments[i]}");
+                Log._Trace($"Segment {i}: {ExtSegments[i]}");
             }
         }
 
@@ -214,14 +214,14 @@ namespace TrafficManager.Manager.Impl {
 
         public override void OnBeforeLoadData() {
             base.OnBeforeLoadData();
-            Log._Debug($"ExtSegmentManager.OnBeforeLoadData: Calculating {ExtSegments.Length} " +
+            Log._Trace($"ExtSegmentManager.OnBeforeLoadData: Calculating {ExtSegments.Length} " +
                        "extended segments...");
 
             for (int i = 0; i < ExtSegments.Length; ++i) {
                 Recalculate(ref ExtSegments[i]);
             }
 
-            Log._Debug($"ExtSegmentManager.OnBeforeLoadData: Calculation finished.");
+            Log._Trace($"ExtSegmentManager.OnBeforeLoadData: Calculation finished.");
         }
     }
 }

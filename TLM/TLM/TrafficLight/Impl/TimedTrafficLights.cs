@@ -163,7 +163,7 @@ namespace TrafficManager.TrafficLight.Impl {
             try {
                 Monitor.Enter(rotateLock_);
 
-                Log._Debug($"TimedTrafficLights.Rotate({dir}) @ node {NodeId}: Rotating timed traffic light.");
+                Log._Trace($"TimedTrafficLights.Rotate({dir}) @ node {NodeId}: Rotating timed traffic light.");
 
                 if (dir != ArrowDirection.Left && dir != ArrowDirection.Right) {
                     throw new NotSupportedException();
@@ -180,7 +180,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         return true;
                     });
 
-                Log._Debug(
+                Log._Trace(
                     $"TimedTrafficLights.Rotate({dir}) @ node {NodeId}: Clock-sorted segment ids: " +
                     clockSortedSegmentIds.CollectionToString());
 
@@ -202,7 +202,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         int targetIndex = (sourceIndex + 1) % clockSortedSegmentIds.Count;
                         ushort targetSegmentId = clockSortedSegmentIds[targetIndex];
 
-                        Log._Debug(
+                        Log._Trace(
                             $"TimedTrafficLights.Rotate({dir}) @ node {NodeId}: Moving light @ seg. " +
                             $"{sourceSegmentId} to seg. {targetSegmentId} @ step {stepIndex}");
 
@@ -271,7 +271,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #else
             const bool logTrafficLights = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $">>>>> TimedTrafficLights.UpdateDirections: called for node {NodeId}");
 
@@ -285,7 +285,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     continue;
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.UpdateDirections: Processing source segment {sourceSegmentId}");
 
@@ -307,14 +307,14 @@ namespace TrafficManager.TrafficLight.Impl {
                         targetSegmentId);
                     dirs.Add(targetSegmentId, dir);
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => "TimedTrafficLights.UpdateDirections: Processing source segment " +
                         $"{sourceSegmentId}, target segment {targetSegmentId}: adding dir {dir}");
                 }
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"<<<<< TimedTrafficLights.UpdateDirections: finished for node {NodeId}: " +
                 $"{Directions.DictionaryToString()}");
@@ -582,7 +582,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #endif
 
             if (!IsMasterNode() || !IsStarted()) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => "TimedTrafficLights.SimulationStep(): TTL SimStep: *STOP* " +
                     $"NodeId={NodeId} isMasterNode={IsMasterNode()} IsStarted={IsStarted()}");
@@ -600,7 +600,7 @@ namespace TrafficManager.TrafficLight.Impl {
 //                    return;
 //            }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.SimulationStep(): TTL SimStep: NodeId={NodeId} Setting lights (1)");
 
@@ -610,7 +610,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             // using (var bm = Benchmark.MaybeCreateBenchmark(null, "StepDone")) {
             if (!Steps[CurrentStep].StepDone(true)) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.SimulationStep(): TTL SimStep: *STOP* NodeId={NodeId} " +
                     $"current step ({CurrentStep}) is not done.");
@@ -622,14 +622,14 @@ namespace TrafficManager.TrafficLight.Impl {
             //-------------------
             // step is done
             //-------------------
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.SimulationStep(): TTL SimStep: NodeId={NodeId} Setting lights (2)");
 
             TrafficLightSimulationManager tlsMan = TrafficLightSimulationManager.Instance;
 
             if (Steps[CurrentStep].NextStepRefIndex < 0) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.SimulationStep(): Step {CurrentStep} is done at " +
                     $"timed light {NodeId}. Determining next step.");
@@ -656,7 +656,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     int bestNextStepIndex = prevStepIndex;
 
                     if (logTrafficLights) {
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "TimedTrafficLights.SimulationStep(): Next step {0} has minTime = 0 at " +
                             "timed light {1}. Old step {2} has waitFlowDiff={3} (flow={4}, wait={5}).",
                             nextStepIndex,
@@ -683,7 +683,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         }
 
                         if (logTrafficLights) {
-                            Log._DebugFormat(
+                            Log._TraceFormat(
                                 "TimedTrafficLights.SimulationStep(): Checking upcoming step {0} " +
                                 "@ node {1}: flow={2} wait={3} minTime={4}. bestWaitFlowDiff={5}, " +
                                 "bestNextStepIndex={6}",
@@ -714,7 +714,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     }
 
                     if (bestNextStepIndex == CurrentStep) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "TimedTrafficLights.SimulationStep(): Best next step " +
                             $"{bestNextStepIndex} (wait/flow diff = {maxWaitFlowDiff}) equals CurrentStep " +
@@ -736,7 +736,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         return;
                     }
 
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => "TimedTrafficLights.SimulationStep(): Best next step " +
                               $"{bestNextStepIndex} (wait/flow diff = {maxWaitFlowDiff}) does not equal " +
@@ -765,7 +765,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             // using (var bm = Benchmark.MaybeCreateBenchmark(null, "IsEndTransitionDone")) {
             if (!Steps[CurrentStep].IsEndTransitionDone()) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.SimulationStep(): TTL SimStep: *STOP* NodeId={NodeId} " +
                     $"current step ({CurrentStep}): end transition is not done.");
@@ -778,7 +778,7 @@ namespace TrafficManager.TrafficLight.Impl {
             //-----------------------------------
             // ending transition (yellow) finished
             if (logTrafficLights) {
-                Log._DebugFormat(
+                Log._TraceFormat(
                     "TimedTrafficLights.SimulationStep(): TTL SimStep: NodeId={0} ending transition " +
                     "done. NodeGroup={1}, nodeId={2}, NumSteps={3}",
                     NodeId,
@@ -803,7 +803,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 ITimedTrafficLights slaveTtl3 = tlsMan.TrafficLightSimulations[slaveNodeId].timedLight;
                 slaveTtl3.CurrentStep = newStepIndex;
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.SimulationStep(): TTL SimStep: NodeId={slaveNodeId} " +
                     $"setting lights of next step: {CurrentStep}");
@@ -876,13 +876,13 @@ namespace TrafficManager.TrafficLight.Impl {
                     false);
 
             if (segmentLights == null) {
-                Log._Debug($"CheckNextChange: No segment lights at node {NodeId}, segment {segmentId}");
+                Log._Trace($"CheckNextChange: No segment lights at node {NodeId}, segment {segmentId}");
                 return 99;
             }
 
             ICustomSegmentLight segmentLight = segmentLights.GetCustomLight(vehicleType);
             if (segmentLight == null) {
-                Log._Debug($"CheckNextChange: No segment light at node {NodeId}, segment {segmentId}");
+                Log._Trace($"CheckNextChange: No segment light at node {NodeId}, segment {segmentId}");
                 return 99;
             }
 
@@ -949,7 +949,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 });
 
             if (NumSteps() <= 0) {
-                Log._Debug($"TimedTrafficLights.OnGeometryUpdate: no steps @ {NodeId}");
+                Log._Trace($"TimedTrafficLights.OnGeometryUpdate: no steps @ {NodeId}");
                 return;
             }
 
@@ -973,7 +973,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #else
             const bool logTrafficLights = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.BackUpInvalidStepSegments: called for timed traffic light @ {NodeId}");
 
@@ -989,7 +989,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 validSegments.Add(segmentId);
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.BackUpInvalidStepSegments: valid segments @ {NodeId}: " +
                 validSegments.CollectionToString());
@@ -1003,7 +1003,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         step.InvalidSegmentLights.AddLast(e.Value);
                         invalidSegmentIds.Add(e.Key);
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "TimedTrafficLights.BackUpInvalidStepSegments: Detected invalid " +
                             $"segment @ step {i}, node {NodeId}: {e.Key}");
@@ -1011,7 +1011,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 }
 
                 foreach (ushort invalidSegmentId in invalidSegmentIds) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => "TimedTrafficLights.BackUpInvalidStepSegments: Removing invalid segment " +
                         $"{invalidSegmentId} from step {i} @ node {NodeId}");
@@ -1021,7 +1021,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
 
                 if (logTrafficLights) {
-                    Log._DebugFormat(
+                    Log._TraceFormat(
                         "TimedTrafficLights.BackUpInvalidStepSegments finished for TTL step {0} @ " +
                         "node {1}: step.CustomSegmentLights={2} step.InvalidSegmentLights={3}",
                         i,
@@ -1056,7 +1056,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                 var startNode = (bool)Constants.ServiceFactory.NetService.IsStartNode(segmentId, NodeId);
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.HandleNewSegments: handling existing seg. {segmentId} @ {NodeId}");
 
@@ -1066,7 +1066,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                 // segment was created
                 RotationOffset = 0;
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.HandleNewSegments: New segment detected: {segmentId} @ {NodeId}");
 
@@ -1079,7 +1079,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
                     if (lightsToReuseNode == null) {
                         // no old segment found: create a fresh custom light
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => "TimedTrafficLights.HandleNewSegments: Adding new segment " +
                             $"{segmentId} to node {NodeId} without reusing old segment");
@@ -1095,7 +1095,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         step.InvalidSegmentLights.RemoveFirst();
                         ICustomSegmentLights lightsToReuse = lightsToReuseNode.Value;
 
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => $"Replacing old segment @ {NodeId} with new segment {segmentId}");
 
@@ -1289,7 +1289,7 @@ namespace TrafficManager.TrafficLight.Impl {
 #else
             const bool logTrafficLights = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.UpdateSegmentEnds: called for node {NodeId}");
 
@@ -1298,13 +1298,13 @@ namespace TrafficManager.TrafficLight.Impl {
 
             // update currently set segment ends
             foreach (ISegmentEndId endId in segmentEndIds) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => "TimedTrafficLights.UpdateSegmentEnds: updating existing segment end " +
                     $"{endId} for node {NodeId}");
 
                 if (!segEndMan.UpdateSegmentEnd(endId)) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => $"TimedTrafficLights.UpdateSegmentEnds: segment end {endId} " +
                         $"@ node {NodeId} is invalid");
@@ -1313,14 +1313,14 @@ namespace TrafficManager.TrafficLight.Impl {
                 } else {
                     ISegmentEnd end = segEndMan.GetSegmentEnd(endId);
                     if (end.NodeId != NodeId) {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => $"TimedTrafficLights.UpdateSegmentEnds: Segment end {end} is " +
                             $"valid and updated but does not belong to TTL node {NodeId} anymore.");
 
                         segmentEndsToDelete.Add(endId);
                     } else {
-                        Log._DebugIf(
+                        Log._TraceIf(
                             logTrafficLights,
                             () => $"TimedTrafficLights.UpdateSegmentEnds: segment end {endId} " +
                             $"@ node {NodeId} is valid");
@@ -1330,7 +1330,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
             // remove all invalid segment ends
             foreach (ISegmentEndId endId in segmentEndsToDelete) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => "TimedTrafficLights.UpdateSegmentEnds: Removing invalid segment " +
                     $"end {endId} @ node {NodeId}");
@@ -1339,7 +1339,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
 
             // set up new segment ends
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.UpdateSegmentEnds: Setting up new segment ends @ node {NodeId}.");
 
@@ -1354,7 +1354,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 ISegmentEndId endId = new SegmentEndId(segmentId, startNode);
 
                 if (segmentEndIds.Contains(endId)) {
-                    Log._DebugIf(
+                    Log._TraceIf(
                         logTrafficLights,
                         () => $"TimedTrafficLights.UpdateSegmentEnds: Node {NodeId} already knows " +
                         $"segment {segmentId}");
@@ -1362,7 +1362,7 @@ namespace TrafficManager.TrafficLight.Impl {
                     continue;
                 }
 
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => $"TimedTrafficLights.UpdateSegmentEnds: Adding segment {segmentId} to node {NodeId}");
 
@@ -1378,7 +1378,7 @@ namespace TrafficManager.TrafficLight.Impl {
                 }
             }
 
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.UpdateSegmentEnds: finished for node {NodeId}: " +
                 $"{segmentEndIds.CollectionToString()}");
@@ -1390,12 +1390,12 @@ namespace TrafficManager.TrafficLight.Impl {
 #else
             const bool logTrafficLights = false;
 #endif
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.DestroySegmentEnds: Destroying segment ends @ node {NodeId}");
 
             foreach (ISegmentEndId endId in segmentEndIds) {
-                Log._DebugIf(
+                Log._TraceIf(
                     logTrafficLights,
                     () => "TimedTrafficLights.DestroySegmentEnds: Destroying segment end " +
                     $"{endId} @ node {NodeId}");
@@ -1406,7 +1406,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
 
             segmentEndIds.Clear();
-            Log._DebugIf(
+            Log._TraceIf(
                 logTrafficLights,
                 () => $"TimedTrafficLights.DestroySegmentEnds: finished for node {NodeId}");
         }

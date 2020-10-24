@@ -53,7 +53,7 @@
             bool logPathfind = DebugSwitch.TransportLinePathfind.Get();
             ushort logStartNode = data.m_startNode;
             ushort logEndNode = data.m_endNode;
-            Log._DebugIf(
+            Log._TraceIf(
                 logPathfind,
                 () => $"TransportLineAI.CustomStartPathFind({segmentId}, ..., {netService}, " +
                       $"{netService2}, {vehicleType}, {skipQueue}): " +
@@ -222,7 +222,7 @@
 
                 data.m_path = path;
                 data.m_flags |= NetSegment.Flags.WaitingPath;
-                Log._DebugIf(
+                Log._TraceIf(
                     logPathfind,
                     () => $"TransportLineAI.CustomStartPathFind({segmentId}, ..., {netService}, " +
                     $"{netService2}, {vehicleType}, {skipQueue}): Started calculating " +

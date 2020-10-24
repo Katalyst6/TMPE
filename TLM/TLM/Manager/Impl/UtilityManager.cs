@@ -60,10 +60,10 @@ namespace TrafficManager.Manager.Impl {
 
         [UsedImplicitly]
         public void PrintAllDebugInfo() {
-            Log._Debug("UtilityManager.PrintAllDebugInfo(): Pausing simulation.");
+            Log._Trace("UtilityManager.PrintAllDebugInfo(): Pausing simulation.");
             Singleton<SimulationManager>.instance.ForcedSimulationPaused = true;
 
-            Log._Debug("=== Flags.PrintDebugInfo() ===");
+            Log._Trace("=== Flags.PrintDebugInfo() ===");
             try {
                 Flags.PrintDebugInfo();
             }
@@ -80,7 +80,7 @@ namespace TrafficManager.Manager.Impl {
                 }
             }
 
-            Log._Debug("UtilityManager.PrintAllDebugInfo(): Unpausing simulation.");
+            Log._Trace("UtilityManager.PrintAllDebugInfo(): Unpausing simulation.");
             Singleton<SimulationManager>.instance.ForcedSimulationPaused = false;
         }
 
@@ -130,7 +130,7 @@ namespace TrafficManager.Manager.Impl {
                             (citizenManager.m_instances.m_buffer[citizenInstanceId].GetLastFramePosition() -
                              (Vector3)citizenManager.m_instances.m_buffer[citizenInstanceId].m_targetPos
                              ).magnitude;
-                        Log._DebugFormat(
+                        Log._TraceFormat(
                             "Found potential floating citizen instance: {0} Source building: {1} " +
                             "Target building: {2} Distance to target position: {3}",
                             citizenInstanceId,
