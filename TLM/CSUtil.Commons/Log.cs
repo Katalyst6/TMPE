@@ -41,7 +41,7 @@ namespace CSUtil.Commons {
 
         // TODO refactor log filename to configuration
         private static readonly string LogFilename
-            = Path.Combine(Application.dataPath, "TMPE.log");
+            = Path.Combine(@"D:\Dev\TMPE.Logs", "TMPE.log");
 
         private enum LogLevel {
             Trace,
