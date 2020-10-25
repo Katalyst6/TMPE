@@ -71,7 +71,7 @@ namespace CSUtil.Commons {
         /// <param name="s">The text</param>
         [Conditional("DEBUG")]
         public static void _Debug(string s) {
-            LogToFile(s, LogLevel.Debug);
+            LogInternal(s, LogLevel.Debug);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace CSUtil.Commons {
         /// <param name="format">The text</param>
         [Conditional("DEBUG")]
         public static void _DebugFormat(string format, params object[] args) {
-            LogToFile(string.Format(format, args), LogLevel.Debug);
+            LogInternal(string.Format(format, args), LogLevel.Debug);
         }
 
         /// <summary>
@@ -94,13 +94,13 @@ namespace CSUtil.Commons {
         [Conditional("DEBUG")]
         public static void _DebugIf(bool cond, Func<string> s) {
             if (cond) {
-                LogToFile(s(), LogLevel.Debug);
+                LogInternal(s(), LogLevel.Debug);
             }
         }
 
         [Conditional("TRACE")]
         public static void _Trace(string s) {
-            LogToFile(s, LogLevel.Trace);
+            LogInternal(s, LogLevel.Trace);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace CSUtil.Commons {
         /// <param name="format">The text</param>
         [Conditional("TRACE")]
         public static void _TraceFormat(string format, params object[] args) {
-            LogToFile(string.Format(format, args), LogLevel.Trace);
+            LogInternal(string.Format(format, args), LogLevel.Trace);
         }
 
         /// <summary>
@@ -123,16 +123,16 @@ namespace CSUtil.Commons {
         [Conditional("TRACE")]
         public static void _TraceIf(bool cond, Func<string> s) {
             if (cond) {
-                LogToFile(s(), LogLevel.Debug);
+                LogInternal(s(), LogLevel.Debug);
             }
         }
 
         public static void Info(string s) {
-            LogToFile(s, LogLevel.Info);
+            LogInternal(s, LogLevel.Info);
         }
 
         public static void InfoFormat(string format, params object[] args) {
-            LogToFile(string.Format(format, args), LogLevel.Info);
+            LogInternal(string.Format(format, args), LogLevel.Info);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace CSUtil.Commons {
         /// <param name="s">The text</param>
         [Conditional("DEBUG")]
         public static void _DebugOnlyWarning(string s) {
-            LogToFile(s, LogLevel.Warning);
+            LogInternal(s, LogLevel.Warning);
         }
 
         /// <summary>
@@ -154,16 +154,16 @@ namespace CSUtil.Commons {
         [Conditional("DEBUG")]
         public static void _DebugOnlyWarningIf(bool cond, Func<string> s) {
             if (cond) {
-                LogToFile(s(), LogLevel.Warning);
+                LogInternal(s(), LogLevel.Warning);
             }
         }
 
         public static void Warning(string s) {
-            LogToFile(s, LogLevel.Warning);
+            LogInternal(s, LogLevel.Warning);
         }
 
         public static void WarningFormat(string format, params object[] args) {
-            LogToFile(string.Format(format, args), LogLevel.Warning);
+            LogInternal(string.Format(format, args), LogLevel.Warning);
         }
 
         /// <summary>
@@ -175,16 +175,16 @@ namespace CSUtil.Commons {
         /// <param name="s">The function which returns text to log</param>
         public static void WarningIf(bool cond, Func<string> s) {
             if (cond) {
-                LogToFile(s(), LogLevel.Warning);
+                LogInternal(s(), LogLevel.Warning);
             }
         }
 
         public static void Error(string s) {
-            LogToFile(s, LogLevel.Error);
+            LogInternal(s, LogLevel.Error);
         }
 
         public static void ErrorFormat(string format, params object[] args) {
-            LogToFile(string.Format(format, args), LogLevel.Error);
+            LogInternal(string.Format(format, args), LogLevel.Error);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace CSUtil.Commons {
         /// <param name="s">The function which returns text to log</param>
         public static void ErrorIf(bool cond, Func<string> s) {
             if (cond) {
-                LogToFile(s(), LogLevel.Error);
+                LogInternal(s(), LogLevel.Error);
             }
         }
 
@@ -206,7 +206,7 @@ namespace CSUtil.Commons {
         /// <param name="s">The text</param>
         [Conditional("DEBUG")]
         public static void _DebugOnlyError(string s) {
-            LogToFile(s, LogLevel.Error);
+            LogInternal(s, LogLevel.Error);
         }
 
         /// <summary>
@@ -215,13 +215,18 @@ namespace CSUtil.Commons {
         /// <param name="what">The hint about what is not implemented</param>
         [Conditional("DEBUG")]
         public static void NotImpl(string what) {
-            LogToFile("Not implemented: " + what, LogLevel.Error);
+            LogInternal("Not implemented: " + what, LogLevel.Error);
         }
 
-        private static void LogToFile(string log, LogLevel level) {
+        private static void LogInternal(string log, LogLevel level) {
             if (level < _level) {
                 return;
             }
+
+            LogToFile(log, level);
+        }
+
+        private static void LogToFile(string log, LogLevel level) {
 
             try {
                 Monitor.Enter(LogLock);
@@ -230,7 +235,7 @@ namespace CSUtil.Commons {
                     long secs = _sw.ElapsedTicks / Stopwatch.Frequency;
                     long fraction = _sw.ElapsedTicks % Stopwatch.Frequency;
                     w.WriteLine(
-                        $"{level.ToString()} " +
+                        $"{level} " +
                         $"{secs:n0}.{fraction:D7}: " +
                         $"{log}");
 

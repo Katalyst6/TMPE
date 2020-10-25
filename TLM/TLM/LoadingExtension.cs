@@ -112,7 +112,7 @@ namespace TrafficManager {
         }
 
         public override void OnLevelUnloading() {
-            Log.Info("OnLevelUnloading");
+            Log._Trace("OnLevelUnloading");
             base.OnLevelUnloading();
             if (IsPathManagerReplaced) {
                 CustomPathManager._instance.WaitForAllPaths();
@@ -123,7 +123,7 @@ namespace TrafficManager {
                 reverseManagers.Reverse();
 
                 foreach (ICustomManager manager in reverseManagers) {
-                    Log.Info($"OnLevelUnloading: {manager.GetType().Name}");
+                    Log._Trace($"OnLevelUnloading: {manager.GetType().Name}");
                     manager.OnLevelUnloading();
                 }
 
@@ -149,7 +149,7 @@ namespace TrafficManager {
                     TransportDemandUI = null;
                 }
 
-                Log.Info("Removing Controls from UI.");
+                Log._Trace("Removing Controls from UI.");
                 if (ModUI.Instance != null) {
                     ModUI.Instance.CloseMainMenu(); // Hide the UI ASAP
                     ModUI.Instance.Destroy();
@@ -169,7 +169,7 @@ namespace TrafficManager {
         public override void OnLevelLoaded(LoadMode mode) {
             SimulationManager.UpdateMode updateMode = SimulationManager.instance.m_metaData.m_updateMode;
             string scene = SceneManager.GetActiveScene().name;
-            Log.Info($"OnLevelLoaded({mode}) called. updateMode={updateMode}, scene={scene}");
+            Log._Trace($"OnLevelLoaded({mode}) called. updateMode={updateMode}, scene={scene}");
 
             if (scene == "ThemeEditor")
                 return;
@@ -336,15 +336,15 @@ namespace TrafficManager {
 
             // Log.Info("Fixing non-created nodes with problems...");
             // FixNonCreatedNodeProblems();
-            Log.Info("Notifying managers...");
+            Log._Trace("Notifying managers...");
             foreach (ICustomManager manager in RegisteredManagers) {
-                Log.Info($"OnLevelLoading: {manager.GetType().Name}");
+                Log._Trace($"OnLevelLoading: {manager.GetType().Name}");
                 manager.OnLevelLoading();
             }
 
             // InitTool();
             // Log._Debug($"Current tool: {ToolManager.instance.m_properties.CurrentTool}");
-            Log.Info("OnLevelLoaded complete.");
+            Log._Trace("OnLevelLoaded complete.");
         }
 
         [UsedImplicitly]

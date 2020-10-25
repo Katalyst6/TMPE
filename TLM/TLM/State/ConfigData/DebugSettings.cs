@@ -15,33 +15,33 @@ namespace TrafficManager.State.ConfigData {
         /// Use DebugSwitch.$EnumName$.Get() to access the switch values.
         /// </summary>
         public bool[] Switches = {
-            false, // 0: path-finding debug log
-            false, // 1: routing basic debug log
-            false, // 2: parking ai debug log (basic)
-            false, // 3: do not actually repair stuck vehicles/cims, just report
-            false, // 4: parking ai debug log (extended)
-            false, // 5: geometry debug log
-            false, // 6: debug parking AI distance issue
-            false, // 7: debug Timed Traffic Lights
-            false, // 8: debug routing
-            false, // 9: debug vehicle to segment end linking
-            false, // 10: prevent routing recalculation on global configuration reload
-            false, // 11: debug junction restrictions
-            false, // 12: debug pedestrian pathfinding
-            false, // 13: priority rules debug
-            false, // 14: disable GUI overlay of citizens having a valid path
-            false, // 15: disable checking of other vehicles for trams
-            false, // 16: debug TramBaseAI.SimulationStep (2)
-            false, // 17: debug alternative lane selection
-            false, // 18: transport line path-find debugging
-            false, // 19: enable obligation to drive on the right hand side of the road
-            false, // 20: debug realistic public transport
-            false, // 21: debug "CalculateSegmentPosition"
-            false, // 22: parking ai debug log (vehicles)
-            false, // 23: debug lane connections
-            false, // 24: debug resource loading
-            false, // 25: debug turn-on-red
-            false  // 26: debug speed limits (also lists NetInfos skipped due to m_netAI in SpeedLimitsManager.cs)
+            true, // 0: path-finding debug log
+            true, // 1: routing basic debug log
+            true, // 2: parking ai debug log (basic)
+            true, // 3: do not actually repair stuck vehicles/cims, just report
+            true, // 4: parking ai debug log (extended)
+            true, // 5: geometry debug log
+            true, // 6: debug parking AI distance issue
+            true, // 7: debug Timed Traffic Lights
+            true, // 8: debug routing
+            true, // 9: debug vehicle to segment end linking
+            true, // 10: prevent routing recalculation on global configuration reload
+            true, // 11: debug junction restrictions
+            true, // 12: debug pedestrian pathfinding
+            true, // 13: priority rules debug
+            true, // 14: disable GUI overlay of citizens having a valid path
+            true, // 15: disable checking of other vehicles for trams
+            true, // 16: debug TramBaseAI.SimulationStep (2)
+            true, // 17: debug alternative lane selection
+            true, // 18: transport line path-find debugging
+            true, // 19: enable obligation to drive on the right hand side of the road
+            true, // 20: debug realistic public transport
+            true, // 21: debug "CalculateSegmentPosition"
+            true, // 22: parking ai debug log (vehicles)
+            true, // 23: debug lane connections
+            true, // 24: debug resource loading
+            true, // 25: debug turn-on-red
+            true  // 26: debug speed limits (also lists NetInfos skipped due to m_netAI in SpeedLimitsManager.cs)
         };
 
         private int nodeId_ = 0;
