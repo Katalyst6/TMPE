@@ -42,7 +42,7 @@ namespace TrafficManager.State {
             bool loadingSucceeded = true;
 
             try {
-                Log.Info("Initializing flags");
+                Log._Trace("Initializing flags");
                 Flags.OnBeforeLoadData();
             }
             catch (Exception e) {
@@ -52,7 +52,7 @@ namespace TrafficManager.State {
 
             foreach (ICustomManager manager in LoadingExtension.RegisteredManagers) {
                 try {
-                    Log.Info($"OnBeforeLoadData: {manager.GetType().Name}");
+                    Log._Trace($"OnBeforeLoadData: {manager.GetType().Name}");
                     manager.OnBeforeLoadData();
                 }
                 catch (Exception e) {
@@ -87,9 +87,9 @@ namespace TrafficManager.State {
             }
 
             if (loadingSucceeded) {
-                Log.Info("OnLoadData completed successfully.");
+                Log._Trace("OnLoadData completed successfully.");
             } else {
-                Log.Info("An error occurred while loading.");
+                Log.Error("An error occurred while loading.");
 
                 // UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel")
                 // .SetMessage("An error occurred while loading",
@@ -104,7 +104,7 @@ namespace TrafficManager.State {
 
             foreach (ICustomManager manager in LoadingExtension.RegisteredManagers) {
                 try {
-                    Log.Info($"OnAfterLoadData: {manager.GetType().Name}");
+                    Log._Trace($"OnAfterLoadData: {manager.GetType().Name}");
                     manager.OnAfterLoadData();
                 }
                 catch (Exception e) {
@@ -303,7 +303,7 @@ namespace TrafficManager.State {
 
             foreach (ICustomManager manager in LoadingExtension.RegisteredManagers) {
                 try {
-                    Log.Info($"OnBeforeSaveData: {manager.GetType().Name}");
+                    Log._Trace($"OnBeforeSaveData: {manager.GetType().Name}");
                     manager.OnBeforeSaveData();
                 }
                 catch (Exception e) {

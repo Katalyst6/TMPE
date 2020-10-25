@@ -63,7 +63,7 @@ namespace TrafficManager.UI.Localization {
 
             // Load all translations CSV file with UTF8
             string filename = $"{Translation.RESOURCES_PREFIX}Translations.{Name}.csv";
-            Log.Info($"Loading translations: {filename}");
+            Log._Trace($"Loading translations: {filename}");
 
             string firstLine;
             string dataBlock;

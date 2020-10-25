@@ -51,7 +51,7 @@ namespace CSUtil.Commons {
             Error,
         }
 
-        private static LogLevel _level = LogLevel.Trace;
+        private static LogLevel _level = LogLevel.Debug;
 
         private static Stopwatch _sw = Stopwatch.StartNew();
 

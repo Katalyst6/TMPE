@@ -131,7 +131,7 @@ namespace TrafficManager.State {
                 Log.Info($"Loading global config from file '{FILENAME}'...");
                 using (FileStream fs = new FileStream(FILENAME, FileMode.Open)) {
                     XmlSerializer serializer = new XmlSerializer(typeof(GlobalConfig));
-                    Log.Info($"Global config loaded.");
+                    Log._Trace($"Global config loaded.");
                     GlobalConfig conf = (GlobalConfig)serializer.Deserialize(fs);
                     if (LoadingExtension.IsGameLoaded
 #if DEBUG

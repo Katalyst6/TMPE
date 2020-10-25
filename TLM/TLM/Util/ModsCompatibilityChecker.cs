@@ -109,7 +109,7 @@ namespace TrafficManager.Util {
                 }
             }
 
-            Log.Info(logStr);
+            Log._Trace(logStr);
             Log.Info("Scan complete: " + results.Count + " incompatible mod(s) found");
 
             return results;
@@ -183,7 +183,7 @@ namespace TrafficManager.Util {
                 }
             }
 
-            Log.Info($"{RESOURCES_PREFIX}{INCOMPATIBLE_MODS_FILE} contains {results.Count} entries");
+            Log._Trace($"{RESOURCES_PREFIX}{INCOMPATIBLE_MODS_FILE} contains {results.Count} entries");
 
             return results;
         }

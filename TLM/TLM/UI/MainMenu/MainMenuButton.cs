@@ -145,7 +145,7 @@ namespace TrafficManager.UI.MainMenu {
             Vector2 resolution = UIView.GetAView().GetScreenResolution();
 
             VectorUtil.ClampRectToScreen(ref rect, resolution);
-            Log.Info($"Setting main menu button position to [{pos.x},{pos.y}]");
+            Log._Trace($"Setting main menu button position to [{pos.x},{pos.y}]");
             absolutePosition = rect.position;
 
             Invalidate();
