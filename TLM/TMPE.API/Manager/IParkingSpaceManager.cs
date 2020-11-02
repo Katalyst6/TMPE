@@ -20,7 +20,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="endPathPos">sidewalk path position near parking space (output). only valid if <paramref name="calculateEndPos"/> yields false.</param>
         /// <param name="calculateEndPos">if false, a parking space path position could be calculated (TODO negate & rename parameter)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpaceForCitizen(Vector3 endPos,
+        bool FindForCitizen(Vector3 endPos,
                                         VehicleInfo vehicleInfo,
                                         ref ExtCitizenInstance extDriverInstance,
                                         ushort homeId,
@@ -46,7 +46,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="parkRot">identified parking space rotation (only valid if method returns true)</param>
         /// <param name="parkOffset">identified parking space offset (only valid if method returns true)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpaceInVicinity(Vector3 targetPos,
+        bool FindInVicinity(Vector3 targetPos,
                                         Vector3 searchDir,
                                         VehicleInfo vehicleInfo,
                                         ushort homeId,
@@ -72,7 +72,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="laneId">identified parking space lane id (only valid if method returns true)</param>
         /// <param name="laneIndex">identified parking space lane index (only valid if method returns true)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpaceRoadSideForVehiclePos(VehicleInfo vehicleInfo,
+        bool FindRoadSideForPosition(VehicleInfo vehicleInfo,
                                                    ushort ignoreParked,
                                                    ushort segmentId,
                                                    Vector3 refPos,
@@ -94,7 +94,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="parkRot">identified parking space rotation (only valid if method returns true)</param>
         /// <param name="parkOffset">identified parking space offset (only valid if method returns true)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpaceRoadSide(ushort ignoreParked,
+        bool FindRoadSide(ushort ignoreParked,
                                       Vector3 refPos,
                                       float width,
                                       float length,
@@ -127,7 +127,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="parkOffset">identified parking space offset (only valid if method returns
         ///     true and a segment id was given)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpaceBuilding(VehicleInfo vehicleInfo,
+        bool FindInBuilding(VehicleInfo vehicleInfo,
                                       ushort homeID,
                                       ushort ignoreParked,
                                       ushort segmentId,
@@ -154,7 +154,7 @@ namespace TrafficManager.API.Manager {
         /// <param name="parkRot">identified parking space rotation (only valid if method returns true)</param>
         /// <param name="parkOffset">identified parking space offset (only valid if method returns true and a segment id was given)</param>
         /// <returns>true if a parking space could be found, false otherwise</returns>
-        bool FindParkingSpacePropAtBuilding(VehicleInfo vehicleInfo,
+        bool FindPropAtBuilding(VehicleInfo vehicleInfo,
                                             ushort homeID,
                                             ushort ignoreParked,
                                             ushort buildingID,

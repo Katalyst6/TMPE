@@ -1,18 +1,14 @@
 namespace TrafficManager.Manager.Impl {
-    using ColossalFramework.Globalization;
-    using ColossalFramework.Math;
     using ColossalFramework;
+    using ColossalFramework.Math;
     using CSUtil.Commons;
-    using JetBrains.Annotations;
     using System;
     using TrafficManager.API.Manager;
     using TrafficManager.API.Traffic.Data;
     using TrafficManager.API.Traffic.Enums;
     using TrafficManager.Custom.AI;
-    using TrafficManager.Custom.PathFinding;
-    using TrafficManager.State.ConfigData;
     using TrafficManager.State;
-    using TrafficManager.UI;
+    using TrafficManager.State.ConfigData;
     using TrafficManager.Util;
     using UnityEngine;
 
@@ -30,22 +26,22 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        public bool FindParkingSpaceForCitizen(Vector3 endPos,
-                                               VehicleInfo vehicleInfo,
-                                               ref ExtCitizenInstance extDriverInstance,
-                                               ushort homeId,
-                                               bool goingHome,
-                                               ushort vehicleId,
-                                               bool allowTourists,
-                                               out Vector3 parkPos,
-                                               ref PathUnit.Position endPathPos,
-                                               out bool calculateEndPos) {
+        public bool FindForCitizen(Vector3 endPos,
+                                    VehicleInfo vehicleInfo,
+                                    ref ExtCitizenInstance extDriverInstance,
+                                    ushort homeId,
+                                    bool goingHome,
+                                    ushort vehicleId,
+                                    bool allowTourists,
+                                    out Vector3 parkPos,
+                                    ref PathUnit.Position endPathPos,
+                                    out bool calculateEndPos) {
             IExtCitizenInstanceManager extCitInstMan = Constants.ManagerFactory.ExtCitizenInstanceManager;
 
 #if DEBUG
-            CitizenInstance[] citizensBuffer = Singleton<CitizenManager> .instance.m_instances.m_buffer;
-            ushort ctzTargetBuilding = citizensBuffer[extDriverInstance.instanceId] .m_targetBuilding;
-            ushort ctzSourceBuilding = citizensBuffer[extDriverInstance.instanceId] .m_sourceBuilding;
+            CitizenInstance[] citizensBuffer = Singleton<CitizenManager>.instance.m_instances.m_buffer;
+            ushort ctzTargetBuilding = citizensBuffer[extDriverInstance.instanceId].m_targetBuilding;
+            ushort ctzSourceBuilding = citizensBuffer[extDriverInstance.instanceId].m_sourceBuilding;
 
             bool citizenDebug
                     = (DebugSettings.VehicleId == 0
@@ -89,7 +85,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             // find a free parking space
-            bool success = FindParkingSpaceInVicinity(
+            bool success = FindInVicinity(
                 endPos,
                 Vector3.zero,
                 vehicleInfo,
@@ -200,7 +196,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        public bool FindParkingSpaceInVicinity(Vector3 targetPos,
+        public bool FindInVicinity(Vector3 targetPos,
                                                Vector3 searchDir,
                                                VehicleInfo vehicleInfo,
                                                ushort homeId,
@@ -222,7 +218,7 @@ namespace TrafficManager.Manager.Impl {
             Vector3 refPos = targetPos + (searchDir * 16f);
 
             // TODO depending on simulation accuracy, disable searching for both road-side and building parking spaces
-            ushort parkingSpaceSegmentId = FindParkingSpaceAtRoadSide(
+            ushort parkingSpaceSegmentId = FindAtRoadSide(
                 0,
                 refPos,
                 vehicleInfo.m_generatedInfo.m_size.x,
@@ -233,7 +229,7 @@ namespace TrafficManager.Manager.Impl {
                 out Quaternion roadParkRot,
                 out float roadParkOffset);
 
-            ushort parkingBuildingId = FindParkingSpaceBuilding(
+            ushort parkingBuildingId = FindInBuildingInternal(
                 vehicleInfo,
                 homeId,
                 0,
@@ -326,7 +322,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        protected ushort FindParkingSpaceAtRoadSide(ushort ignoreParked,
+        public ushort FindAtRoadSide(ushort ignoreParked,
                                                     Vector3 refPos,
                                                     float width,
                                                     float length,
@@ -475,7 +471,32 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        protected ushort FindParkingSpaceBuilding(VehicleInfo vehicleInfo,
+        public bool FindInBuilding(VehicleInfo vehicleInfo,
+                                             ushort homeId,
+                                             ushort ignoreParked,
+                                             ushort segmentId,
+                                             Vector3 refPos,
+                                             float maxBuildingDistance,
+                                             float maxParkingSpaceDistance,
+                                             out Vector3 parkPos,
+                                             out Quaternion parkRot,
+                                             out float parkOffset) {
+            return FindInBuildingInternal(
+                       vehicleInfo,
+                       homeId,
+                       ignoreParked,
+                       segmentId,
+                       refPos,
+                       maxBuildingDistance,
+                       maxParkingSpaceDistance,
+                       false,
+                       out parkPos,
+                       out parkRot,
+                       out parkOffset) != 0;
+        }
+
+        /// <inheritdoc />
+        protected ushort FindInBuildingInternal(VehicleInfo vehicleInfo,
                                                   ushort homeID,
                                                   ushort ignoreParked,
                                                   ushort segmentId,
@@ -525,7 +546,7 @@ namespace TrafficManager.Manager.Impl {
                 ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
 
                 while (buildingId != 0) {
-                    if (FindParkingSpacePropAtBuilding(
+                    if (FindPropAtBuilding(
                         vehicleInfo,
                         homeID,
                         ignoreParked,
@@ -585,7 +606,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        public bool FindParkingSpacePropAtBuilding(VehicleInfo vehicleInfo,
+        public bool FindPropAtBuilding(VehicleInfo vehicleInfo,
                                                    ushort homeId,
                                                    ushort ignoreParked,
                                                    ushort buildingId,
@@ -778,7 +799,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        public bool FindParkingSpaceRoadSideForVehiclePos(VehicleInfo vehicleInfo,
+        public bool FindRoadSideForPosition(VehicleInfo vehicleInfo,
                                                           ushort ignoreParked,
                                                           ushort segmentId,
                                                           Vector3 refPos,
@@ -845,7 +866,7 @@ namespace TrafficManager.Manager.Impl {
         }
 
         /// <inheritdoc />
-        public bool FindParkingSpaceRoadSide(ushort ignoreParked,
+        public bool FindRoadSide(ushort ignoreParked,
                                              Vector3 refPos,
                                              float width,
                                              float length,
@@ -853,37 +874,12 @@ namespace TrafficManager.Manager.Impl {
                                              out Vector3 parkPos,
                                              out Quaternion parkRot,
                                              out float parkOffset) {
-            return FindParkingSpaceAtRoadSide(
+            return FindAtRoadSide(
                        ignoreParked,
                        refPos,
                        width,
                        length,
                        maxDistance,
-                       false,
-                       out parkPos,
-                       out parkRot,
-                       out parkOffset) != 0;
-        }
-
-        /// <inheritdoc />
-        public bool FindParkingSpaceBuilding(VehicleInfo vehicleInfo,
-                                             ushort homeId,
-                                             ushort ignoreParked,
-                                             ushort segmentId,
-                                             Vector3 refPos,
-                                             float maxBuildingDistance,
-                                             float maxParkingSpaceDistance,
-                                             out Vector3 parkPos,
-                                             out Quaternion parkRot,
-                                             out float parkOffset) {
-            return FindParkingSpaceBuilding(
-                       vehicleInfo,
-                       homeId,
-                       ignoreParked,
-                       segmentId,
-                       refPos,
-                       maxBuildingDistance,
-                       maxParkingSpaceDistance,
                        false,
                        out parkPos,
                        out parkRot,

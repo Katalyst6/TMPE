@@ -1,19 +1,16 @@
 namespace TrafficManager.Manager.Impl {
+    using ColossalFramework;
     using ColossalFramework.Globalization;
     using ColossalFramework.Math;
-    using ColossalFramework;
     using CSUtil.Commons;
     using JetBrains.Annotations;
-    using System;
     using TrafficManager.API.Manager;
     using TrafficManager.API.Traffic.Data;
     using TrafficManager.API.Traffic.Enums;
-    using TrafficManager.Custom.AI;
     using TrafficManager.Custom.PathFinding;
-    using TrafficManager.State.ConfigData;
     using TrafficManager.State;
+    using TrafficManager.State.ConfigData;
     using TrafficManager.UI;
-    using TrafficManager.Util;
     using UnityEngine;
 
     public class AdvancedParkingManager
@@ -1813,7 +1810,7 @@ namespace TrafficManager.Manager.Impl {
             Vector3 parkPos;
             Quaternion parkRot;
 
-            found = Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceInVicinity(
+            found = Constants.ManagerFactory.ParkingSpaceManager.FindInVicinity(
                     refPos,
                     Vector3.zero,
                     parkedVehicle.Info,
@@ -1915,7 +1912,7 @@ namespace TrafficManager.Manager.Impl {
 
             parkPos = Vector3.zero;
 
-            if (Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceRoadSide(
+            if (Constants.ManagerFactory.ParkingSpaceManager.FindRoadSide(
                 0,
                 refPos,
                 vehicleInfo.m_generatedInfo.m_size.x,
@@ -1984,7 +1981,7 @@ namespace TrafficManager.Manager.Impl {
 
             parkPos = Vector3.zero;
 
-            if (Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceBuilding(
+            if (Constants.ManagerFactory.ParkingSpaceManager.FindInBuilding(
                 vehicleInfo,
                 homeId,
                 0,
