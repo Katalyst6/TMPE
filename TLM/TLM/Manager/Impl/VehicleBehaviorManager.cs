@@ -238,7 +238,7 @@ namespace TrafficManager.Manager.Impl {
                                                  vehicleInfo,
                                                  homeID,
                                                  vehicleID,
-                                                 GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance,
+                                                 GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance,
                                                  out ExtParkingSpaceLocation _,
                                                  out ushort _,
                                                  out parkPos,
@@ -258,7 +258,7 @@ namespace TrafficManager.Manager.Impl {
                             vehicleInfo,
                             homeID,
                             vehicleID,
-                            GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance,
+                            GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance,
                             out ExtParkingSpaceLocation parkLoc,
                             out ushort parkId,
                             out parkPos,
@@ -311,8 +311,8 @@ namespace TrafficManager.Manager.Impl {
                             Constants.ManagerFactory.ExtBuildingManager.ModifyParkingSpaceDemand(
                                 ref extBuildingManager.ExtBuildings[targetBuildingId],
                                 parkPos,
-                                GlobalConfig.Instance.ParkingAI.MinFoundParkPosParkingSpaceDemandDelta,
-                                GlobalConfig.Instance.ParkingAI.MaxFoundParkPosParkingSpaceDemandDelta);
+                                GlobalConfig.Instance.Parking.MinFoundParkPosParkingSpaceDemandDelta,
+                                GlobalConfig.Instance.Parking.MaxFoundParkPosParkingSpaceDemandDelta);
                         }
 
                         // if (driverExtInstance.CurrentPathMode == ExtCitizenInstance.PathMode.DrivingToAltParkPos
@@ -338,7 +338,7 @@ namespace TrafficManager.Manager.Impl {
                     if (targetBuildingId != 0
                         && (buildingsBuffer[targetBuildingId].m_flags & Building.Flags.IncomingOutgoing) != Building.Flags.None
                         && (refPos - buildingsBuffer[targetBuildingId].m_position).magnitude
-                        <= GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance)
+                        <= GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance)
                     {
                         // vehicle is at target and target is an outside connection: accept despawn
                         Log._TraceIf(
@@ -360,7 +360,7 @@ namespace TrafficManager.Manager.Impl {
                         if (driverExtInstance.failedParkingAttempts > 1) {
                             extBuildingManager.AddParkingSpaceDemand(
                                 ref extBuildingManager.ExtBuildings[targetBuildingId],
-                                GlobalConfig.Instance.ParkingAI.FailedParkingSpaceDemandIncrement *
+                                GlobalConfig.Instance.Parking.FailedParkingSpaceDemandIncrement *
                                 (uint)(driverExtInstance.failedParkingAttempts - 1));
                         }
                     }
@@ -378,7 +378,7 @@ namespace TrafficManager.Manager.Impl {
                             () => $"CustomPassengerCarAI.ExtParkVehicle({vehicleID}): Parking failed " +
                             $"for vehicle {vehicleID}: Parked car could not be created. ABORT.");
 
-                        driverExtInstance.failedParkingAttempts = GlobalConfig.Instance.ParkingAI.MaxParkingAttempts + 1;
+                        driverExtInstance.failedParkingAttempts = GlobalConfig.Instance.Parking.MaxParkingAttempts + 1;
                     }
 
                     driverExtInstance.pathMode = ExtPathMode.ParkingFailed;
@@ -719,7 +719,7 @@ namespace TrafficManager.Manager.Impl {
                         startBothWays = false;
 
                         if (driverExtInstance.failedParkingAttempts
-                            > GlobalConfig.Instance.ParkingAI.MaxParkingAttempts) {
+                            > GlobalConfig.Instance.Parking.MaxParkingAttempts) {
                             // maximum number of parking attempts reached
                             Log._TraceIf(
                                 logParkingAi,
@@ -741,7 +741,7 @@ namespace TrafficManager.Manager.Impl {
                                 vehicleID,
                                 vehicleID,
                                 driverExtInstance.failedParkingAttempts,
-                                GlobalConfig.Instance.ParkingAI.MaxParkingAttempts);
+                                GlobalConfig.Instance.Parking.MaxParkingAttempts);
                         }
                     } else {
                         driverExtInstance.pathMode =

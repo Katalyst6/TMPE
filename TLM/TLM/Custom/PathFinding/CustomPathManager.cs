@@ -307,7 +307,7 @@ namespace TrafficManager.Custom.PathFinding {
                     allowUnderground,
                     false,
                     Options.parkingAI
-                        ? GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                        ? GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out PathUnit.Position posA,
                     out _,
@@ -327,7 +327,7 @@ namespace TrafficManager.Custom.PathFinding {
                     allowUnderground,
                     false,
                     Options.parkingAI
-                        ? GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                        ? GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out posA,
                     out _,
@@ -348,7 +348,7 @@ namespace TrafficManager.Custom.PathFinding {
                     false,
                     Options.parkingAI
                         ? GlobalConfig
-                          .Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                          .Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out posA,
                     out _,

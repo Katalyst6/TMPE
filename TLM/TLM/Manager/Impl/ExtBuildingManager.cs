@@ -44,14 +44,14 @@
         private void RemoveDemand(ref ExtBuilding extBuilding) {
             RemoveParkingSpaceDemand(
                 ref extBuilding,
-                GlobalConfig.Instance.ParkingAI.ParkingSpaceDemandDecrement);
+                GlobalConfig.Instance.Parking.ParkingSpaceDemandDecrement);
             RemovePublicTransportDemand(
                 ref extBuilding,
-                GlobalConfig.Instance.ParkingAI.PublicTransportDemandDecrement,
+                GlobalConfig.Instance.Parking.PublicTransportDemandDecrement,
                 true);
             RemovePublicTransportDemand(
                 ref extBuilding,
-                GlobalConfig.Instance.ParkingAI.PublicTransportDemandDecrement,
+                GlobalConfig.Instance.Parking.PublicTransportDemandDecrement,
                 false);
         }
 
@@ -90,11 +90,11 @@
             float distance = Mathf.Clamp(
                 (parkPos - buildingPos).magnitude,
                 0f,
-                GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding);
+                GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding);
 
             float delta =
                 ((maxDelta - minDelta) *
-                (distance / GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding)) +
+                (distance / GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding)) +
                 minDelta;
 
             extBuilding.parkingSpaceDemand = (byte)Mathf.Clamp(

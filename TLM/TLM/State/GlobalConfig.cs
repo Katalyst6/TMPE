@@ -69,7 +69,7 @@ namespace TrafficManager.State {
 
         public Main Main = new Main();
 
-        public ParkingAI ParkingAI = new ParkingAI();
+        public ParkingConfig Parking = new ParkingConfig();
 
         public PathFinding PathFinding = new PathFinding();
 
@@ -159,8 +159,8 @@ namespace TrafficManager.State {
                         conf.Gameplay = new Gameplay();
                     }
 
-                    if (conf.ParkingAI == null) {
-                        conf.ParkingAI = new ParkingAI();
+                    if (conf.Parking == null) {
+                        conf.Parking = new ParkingConfig();
                     }
 
                     if (conf.PathFinding == null) {

@@ -682,7 +682,7 @@ namespace TrafficManager.Manager.Impl {
 
             float doorSqrDist = (instanceData.GetLastFramePosition() - doorPosition).sqrMagnitude;
 
-            if (doorSqrDist > GlobalConfig.Instance.ParkingAI.MaxParkedCarInstanceSwitchSqrDistance) {
+            if (doorSqrDist > GlobalConfig.Instance.Parking.MaxParkedCarInstanceSwitchSqrDistance) {
                 // citizen is still too far away from the parked car
                 ExtPathMode oldPathMode = extInstance.pathMode;
                 if (doorSqrDist > extInstance.lastDistanceToParkedCar + 1024f) {
@@ -947,14 +947,14 @@ namespace TrafficManager.Manager.Impl {
                     if (instanceData.m_sourceBuilding != 0) {
                         extBuildingMan.RemovePublicTransportDemand(
                             ref extBuildingMan.ExtBuildings[instanceData.m_sourceBuilding],
-                            GlobalConfig.Instance.ParkingAI.PublicTransportDemandUsageDecrement,
+                            GlobalConfig.Instance.Parking.PublicTransportDemandUsageDecrement,
                             true);
                     }
 
                     if (instanceData.m_targetBuilding != 0) {
                         extBuildingMan.RemovePublicTransportDemand(
                             ref extBuildingMan.ExtBuildings[instanceData.m_targetBuilding],
-                            GlobalConfig.Instance.ParkingAI.PublicTransportDemandUsageDecrement,
+                            GlobalConfig.Instance.Parking.PublicTransportDemandUsageDecrement,
                             false);
                     }
 
@@ -1214,7 +1214,7 @@ namespace TrafficManager.Manager.Impl {
                 }
 
                 if (sqrDistToParkedVehicle >
-                    4f * GlobalConfig.Instance.ParkingAI.MaxParkedCarInstanceSwitchSqrDistance) {
+                    4f * GlobalConfig.Instance.Parking.MaxParkedCarInstanceSwitchSqrDistance) {
                     // error! parked car is too far away
                     Log._TraceIf(
                         logParkingAi,
@@ -1284,14 +1284,14 @@ namespace TrafficManager.Manager.Impl {
                         if (instanceData.m_sourceBuilding != 0) {
                             extBuildingMan.RemovePublicTransportDemand(
                                 ref extBuildingMan.ExtBuildings[instanceData.m_sourceBuilding],
-                                GlobalConfig.Instance.ParkingAI.PublicTransportDemandUsageDecrement,
+                                GlobalConfig.Instance.Parking.PublicTransportDemandUsageDecrement,
                                 true);
                         }
 
                         if (instanceData.m_targetBuilding != 0) {
                             extBuildingMan.RemovePublicTransportDemand(
                                 ref extBuildingMan.ExtBuildings[instanceData.m_targetBuilding],
-                                GlobalConfig.Instance.ParkingAI.PublicTransportDemandUsageDecrement,
+                                GlobalConfig.Instance.Parking.PublicTransportDemandUsageDecrement,
                                 false);
                         }
 
@@ -1339,7 +1339,7 @@ namespace TrafficManager.Manager.Impl {
                 }
             }
 
-            ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
+            ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
             if (usesCar) {
                 Log._TraceIf(
                     logParkingAi,
@@ -1576,14 +1576,14 @@ namespace TrafficManager.Manager.Impl {
                     if (instanceData.m_targetBuilding != 0) {
                         extBuildingMan.AddPublicTransportDemand(
                             ref extBuildingMan.ExtBuildings[instanceData.m_targetBuilding],
-                            GlobalConfig.Instance.ParkingAI.PublicTransportDemandIncrement,
+                            GlobalConfig.Instance.Parking.PublicTransportDemandIncrement,
                             false);
                     }
 
                     if (instanceData.m_sourceBuilding != 0) {
                         extBuildingMan.AddPublicTransportDemand(
                             ref extBuildingMan.ExtBuildings[instanceData.m_sourceBuilding],
-                            GlobalConfig.Instance.ParkingAI.PublicTransportDemandIncrement,
+                            GlobalConfig.Instance.Parking.PublicTransportDemandIncrement,
                             true);
                     }
                 }
@@ -1616,14 +1616,14 @@ namespace TrafficManager.Manager.Impl {
                         (ushort parkedVehId, ref VehicleParked parkedVehicle) => {
                             oldParkedVehiclePos = parkedVehicle.m_position;
                             parkedToCitizen = (parkedVehicle.m_position - citizenPos).magnitude;
-                            if (parkedToCitizen > GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToHome) {
+                            if (parkedToCitizen > GlobalConfig.Instance.Parking.MaxParkedCarDistanceToHome) {
                                 // parked car is far away from current location
                                 // -> relocate parked car and try again
                                 movedCar = TryMoveParkedVehicle(
                                     parkedVehicleId,
                                     ref parkedVehicle,
                                     citizenPos,
-                                    GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToHome,
+                                    GlobalConfig.Instance.Parking.MaxParkedCarDistanceToHome,
                                     homeId);
                             }
 
@@ -1762,7 +1762,7 @@ namespace TrafficManager.Manager.Impl {
                         IExtBuildingManager extBuildingManager = Constants.ManagerFactory.ExtBuildingManager;
                         extBuildingManager.AddParkingSpaceDemand(
                             ref extBuildingManager.ExtBuildings[driverInstanceData.m_targetBuilding],
-                            GlobalConfig.Instance.ParkingAI.FailedParkingSpaceDemandIncrement);
+                            GlobalConfig.Instance.Parking.FailedParkingSpaceDemandIncrement);
                     }
 
                     break;
@@ -1908,8 +1908,8 @@ namespace TrafficManager.Manager.Impl {
                 homeId,
                 vehicleId,
                 goingHome
-                    ? GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToHome
-                    : GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding,
+                    ? GlobalConfig.Instance.Parking.MaxParkedCarDistanceToHome
+                    : GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding,
                 out ExtParkingSpaceLocation knownParkingSpaceLocation,
                 out ushort knownParkingSpaceLocationId,
                 out parkPos,
@@ -1989,7 +1989,7 @@ namespace TrafficManager.Manager.Impl {
                         VehicleInfo.VehicleType.Car,
                         false,
                         false,
-                        GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance,
+                        GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance,
                         out endPathPos)) {
                         calculateEndPos = false;
                     }
@@ -2095,7 +2095,7 @@ namespace TrafficManager.Manager.Impl {
                 refPos,
                 vehicleInfo.m_generatedInfo.m_size.x,
                 vehicleInfo.m_generatedInfo.m_size.z,
-                GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding,
+                GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding,
                 out parkPos,
                 out Quaternion parkRot,
                 out _))
@@ -2165,8 +2165,8 @@ namespace TrafficManager.Manager.Impl {
                 0,
                 0,
                 refPos,
-                GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding,
-                GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding,
+                GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding,
+                GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding,
                 out parkPos,
                 out Quaternion parkRot,
                 out _))
@@ -2260,7 +2260,7 @@ namespace TrafficManager.Manager.Impl {
 
                     // choose nearest parking position, after a bit of randomization
                     if ((roadParkPos - targetPos).magnitude < (buildingParkPos - targetPos).magnitude
-                        && rng.Int32(GlobalConfig.Instance.ParkingAI.VicinityParkingSpaceSelectionRand) != 0) {
+                        && rng.Int32(GlobalConfig.Instance.Parking.VicinityParkingSpaceSelectionRand) != 0) {
                         // road parking space is closer
 
                         Log._TraceIf(
@@ -2383,7 +2383,7 @@ namespace TrafficManager.Manager.Impl {
                     Vector3 segCenter = netManager.m_segments.m_buffer[segmentId].m_bounds.center;
 
                     // randomize target position to allow for opposite road-side parking
-                    ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
+                    ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
                     segCenter.x +=
                         Singleton<SimulationManager>.instance.m_randomizer.Int32(
                             parkingAiConf.ParkingSpacePositionRand) -
@@ -2528,7 +2528,7 @@ namespace TrafficManager.Manager.Impl {
                     (i * BuildingManager.BUILDINGGRID_RESOLUTION) + j];
                 var numIterations = 0;
                 Building[] buildingsBuffer = Singleton<BuildingManager>.instance.m_buildings.m_buffer;
-                ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
+                ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
 
                 while (buildingId != 0) {
                     if (FindParkingSpacePropAtBuilding(
@@ -2705,7 +2705,7 @@ namespace TrafficManager.Manager.Impl {
                         result = true;
                         if (randomize
                             && propMinDistance <= maxDistance
-                            && rng.Int32(GlobalConfig.Instance.ParkingAI.VicinityParkingSpaceSelectionRand) == 0)
+                            && rng.Int32(GlobalConfig.Instance.Parking.VicinityParkingSpaceSelectionRand) == 0)
                         {
                             break;
                         }

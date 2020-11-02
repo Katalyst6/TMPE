@@ -434,7 +434,7 @@ namespace TrafficManager.Manager.Impl {
             ushort homeId = citizensBuffer[instanceData.m_citizen].m_homeBuilding;
             CarUsagePolicy carUsageMode = CarUsagePolicy.Allowed;
             var startsAtOutsideConnection = false;
-            ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
+            ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
 
             if (Options.parkingAI) {
                 switch (extInstance.pathMode) {
@@ -1130,7 +1130,7 @@ namespace TrafficManager.Manager.Impl {
                     allowUnderground,
                     false,
                     Options.parkingAI
-                        ? GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                        ? GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out PathUnit.Position posA,
                     out PathUnit.Position posB,
@@ -1148,7 +1148,7 @@ namespace TrafficManager.Manager.Impl {
                     allowUnderground,
                     false,
                     Options.parkingAI
-                        ? GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                        ? GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out posA,
                     out posB,
@@ -1167,7 +1167,7 @@ namespace TrafficManager.Manager.Impl {
                     allowUnderground,
                     false,
                     Options.parkingAI
-                        ? GlobalConfig.Instance.ParkingAI.MaxBuildingToPedestrianLaneDistance
+                        ? GlobalConfig.Instance.Parking.MaxBuildingToPedestrianLaneDistance
                         : 32f,
                     out posA,
                     out posB,
@@ -1480,7 +1480,7 @@ namespace TrafficManager.Manager.Impl {
             const bool logParkingAi = false;
 #endif
 
-            ParkingAI parkingAiConf = GlobalConfig.Instance.ParkingAI;
+            ParkingConfig parkingAiConf = GlobalConfig.Instance.Parking;
             bool ret =
                 (buildingsBuffer[instanceData.m_sourceBuilding].m_flags
                  & Building.Flags.IncomingOutgoing) != Building.Flags.None

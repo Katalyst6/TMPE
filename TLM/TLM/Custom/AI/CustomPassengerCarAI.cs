@@ -125,7 +125,7 @@ namespace TrafficManager.Custom.AI {
                     parkedId,
                     ref data,
                     data.m_position,
-                    GlobalConfig.Instance.ParkingAI.MaxParkedCarDistanceToBuilding,
+                    GlobalConfig.Instance.Parking.MaxParkedCarDistanceToBuilding,
                     homeId)) {
                 Singleton<VehicleManager>.instance.ReleaseParkedVehicle(parkedId);
             }

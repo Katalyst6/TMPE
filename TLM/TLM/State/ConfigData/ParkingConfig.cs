@@ -1,5 +1,5 @@
-﻿namespace TrafficManager.State.ConfigData {
-    public class ParkingAI {
+namespace TrafficManager.State.ConfigData {
+    public class ParkingConfig {
         /// <summary>
         /// Target position randomization to allow opposite road-side parking
         /// </summary>
