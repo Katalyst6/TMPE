@@ -1,37 +1,33 @@
 namespace TrafficManager.UI.MainMenu {
     using TrafficManager.Custom.PathFinding;
+    using TrafficManager.Manager.Impl;
     using UnityEngine;
 
     public class StatsLabel : U.Label.ULabel {
-        private uint _previousValue = 0;
 
         public override void Start() {
             base.Start();
-            this.text = "0";
-            this.suffix = " pathfinds";
+            this.text = string.Empty;
             this.textColor = Color.green;
         }
 
 #if QUEUEDSTATS
         public override void Update() {
-            uint queued = CustomPathManager.TotalQueuedPathFinds;
-            if (queued == _previousValue) {
-                return;
-            }
+            var pathfinds = CustomPathManager.TotalQueuedPathFinds;
+            var parkingCheckups = ParkingManager.QueuedCheckups;
 
-            if (queued < 1000) {
-                textColor = Color.Lerp(Color.green, Color.yellow, queued / 1000f);
-            } else if (queued < 2500) {
+            if (pathfinds < 1000 && parkingCheckups < 1000) {
+                textColor = Color.Lerp(Color.green, Color.yellow, pathfinds / 1000f);
+            } else if (pathfinds < 2500 && parkingCheckups < 2500) {
                 textColor = Color.Lerp(
                     Color.yellow,
                     Color.red,
-                    (queued - 1000f) / 1500f);
+                    (pathfinds - 1000f) / 1500f);
             } else {
                 textColor = Color.red;
             }
 
-            text = queued.ToString();
-            _previousValue = queued;
+            text = $"{pathfinds} pathfinds; {parkingCheckups} parking checkups";
         }
 #endif
     }

@@ -77,6 +77,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Geometry\SegmentEndReplacement.cs" />
+    <Compile Include="Manager\IParkingManager.cs" />
     <Compile Include="Manager\IAdvancedParkingManager.cs" />
     <Compile Include="Manager\ICustomDataManager.cs" />
     <Compile Include="Manager\ICustomManager.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Manager\IRoutingManager.cs" />
     <Compile Include="Manager\ISegmentEndManager.cs" />
     <Compile Include="Manager\ISpeedLimitManager.cs" />
+    <Compile Include="Manager\ITaskManager.cs" />
     <Compile Include="Manager\ITrafficLightManager.cs" />
     <Compile Include="Manager\ITrafficLightSimulationManager.cs" />
     <Compile Include="Manager\ITrafficMeasurementManager.cs" />

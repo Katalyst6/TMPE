@@ -1,5 +1,7 @@
-﻿namespace TrafficManager.API.Manager {
+namespace TrafficManager.API.Manager {
     public interface IManagerFactory {
+        ITaskManager TaskManager { get; }
+        IParkingManager ParkingManager { get; }
         IAdvancedParkingManager AdvancedParkingManager { get; }
         ICustomSegmentLightsManager CustomSegmentLightsManager { get; }
         IExtBuildingManager ExtBuildingManager { get; }

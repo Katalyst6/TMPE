@@ -73,6 +73,7 @@
     <Compile Include="TernaryBoolUtil.cs" />
     <Compile Include="ToStringExt.cs" />
     <Compile Include="VectorUtil.cs" />
+    <Compile Include="_Extensions\CollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

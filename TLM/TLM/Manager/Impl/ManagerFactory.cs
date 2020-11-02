@@ -1,8 +1,14 @@
-﻿namespace TrafficManager.Manager.Impl {
+namespace TrafficManager.Manager.Impl {
     using TrafficManager.API.Manager;
 
     public class ManagerFactory : IManagerFactory {
         public static IManagerFactory Instance = new ManagerFactory();
+
+        public ITaskManager TaskManager =>
+            Impl.TaskManager.Instance;
+
+        public IParkingManager ParkingManager =>
+            Impl.ParkingManager.Instance;
 
         public IAdvancedParkingManager AdvancedParkingManager =>
             Impl.AdvancedParkingManager.Instance;
