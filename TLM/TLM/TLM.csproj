@@ -163,6 +163,7 @@
     <AdditionalFiles Include="Custom\PathFinding\StockVehicleManager.cs" />
     <Compile Include="Custom\PathFinding\CustomVehicleManager.cs" />
     <Compile Include="Geometry\Impl\SegmentEndId.cs" />
+    <Compile Include="Manager\Impl\ParkingSpaceManager.cs" />
     <Compile Include="Manager\Impl\ParkingManager.cs" />
     <Compile Include="Manager\Impl\TaskManager.cs" />
     <Compile Include="Patcher.cs" />

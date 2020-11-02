@@ -10,6 +10,9 @@ namespace TrafficManager.Manager.Impl {
         public IParkingManager ParkingManager =>
             Impl.ParkingManager.Instance;
 
+        public IParkingSpaceManager ParkingSpaceManager =>
+            Impl.ParkingSpaceManager.Instance;
+
         public IAdvancedParkingManager AdvancedParkingManager =>
             Impl.AdvancedParkingManager.Instance;
 

@@ -797,7 +797,7 @@ namespace TrafficManager.Manager.Impl {
                         }
 
                         // find a parking space in the vicinity of the target
-                        if (AdvancedParkingManager.Instance.FindParkingSpaceForCitizen(
+                        if (Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceForCitizen(
                                 endPos,
                                 vehicleInfo,
                                 ref extInstance,

@@ -189,7 +189,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 
                                 foundParkingSpace =
-                                    AdvancedParkingManager.Instance.FindParkingSpaceRoadSideForVehiclePos(
+                                    Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceRoadSideForVehiclePos(
                                             vehicleInfo,
                                             0,
                                             driverExtInstance.parkingSpaceLocationId,
@@ -211,7 +211,7 @@ namespace TrafficManager.Manager.Impl {
                                 }
 
                                 foundParkingSpace =
-                                    AdvancedParkingManager.Instance.FindParkingSpacePropAtBuilding(
+                                    Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpacePropAtBuilding(
                                         vehicleInfo,
                                         homeID,
                                         0,
@@ -232,7 +232,7 @@ namespace TrafficManager.Manager.Impl {
                                           $"PathMode={driverExtInstance.pathMode}");
 
                                 foundParkingSpace =
-                                    Constants.ManagerFactory.AdvancedParkingManager.FindParkingSpaceInVicinity(
+                                    Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceInVicinity(
                                                  refPos,
                                                  searchDir,
                                                  vehicleInfo,
@@ -252,7 +252,7 @@ namespace TrafficManager.Manager.Impl {
 
                 if (!searchedParkingSpace) {
                     foundParkingSpace =
-                        Constants.ManagerFactory.AdvancedParkingManager.FindParkingSpaceInVicinity(
+                        Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceInVicinity(
                             refPos,
                             searchDir,
                             vehicleInfo,
@@ -760,7 +760,7 @@ namespace TrafficManager.Manager.Impl {
                     Vector3 returnPos =
                         searchAtCurrentPos ? (Vector3)vehicleData.m_targetPos3 : endPos;
 
-                    if (AdvancedParkingManager.Instance.FindParkingSpaceForCitizen(
+                    if (Constants.ManagerFactory.ParkingSpaceManager.FindParkingSpaceForCitizen(
                         returnPos,
                         vehicleData.Info,
                         ref driverExtInstance,
