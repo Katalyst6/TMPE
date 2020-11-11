@@ -160,7 +160,10 @@
     <Compile Include="Custom\AI\CustomTrolleybusAI.cs" />
     <Compile Include="Custom\AI\CustomVehicleAI.cs" />
     <Compile Include="Custom\Data\CustomVehicle.cs" />
+    <AdditionalFiles Include="Custom\PathFinding\StockVehicleManager.cs" />
+    <Compile Include="Custom\PathFinding\CustomVehicleManager.cs" />
     <Compile Include="Geometry\Impl\SegmentEndId.cs" />
+    <Compile Include="Manager\Impl\ParkingManager.cs" />
     <Compile Include="Patcher.cs" />
     <Compile Include="Manager\AbstractCustomManager.cs" />
     <Compile Include="Manager\AbstractFeatureManager.cs" />
