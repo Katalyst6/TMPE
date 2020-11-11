@@ -12,7 +12,7 @@ namespace TrafficManager.Manager.Impl {
         private readonly Thread _parkedVehicleCheckupThread;
 
         private static long _queuedCheckups = 0;
-        public static long QueuedCheckups => _queuedCheckups;
+        public static long QueuedCheckups => Interlocked.Read(ref _queuedCheckups);
 
         public static readonly ParkingManager Instance
             = new ParkingManager();

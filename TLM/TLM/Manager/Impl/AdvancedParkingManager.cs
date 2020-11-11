@@ -1583,7 +1583,7 @@ namespace TrafficManager.Manager.Impl {
             // relocate parked car if abandoned
             if (extInstance.pathMode == ExtPathMode.CalculatingWalkingPathToParkedCar) {
                 // parked car is unreachable
-                Citizen[] citizensBuffer = Singleton<CitizenManager> .instance.m_citizens.m_buffer;
+                Citizen[] citizensBuffer = Singleton<CitizenManager>.instance.m_citizens.m_buffer;
                 ushort parkedVehicleId = citizensBuffer[instanceData.m_citizen].m_parkedVehicle;
 
                 if (parkedVehicleId != 0) {

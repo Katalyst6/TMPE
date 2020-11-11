@@ -15,6 +15,7 @@ namespace TrafficManager.UI.MainMenu {
         public override void Update() {
             var pathfinds = CustomPathManager.TotalQueuedPathFinds;
             var parkingCheckups = ParkingManager.QueuedCheckups;
+            var parkingPropChecks = ParkingSpaceManager.PropChecks;
 
             if (pathfinds < 1000 && parkingCheckups < 1000) {
                 textColor = Color.Lerp(Color.green, Color.yellow, pathfinds / 1000f);
@@ -27,7 +28,7 @@ namespace TrafficManager.UI.MainMenu {
                 textColor = Color.red;
             }
 
-            text = $"{pathfinds} pathfinds; {parkingCheckups} parking checkups";
+            text = $"{pathfinds} pathfinds; {parkingCheckups} parking checkups; {parkingPropChecks} parking prop checkups";
         }
 #endif
     }

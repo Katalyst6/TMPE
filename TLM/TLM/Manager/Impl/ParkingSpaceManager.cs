@@ -3,6 +3,7 @@ namespace TrafficManager.Manager.Impl {
     using ColossalFramework.Math;
     using CSUtil.Commons;
     using System;
+    using System.Threading;
     using TrafficManager.API.Manager;
     using TrafficManager.API.Traffic.Data;
     using TrafficManager.API.Traffic.Enums;
@@ -520,7 +521,7 @@ namespace TrafficManager.Manager.Impl {
             var centerI = (int)((refPos.z / BuildingManager.BUILDINGGRID_CELL_SIZE) +
                                 (BuildingManager.BUILDINGGRID_RESOLUTION / 2f));
             var centerJ = (int)((refPos.x / BuildingManager.BUILDINGGRID_CELL_SIZE) +
-                                 BuildingManager.BUILDINGGRID_RESOLUTION / 2f);
+                                (BuildingManager.BUILDINGGRID_RESOLUTION / 2f));
             int radius = Math.Max(
                 1,
                 (int)(maxBuildingDistance / (BuildingManager.BUILDINGGRID_CELL_SIZE / 2f)) + 1);
@@ -605,6 +606,9 @@ namespace TrafficManager.Manager.Impl {
             return foundBuildingId;
         }
 
+        private static long _propCheck = 0;
+        public static long PropChecks => Interlocked.Read(ref _propCheck);
+
         /// <inheritdoc />
         public bool FindPropAtBuilding(VehicleInfo vehicleInfo,
                                                    ushort homeId,
@@ -623,6 +627,8 @@ namespace TrafficManager.Manager.Impl {
 #else
             const bool logParkingAi = false;
 #endif
+            Interlocked.Increment(ref _propCheck);
+
             // int buildingWidth = building.Width;
             int buildingLength = building.Length;
 
@@ -673,6 +679,8 @@ namespace TrafficManager.Manager.Impl {
                 VehicleInfo.VehicleType.None)
             {
                 foreach (BuildingInfo.Prop prop in buildingInfo.m_props) {
+                    //Interlocked.Increment(ref _propCheck);
+
                     var randomizer = new Randomizer(buildingId << 6 | prop.m_index);
                     if (randomizer.Int32(100u) >= prop.m_probability ||
                         buildingLength < prop.m_requiredLength) {
@@ -715,14 +723,12 @@ namespace TrafficManager.Manager.Impl {
                         vehicleInfo.m_generatedInfo.m_size.z,
                         ref propMinDistance,
                         ref parkPos,
-                        ref parkRot))
-                    {
+                        ref parkRot)) {
                         // NON-STOCK CODE
                         result = true;
                         if (randomize
                             && propMinDistance <= maxDistance
-                            && rng.Int32(GlobalConfig.Instance.Parking.VicinityParkingSpaceSelectionRand) == 0)
-                        {
+                            && rng.Int32(GlobalConfig.Instance.Parking.VicinityParkingSpaceSelectionRand) == 0) {
                             break;
                         }
                     }
